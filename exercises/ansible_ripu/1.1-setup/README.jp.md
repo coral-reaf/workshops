@@ -1,4 +1,4 @@
-# Workshop Exercise - Your Lab Environment
+# ワークショップ演習 - Your Lab Environment
 
 ## Table of Contents
 
