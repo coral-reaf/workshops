@@ -1,30 +1,30 @@
-# ワークショップ演習 - Your Lab Environment
+# ワークショップ演習 - Lab 環境
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Your Lab Environment](#workshop-exercise---your-lab-environment)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Your Lab Environment](#your-lab-environment)
-    - [Step 1 - Access the Environment](#step-1---access-the-environment)
-    - [Step 2 - Open a Terminal Session](#step-2---open-a-terminal-session)
-    - [Step 3 - Access the AAP Web UI](#step-3---access-the-aap-web-ui)
-    - [Step 4 - Access the RHEL Web Console](#step-4---access-the-rhel-web-console)
-    - [Step 5 - Challenge Labs](#step-5---challenge-labs)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - Lab 環境](#workshop-exercise---your-lab-environment)
+  - [目次](#目次)
+  - [目的](#目的)
+  - [ガイド](#ガイド)
+    - [Lab 環境](#lab-環境)
+    - [Step 1 - 環境へのアクセス](#step-1---環境へのアクセス)
+    - [Step 2 - ターミナルセッションを開く](#step-2---ターミナルセッションを開く)
+    - [Step 3 - AAP Web UI へのアクセス](#step-3---aap-web-ui-へのアクセス)
+    - [Step 4 - RHEL Web コンソールへのアクセス](#step-4---rhel-web-コンソールへのアクセス)
+    - [Step 5 - チャレンジラボ](#step-5---チャレンジラボ)
+  - [まとめ](#まとめ)
 
-## Objectives
+## 目的
 
-* Understand the lab topology and how to access the environment
-* Understand how to perform the workshop exercises
-* Understand challenge labs
+* ラボのトポロジと環境へのアクセス方法を理解する
+* ワークショップ演習の実施方法を理解する
+* チャレンジラボを理解する
 
-## Guide
+## ガイド
 
-### Your Lab Environment
+### Lab 環境
 
-The workshop is provisioned with a pre-configured lab environment. You will have access to a host deployed with Ansible Automation Platform (AAP) which you will use to control the playbook and workflow jobs that automation the RHEL in-place upgrade workflow steps. You will also have access to some "pet" application hosts, two with RHEL7 and another two with RHEL8. These are the hosts where we will be upgrading the RHEL operating system (OS).
+ワークショップでは、事前構成されたラボ環境がプロビジョニングされます。Ansible Automation Platform (AAP) でデプロイされたホストにアクセスして、RHEL インプレース アップグレード ワークフロー ステップを自動化するプレイブックとワークフロー ジョブを制御します。また、RHEL7 の 2 つと RHEL8 の 2 つの「ペット」アプリケーションホストにもアクセスします。これらは、RHEL オペレーティング システム (OS) をアップグレードするホストです。
 
 | Role                 | Inventory name |
 | ---------------------| ---------------|
@@ -34,82 +34,82 @@ The workshop is provisioned with a pre-configured lab environment. You will have
 | RHEL8 pet app host 1 | more-calf      |
 | RHEL8 pet app host 2 | upward-moray   |
 
-> **Note**
+> **注記**
 >
-> The inventory names of the pet app hosts will be random pet names different from the example above. <!-- FIXME: The workshop launch page provided by your instructor will list the names actually provisioned with your workshop instance. --> We'll dive deeper into why we are using random names in a later exercise.
+> ペット アプリ ホストのインベントリ名は、上記の例とは異なるランダムなペット名になります。 <!-- FIXME: The workshop launch page provided by your instructor will list the names actually provisioned with your workshop instance. --> ランダムな名前を使用する理由については、後の演習で詳しく説明します。
 
-### Step 1 - Access the Environment
+### Step 1 - 環境へのアクセス
 
-We will use Visual Studio Code (VS Code) as it provides a convenient and intuitive way to use a web browser to edit files and access terminal sessions. If you are a command line hero, direct SSH access is available if VS Code is not to your liking. There is a short YouTube video to explain if you need additional clarity: <a href="https://youtu.be/Y_Gx4ZBfcuk">Ansible Workshops - Accessing your workbench environment</a>.
+Visual Studio Code (VS Code) を使用します。これは、Web ブラウザーを使用してファイルを編集したり、ターミナル セッションにアクセスしたりするための便利で直感的な方法を提供するためです。コマンド ラインに精通していて、VS Code が気に入らない場合は、直接 SSH アクセスを利用できます。さらに明確にする必要がある場合は、YouTube の短い説明ビデオがあります: <a href="https://youtu.be/Y_Gx4ZBfcuk">Ansible Workshops - Accessing your workbench environment</a>.
 
-- You can open VS Code in your web browser using the "WebUI" link under "VS Code access" on the workshop launch page provided by your instructor. The password is given below the link. For example:
+- 講師から提供されたワークショップ起動ページの「VS Code アクセス」の下にある「WebUI」リンクを使用して、Web ブラウザーで VS Code を開くことができます。パスワードはリンクの下に記載されています。例:
 
   ![Example link to VS Code WebUI](images/vscode_link.png)
 
-- After opening the link, type in the provided password to access your instance of VS Code.
+- リンクを開いたら、提供されたパスワードを入力して VS Code のインスタンスにアクセスします。
 
-> **Note**
+> **注記**
 >
-> A welcome wizard may appear to guide you through configuring your VS Code user experience. This is optional as the default settings will work fine for this workshop. Feel free to step though the wizard to explore the VS code bells and whistles or you may just skip it.
+> VS Code ユーザー エクスペリエンスの構成をガイドする Welcome ウィザードが表示される場合があります。このワークショップではデフォルト設定で問題なく機能するため、これはオプションです。自由にウィザードを操作して VS Code のさまざまな機能を確認したり、スキップしたりしてください。
 
-### Step 2 - Open a Terminal Session
+### Step 2 - ターミナルセッションを開く
 
-Terminal sessions provide access to the RHEL commands and utilities that will help us understand what's going on "behind the curtain" when the RHEL in-place upgrade automation is doing its thing.
+ターミナル セッションでは、RHEL コマンドとユーティリティにアクセスできるため、自動化による RHEL インプレース アップグレードが行われているときに「舞台裏で」何が起こっているかを把握するのに役立ちます。
 
-- Use VS Code to open a terminal session. For example:
+- VS Code を使用してターミナル セッションを開きます。例:
 
   ![Example of how to open a terminal session in VS Code](images/new_term.svg)
 
-- This terminal session will be running on the AAP control host `ansible-1`. Use the `cat /etc/hosts` command to see the hostnames of your pet app hosts. Next, use the `ssh` command to login to one of your pet app hosts. Finally, use the highlighted commands confirm the RHEL OS version and kernel version installed.
+- このターミナル セッションは、AAP コントロール ホスト `ansible-1` で実行されます。 `cat /etc/hosts` コマンドを使用して、ペット アプリ ホストのホスト名を確認します。次に、 `ssh` コマンドを使ってペットアプリホストの 1 つにログインします。最後に、強調表示されたコマンドを使用して、インストールされている RHEL OS バージョンとカーネル バージョンを確認します。
 
-  For example:
+  例:
 
   ![Example ssh login to pet app host](images/ssh_login.svg)
 
-- In the example above, the command `ssh tidy-bengal` connects us to a new session on the named pet app host. Then the commands `cat /etc/redhat-release` and `uname -r` are used to output the OS release information `Red Hat Enterprise Linux Server release 7.9 (Maipo)` and kernel version `3.10.0-1160.88.1.el7.x86_64` from that host.
+- 上記の例では、 `ssh tidy-bengal` コマンドは、指定されたペット アプリ ホスト上の新しいセッションに接続します。次に、 `cat /etc/redhat-release` と `uname -r` を使ってそのホストからOSのリリース情報 `Red Hat Enterprise Linux Server release 7.9 (Maipo)` とカーネルバージョン `3.10.0-1160.88.1.el7.x86_64` を出力しています。
 
-### Step 3 - Access the AAP Web UI
+### Step 3 - AAP Web UI へのアクセス
 
-The AAP Web UI is where we will go to submit and check the status of the Ansible playbook jobs we will use to automate the RHEL in-place upgrade workflow.
+AAP Web UI は、RHEL インプレースアップグレードワークフローを自動化するために使用する Ansible Playbook ジョブの送信とステータスの確認を行う場所です。
 
-- Let's open the AAP Web UI in a new web browser tab using the "WebUI" link under "Automation controller" on the workshop launch page. For example:
+- "Automation controller" の "Console" の URL リンクをクリックし AAP の Web UI を開きます。例:
 
   ![Example link to AAP Web UI](images/aap_link.png)
 
-- Enter the username `admin` and the password provided. This will bring you to your AAP Web UI dashboard like the example below:
+- ユーザー名 `admin` と表示されているパスワードを使ってログインします。これにより、次の例のように AAP Web UI ダッシュボードが表示されます。:
 
   ![Example AAP Web UI dashboard](images/aap_console_example.svg)
 
-- We will learn more about how to use the AAP Web UI in the next exercise.
+- 次の演習では、AAP Web UI の使用方法について詳しく学習します。
 
-### Step 4 - Access the RHEL Web Console
+### Step 4 - RHEL Web コンソールへのアクセス
 
-We will use the RHEL Web Console to review the results of the Leapp pre-upgrade reports we generate for our pet app servers.
+RHEL Web コンソールを使用して、ペット アプリ サーバー用に生成した Leapp アップグレード前レポートの結果を確認します。
 
-- Open a new web browser tab using the link under "RHEL Web Console" on the workshop launch page. For example:
+- "RHEL Web Console" へのリンクをクリックし、新しい Web ブラーザータブを開きます。例:
 
   ![Example link to RHEL Web Console](images/cockpit_link.png)
 
-- Enter the username `student` and the password provided. This will bring you to a RHEL Web Console Overview page like the example below:
+- ユーザー名 `student` と表示されているパスワードを使ってログインします。これにより、次の例のような RHEL Web コンソールの概要ページが表示されます。:
 
   ![Example RHEL Web Console](images/cockpit_example.svg)
 
-- We will revisit the RHEL Web Console when we are ready to review our pre-upgrade reports in an upcoming exercise.
+- 今後の演習でアップグレード前のレポートを確認する準備ができたら、RHEL Web コンソールを再度確認します。
 
-### Step 5 - Challenge Labs
+### Step 5 - チャレンジラボ
 
-You will soon discover that many exercises in the workshop come with a "Challenge Lab" step. These labs are meant to give you a small task to solve using what you have learned so far. The solution of the task is shown underneath a warning sign.
+ワークショップの多くの演習には "Challenge Lab" ステップがあることにすぐに気づくでしょう。これらのラボは、これまでに学習した内容を使用して解決する小さなタスクを提供することを目的としています。タスクの解決方法は、警告サインの下に表示されます。
 
 ## Conclusion
 
-In this exercise, we learned about the lab environment we will be using to continue through the workshop exercises. We verified that we are able to use VS Code in our web browser and from there we can open terminal sessions. We also made sure we are able to access the AAP Web UI which will be the "self-service portal" we use to perform the next steps of the RHEL in-place upgrade automation workflow. Finally, we connected to the RHEL Web Console where we will soon be reviewing pre-upgrade reports.
+この演習では、ワークショップの演習を続けるために使用するラボ環境について学習しました。Web ブラウザーで VS Code を使用でき、そこからターミナル セッションを開くことができることを確認しました。また、RHEL インプレース アップグレード自動化ワークフローの次の手順を実行するために使用する「セルフサービス ポータル」となる AAP Web UI にアクセスできることも確認しました。最後に、RHEL Web コンソールに接続し、すぐにアップグレード前のレポートを確認します。
 
-Use the link below to move on the the next exercise.
+次の演習に進むには、以下のリンクを使用してください。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Next Exercise](../1.2-preupg/README.md)
+[Next Exercise](../1.2-preupg/README.jp.md)
 
-[Home](../README.md)
+[Home](../README.jp.md)
