@@ -35,15 +35,15 @@
 
 ## Lab ダイヤグラム
 
-The lab environment provisioned for the workshop includes a number of RHEL cloud instances. One instance is dedicated to hosting AAP and is used to run playbook and workflow jobs. The jobs are executed against the remaining hosts which will be upgraded in-place to the next RHEL major version. The automation uses LVM to manage the snapshot/rollback capability.
+ワークショップ用に用意されたラボ環境には、複数のRHELクラウドインスタンスが含まれています。1つのインスタンスはAAPのホスティング専用で、Playbook とワークフローのジョブを実行するために使用されます。ジョブは、次のRHELメジャーバージョンにインプレースでアップグレードされる残りのホストに対して実行されます。自動化は、スナップショット/ロールバック機能を管理するためにLVMを使用します。
 
 ![RHEL In-place Upgrade Automation Workshop lab diagram](images/ripu_lab_diagram.svg)
 
-## Workshop Exercises
+## ワークショップ演習
 
-The workshop is composed of three sections each of which includes a number of exercises. Each exercise builds upon the steps performed and concepts learned in the previous exercises, so it is important to do them in the prescribed order.
+ワークショップは3つのセクションで構成され、各セクションにはいくつかの演習が含まれています。各演習は、前の演習で実施した内容に基づいているため、順番に行う必要があります。
 
-### Section 1 - Pre-upgrade Analysis
+### セクション 1 - アップグレード前の分析
 
 * [Exercise 1.1 - Workshop Lab Environment](1.1-setup/README.md)
 * [Exercise 1.2 - Run Pre-upgrade Jobs](1.2-preupg/README.md)
