@@ -110,6 +110,6 @@ RHEL Web コンソールを使用して、ペット アプリ サーバー用に
 
 **ナビゲーション**
 
-[Next Exercise](../1.2-preupg/README.jp.md)
+[Next Exercise](../1.2-preupg/README.ja.md)
 
-[Home](../README.jp.md)
+[Home](../README.ja.md)
