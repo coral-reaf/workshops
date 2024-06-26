@@ -2,11 +2,11 @@
 
 このワークショップでは、Red Hat Enterprise Linux (RHEL) のインプレース・アップグレードを自動化する包括的なアプローチを紹介します。このソリューションでは、Ansible Automation Platform (AAP) を使用して、大規模な RHEL ホスト全体でエンタープライズ規模のアップグレードを実行します。このワークショップでは、RHEL7 から RHEL8 へのアップグレード、および RHEL8 から RHEL9 へのアップグレードを実行するために、このアプローチの例を使用する方法を示します。また、このソリューションを企業環境の特殊な要件に合わせてカスタマイズする方法についても学びます。
 
-There are four key features that the solution approach recommends to deliver success at scale:
+このソリューション・アプローチには、規模を拡大して成功を収めるために推奨される4つの重要な特徴があります:
 
 ![Automate Everything, Snapshot/rollback, Custom Modules, Reporting Dashboard](images/ripu_key_features.svg)
 
-As you progress through this workshop, you will learn more about the importance of these features and the different options for how you might implement them in your enterprise. For this workshop, we assume you have at least some experience using Ansible Automation Platform and working with Ansible playbooks and roles. If you're new to Ansible, consider first completing the workshop [Ansible for Red Hat Enterprise Linux](https://aap2.demoredhat.com/exercises/ansible_rhel).
+このワークショップを進めるにつれ、これらの機能の重要性と、企業での実装方法のさまざまなオプションについて、より詳しく学ぶことができます。このワークショップでは、Ansible Automation Platformの使用経験、およびAnsible playbookとロールの使用経験があることを前提としています。Ansibleを初めて使用する場合は、まず次のワークショップを完了することをご検討ください。 [Ansible for Red Hat Enterprise Linux](https://aap2.demoredhat.com/exercises/ansible_rhel).
 
 ## Table of Contents
 
