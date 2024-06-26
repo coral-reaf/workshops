@@ -8,11 +8,11 @@
 
 このワークショップを進めるにつれ、これらの機能の重要性と、企業での実装方法のさまざまなオプションについて、より詳しく学ぶことができます。このワークショップでは、Ansible Automation Platformの使用経験、およびAnsible playbookとロールの使用経験があることを前提としています。Ansibleを初めて使用する場合は、まず次のワークショップを完了することをご検討ください。 [Ansible for Red Hat Enterprise Linux](https://aap2.demoredhat.com/exercises/ansible_rhel/README.ja.html).
 
-## Table of Contents
+## 目次
 
-- [RHEL In-place Upgrade Automation Workshop](#rhel-in-place-upgrade-automation-workshop)
-  - [Table of Contents](#table-of-contents)
-  - [Presentations](#presentations)
+- [RHEL In-place Upgrade Automation ワークショップ](#rhel-in-place-upgrade-automation-workshop)
+  - [目次](#目次)
+  - [プレゼンテーション](#プレゼンテーション)
   - [Time Planning](#time-planning)
   - [Lab Diagram](#lab-diagram)
   - [Workshop Exercises](#workshop-exercises)
@@ -22,11 +22,11 @@
     - [Supplemental Exercises](#supplemental-exercises)
   - [Workshop Navigation](#workshop-navigation)
 
-## Presentations
+## プレゼンテーション
 
-The exercises are self explanatory and guide the participants through all the phases of an automated RHEL in-place upgrade. All concepts are explained as they are introduced.
+この演習は、RHEL のインプレースアップグレードを自動化するためのすべてのフェーズに対して、参加者をガイドします。すべてのコンセプトは、紹介されながら説明されます。
 
-There is an optional presentation deck available with additional information on the benefits of the approach demonstrated in this workshop:
+このワークショップで示されたアプローチの利点に関する追加情報をまとめたプレゼンテーション・デッキをオプションで用意しています。:
 [RHEL In-place Upgrade Automation](../../decks/ansible_ripu.pdf)
 
 ## Time Planning
