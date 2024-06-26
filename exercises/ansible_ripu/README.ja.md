@@ -17,10 +17,9 @@
   - [Lab ダイヤグラム](#Lab-ダイヤグラム)
   - [ワークショップ演習](#ワークショップ演習)
     - [セクション 1 - アップグレード前の分析](#セクション-1---アップグレード前の分析)
-    - [Section 2 - RHEL OS Upgrade](#section-2---rhel-os-upgrade)
-    - [Section 3 - Rolling Back](#section-3---rolling-back)
-    - [Supplemental Exercises](#supplemental-exercises)
-  - [Workshop Navigation](#workshop-navigation)
+    - [セクション 2 - RHEL OS アップグレード](#セクション-2---rhel-os-アップグレード)
+    - [セクション 3 - ロールバック](#セクション-3---ロールバック)
+  - [ワークショップナビゲーション](#ワークショップナビゲーション)
 
 ## プレゼンテーション
 
@@ -45,33 +44,33 @@
 
 ### セクション 1 - アップグレード前の分析
 
-* [Exercise 1.1 - Workshop Lab Environment](1.1-setup/README.md)
-* [Exercise 1.2 - Run Pre-upgrade Jobs](1.2-preupg/README.md)
-* [Exercise 1.3 - Review Pre-upgrade Reports](1.3-report/README.md)
-* [Exercise 1.4 - Perform Recommended Remediation](1.4-remediate/README.md)
-* [Exercise 1.5 - (Optional) Custom Pre-upgrade Checks](1.5-custom-modules/README.md)
-* [Exercise 1.6 - (Optional) Deploy a Pet App](1.6-my-pet-app/README.md)
+* [演習 1.1 - ワークショップ Lab 環境](1.1-setup/README.jp.md)
+* [演習 1.2 - プリアップグレードジョブの実行](1.2-preupg/README.jp.md)
+* [演習 1.3 - プリアップグレードレポートのレビュー](1.3-report/README.jp.md)
+* [演習 1.4 - 推奨の修復作業の実行](1.4-remediate/README.jp.md)
+* [演習 1.5 - (オプション) カスタムプリアップグレードチェック](1.5-custom-modules/README.jp.md)
+* [演習 1.6 - (オプション) ペットアプリのデプロイ](1.6-my-pet-app/README.jp.md)
 
-### Section 2 - RHEL OS Upgrade
+### セクション 2 - RHEL OS アップグレード
 
-* [Exercise 2.1 - Run OS Upgrade Jobs](2.1-upgrade/README.md)
-* [Exercise 2.2 - Let's Talk About Snapshots](2.2-snapshots/README.md)
-* [Exercise 2.3 - Check if the Upgrade Worked](2.3-check-upg/README.md)
-* [Exercise 2.4 - (Optional) How is the Pet App Doing?](2.4-check-pet-app/README.md)
+* [演習 2.1 - OS アップグレードジョブの実行](2.1-upgrade/README.jp.md)
+* [演習 2.2 - スナップショットに関するお話](2.2-snapshots/README.jp.md)
+* [演習 2.3 - アップグレードが成功したか否かの確認](2.3-check-upg/README.jp.md)
+* [演習 2.4 - (オプション) ペットアプリの動作具合は？](2.4-check-pet-app/README.jp.md)
 
-### Section 3 - Rolling Back
+### セクション 3 - ロールバック
 
-* [Exercise 3.1 - (Optional) Trash the Instance](3.1-rm-rf/README.md)
-* [Exercise 3.2 - Run Rollback Job](3.2-rollback/README.md)
-* [Exercise 3.3 - Check if Upgrade Undone](3.3-check-undo/README.md)
-* [Exercise 3.4 - Rinse and Repeat](3.4-conclusion/README.md)
+* [演習 3.1 - (オプション) インスタンスの破棄](3.1-rm-rf/README.jp.md)
+* [演習 3.2 - ロールバックジョブの実行](3.2-rollback/README.jp.md)
+* [演習 3.3 - アップグレードが元に戻されたことの確認](3.3-check-undo/README.jp.md)
+* [演習 3.4 - 繰り返し](3.4-conclusion/README.jp.md)
 
-## Workshop Navigation
+## ワークショップナビゲーション
 
-Your will find links to the previous and next exercises at the bottom of each exercise page. Click the link below to get started.
+各演習ページの下部に、前の演習と次の演習へのリンクがあります。移動するには、下のリンクをクリックしてください。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Next Exercise](1.1-setup/README.md)
+[Next Exercise](1.1-setup/README.jp.md)
