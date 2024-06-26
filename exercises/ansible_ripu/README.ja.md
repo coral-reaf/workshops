@@ -13,8 +13,8 @@
 - [RHEL In-place Upgrade Automation ワークショップ](#rhel-in-place-upgrade-automation-workshop)
   - [目次](#目次)
   - [プレゼンテーション](#プレゼンテーション)
-  - [Time Planning](#time-planning)
-  - [Lab Diagram](#lab-diagram)
+  - [タイムプランニング](#タイムプランニング)
+  - [Lab ダイヤグラム](#Lab-ダイヤグラム)
   - [Workshop Exercises](#workshop-exercises)
     - [Section 1 - Pre-upgrade Analysis](#section-1---pre-upgrade-analysis)
     - [Section 2 - RHEL OS Upgrade](#section-2---rhel-os-upgrade)
@@ -29,11 +29,11 @@
 このワークショップで示されたアプローチの利点に関する追加情報をまとめたプレゼンテーション・デッキをオプションで用意しています。:
 [RHEL In-place Upgrade Automation](../../decks/ansible_ripu.pdf)
 
-## Time Planning
+## タイムプランニング
 
-The time required to complete the workshop depends on the number of participants and how familiar they are with Linux and Ansible. The exercises themselves should take a minimum of 4 hours. The introduction in the optional presentation adds another hour. There are also some optional exercises which can be skipped, but are recommended if time allows. There are also supplemental exercises at the end of the workshop to allow for open-ended experimentation and exploring customizations that may apply to your specific environment and requirements. The lab environment provisioned could even be used for a multi-day deep dive workshop, but that is beyond the scope of this guide.
+ワークショップの所要時間は、参加者の人数やLinuxやAnsibleにどれだけ慣れているかによって異なります。演習自体は最低4時間かかります。オプショナルプレゼンテーションのイントロダクションでさらに1時間追加されます。省略可能なオプションの演習もいくつかありますが、時間が許せばそちらをお勧めします。また、ワークショップの最後には補足的な演習があり、自由に実験したり、特定の環境や要件に適用できるカスタマイズを検討することができます。提供されるラボ環境は、数日間のディープダイブ・ワークショップに使用することもできますが、このガイドの範囲を超えています。
 
-## Lab Diagram
+## Lab ダイヤグラム
 
 The lab environment provisioned for the workshop includes a number of RHEL cloud instances. One instance is dedicated to hosting AAP and is used to run playbook and workflow jobs. The jobs are executed against the remaining hosts which will be upgraded in-place to the next RHEL major version. The automation uses LVM to manage the snapshot/rollback capability.
 
