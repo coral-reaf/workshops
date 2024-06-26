@@ -1,9 +1,22 @@
-# Workshop Exercise - Run Pre-upgrade Jobs
+# ワークショップ演習 - プリアップグレードジョブの実行
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Run Pre-upgrade Jobs](#workshop-exercise---run-pre-upgrade-jobs)
-  - [Table of Contents](#table-of-contents)
+- [ワークショップ演習 - プリアップグレードジョブの実行](#ワークショップ演習---プリアップグレードジョブの実行)
+  - [目次](#目次)
+  - [目的](#目的)
+  - [ガイド](#ガイド)
+    - [Step 1 - RHEL インプレースアップグレードオートメーションワークフロー](#step-1---rhel-インプレースアップグレードオートメーションワークフロー)
+      - [分析](#分析)
+      - [アップグレード](#アップグレード)
+      - [コミット](#コミット)
+      - [始めましょう](#始めましょう)
+    - [Step 2 - AAP を使った分析 Playbook ジョブの起動](#step-2---aap-を使った分析-playbook-ジョブの起動)
+    - [Step 3 - Playbook ジョブ出力のレビュー](#step-3---playbook-ジョブ出力のレビュー)
+    - [Step 4 - チャレンジ ラボ: 分析 Playbook](#step-4---チャレンジラボ-分析-playbook)
+  - [結論](#結論)
+
+  - [目次](#table-of-contents)
   - [Objectives](#objectives)
   - [Guide](#guide)
     - [Step 1 - RHEL In-place Upgrade Automation Workflow](#step-1---rhel-in-place-upgrade-automation-workflow)
