@@ -30,6 +30,7 @@
   - [Conclusion](#conclusion)
 
 - [ワークショップ演習 - プリアップグレードジョブの実行](#ワークショップ演習---プリアップグレードジョブの実行)
+- [Workshop Exercise - Run Pre-upgrade Jobs](#workshop-exercise---run-pre-upgrade-jobs)
   - [目次](#目次)
   - [目的](#目的)
   - [ガイド](#ガイド)
