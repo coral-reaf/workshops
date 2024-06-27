@@ -33,7 +33,7 @@
   - [目次](#目次)
   - [目的](#目的)
   - [ガイド](#ガイド)
-    - [Step 1 - RHEL In-place Upgrade Automation Workflow](#step-1---rhel-in-place-upgrade-automation-workflow)
+    - [Step 1 - RHEL インプレースアップグレードオートメーションワークフロー](#step-1---rhel-in-place-upgrade-automation-workflow)
       - [Analysis](#analysis)
       - [Upgrade](#upgrade)
       - [Commit](#commit)
