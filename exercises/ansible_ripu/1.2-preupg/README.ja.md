@@ -4,7 +4,7 @@
 
 - [ワークショップ演習 - プリアップグレードジョブの実行](#ワークショップ演習---プリアップグレードジョブの実行)
   - [目次](#目次)
-  - [目的](#目的)
+  - [目標](#目的)
   - [ガイド](#ガイド)
     - [Step 1 - RHEL インプレースアップグレードオートメーションワークフロー](#step-1---rhel-インプレースアップグレードオートメーションワークフロー)
       - [分析](#分析)
@@ -17,29 +17,29 @@
   - [結論](#結論)
 
 
-## Objectives
+## 目標
 
-* Understand the end-to-end RHEL in-place upgrade workflow
-* Understand how to use AAP job templates to run Ansible playbooks
-* Run the pre-upgrade analysis jobs
+* エンドツーエンドの RHEL インプレース アップグレード ワークフローを理解する
+* AAP ジョブ テンプレートを使用して Ansible プレイブックを実行する方法を理解する
+* アップグレード前の分析ジョブを実行する
 
-## Guide
+## ガイド
 
-### Step 1 - RHEL In-place Upgrade Automation Workflow
+### Step 1 - RHEL インプレースアップグレードオートメーションワークフロー
 
-Red Hat Enterprise Linux (RHEL) comes with the Leapp utility, the underlying framework that our automation approach uses to upgrade the operating system to the next major version. The [Leapp documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/upgrading_from_rhel_7_to_rhel_8/index) guides users on how to use the Leapp framework to manually upgrade a RHEL host. This is fine if you only have a few RHEL hosts to upgrade, but what if you are a large enterprise with tens of thousands of RHEL hosts? The manual process does not scale. Using automation, the end-to-end process for upgrading a RHEL host is reduced to a matter of days and the total downtime required for the actual upgrade is measured in hours or less.
+Red Hat Enterprise Linux (RHEL) には、Leapp ユーティリティが付属しています。これは、自動化アプローチでオペレーティング システムを次のメジャー バージョンにアップグレードするために使用する基盤となるフレームワークです。[Leapp documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/upgrading_from_rhel_7_to_rhel_8/index) では、Leapp フレームワークを使用して RHEL ホストを手動でアップグレードする方法について説明しています。アップグレードする RHEL ホストが数台しかない場合はこれで問題ありませんが、数万台の RHEL ホストがある大企業の場合はどうでしょうか。手動プロセスは拡張できません。自動化を使用すると、RHEL ホストのアップグレードのエンドツーエンドのプロセスは数日に短縮され、実際のアップグレードに必要なダウンタイムの合計は数時間以内になります。
 
-Our RHEL in-place upgrade automation approach follows a workflow with three phases:
+当社の RHEL インプレース アップグレード自動化アプローチは、3 つのフェーズから成るワークフローに従います。:
 
-![Three phase workflow: Analysis, Upgrade, Commit](images/ripu-workflow.svg)
+![3 フェーズ ワークフロー: Analysis, Upgrade, Commit](images/ripu-workflow.svg)
 
-> **Note**
+> **注記**
 >
-> The <sub>![arrow pointing down at server](images/playbook_icon.svg)</sub> icon indicates workflow steps that are automated by Ansible playbooks.
+> The <sub>![arrow pointing down at server](images/playbook_icon.svg)</sub> は、Ansible Playbook によって自動化されるワークフロー ステップを示します。
 
-#### Analysis
+#### 分析
 
-During the analysis phase, no changes are made yet. When the analysis playbook is executed, it uses the Leapp utility to scan the host for issues or blockers that may prevent a successful upgrade. Then it generates a detailed report listing any potential risks found. The report also includes recommended actions that should be followed to reduce the likelihood of the reported issues impacting the upgrade. If any recommended remediation actions are performed, the analysis scan should be run again to verify the risks are resolved. This iteration continues until everyone reviewing the report is comfortable that any remaining findings are acceptable.
+分析フェーズでは、まだ変更は行われません。分析 Playbook が実行されると、Leapp ユーティリティを使用して、アップグレードの成功を妨げる可能性のある問題や障害がホストでスキャンされます。次に、見つかった潜在的なリスクをリストした詳細なレポートが生成されます。レポートには、報告された問題がアップグレードに影響を与える可能性を減らすために従うべき推奨アクションも含まれています。推奨される修復アクションが実行された場合は、リスクが解決されていることを確認するために分析スキャンを再度実行する必要があります。この反復は、レポートを確認する全員が残りの調査結果が許容できると確信するまで続けられます。
 
 <!-- The following only applies when using the Ansible role being developed for LVM snapshots...
 
