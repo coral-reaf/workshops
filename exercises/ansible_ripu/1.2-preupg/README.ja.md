@@ -29,10 +29,10 @@
     - [Step 4 - Challenge Lab: Analysis Playbook](#step-4---challenge-lab-analysis-playbook)
   - [Conclusion](#conclusion)
 
-- [Workshop Exercise - Run Pre-upgrade Jobs](#workshop-exercise---run-pre-upgrade-jobs)
-  - [Table of Contents](#table-of-contents)
+- [ワークショップ演習 - プリアップグレードジョブの実行](#ワークショップ演習---プリアップグレードジョブの実行)
+  - [目次](#目次)
   - [目的](#目的)
-  - [Guide](#guide)
+  - [ガイド](#ガイド)
     - [Step 1 - RHEL In-place Upgrade Automation Workflow](#step-1---rhel-in-place-upgrade-automation-workflow)
       - [Analysis](#analysis)
       - [Upgrade](#upgrade)
