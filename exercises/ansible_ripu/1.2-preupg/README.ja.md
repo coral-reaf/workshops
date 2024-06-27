@@ -37,12 +37,12 @@
     - [Step 1 - RHEL インプレースアップグレードオートメーションワークフロー](#step-1---rhel-インプレースアップグレードオートメーションワークフロー)
       - [分析](#分析)
       - [アップグレード](#upgrade)
-      - [Commit](#commit)
-      - [Let's Get Started](#lets-get-started)
-    - [Step 2 - Use AAP to Launch an Analysis Playbook Job](#step-2---use-aap-to-launch-an-analysis-playbook-job)
-    - [Step 3 - Review the Playbook Job Output](#step-3---review-the-playbook-job-output)
-    - [Step 4 - Challenge Lab: Analysis Playbook](#step-4---challenge-lab-analysis-playbook)
-  - [Conclusion](#conclusion)
+      - [コミット](#コミット)
+      - [始めましょう](#始めましょう)
+    - [Step 2 - AAP を使った分析 Playbook ジョブの起動](#step-2---aap-を使った分析-playbook-ジョブの起動)
+    - [Step 3 - Playbook ジョブ出力のレビュー](#step-3---playbook-ジョブ出力のレビュー)
+    - [Step 4 - チャレンジ ラボ: 分析 Playbook](#step-4---チャレンジラボ-分析-playbook)
+  - [結論](#結論)
 
 
 ## Objectives
