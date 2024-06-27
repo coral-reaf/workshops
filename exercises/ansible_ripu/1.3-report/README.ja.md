@@ -1,17 +1,17 @@
-# Workshop Exercise - Review Pre-upgrade Reports
+# ワークショップ演習 - アップグレード前レポートのレビュー
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Review Pre-upgrade Reports](#workshop-exercise---review-pre-upgrade-reports)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Managing Leapp Pre-upgrade Results](#step-1---managing-leapp-pre-upgrade-results)
-    - [Step 2 - Navigating the RHEL Web Console](#step-2---navigating-the-rhel-web-console)
-    - [Step 3 - Review Leapp Pre-upgrade Report of RHEL8 Host](#step-3---review-leapp-pre-upgrade-report-of-rhel8-host)
-    - [Step 4 - Review Leapp Pre-upgrade Report of RHEL7 Host](#step-4---review-leapp-pre-upgrade-report-of-rhel7-host)
-    - [Challenge Lab: What About Ignoring So Many High Findings?](#challenge-lab-what-about-ignoring-so-many-high-findings)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - アップグレード前レポートのレビュー](#ワークショップ演習---アップグレード前レポートのレビュー)
+  - [目次](#目次)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - Leapp アップグレード前結果の管理](#step-1---managing-leapp-pre-upgrade-results)
+    - [Step 2 - RHEL Web コンソールの操作](#step-2---navigating-the-rhel-web-console)
+    - [Step 3 - RHEL8 ホストの Leapp アップグレード前レポートのレビュー](#step-3---RHEL8-ホストの-Leapp-アップグレード前レポートのレビュー)
+    - [Step 4 - RHEL7 ホストの Leapp アップグレード前レポートのレビュー](#step-4---RHEL7-ホストの-Leapp-アップグレード前レポートのレビュー)
+    - [チャレンジラボ: 多数の高レベルの検出結果を無視するのはどうでしょうか?](#チャレンジラボ-多数の高レベルの検出結果を無視するのはどうでしょうか)
+  - [まとめ](#まとめ)
 
 ## Objectives
 
