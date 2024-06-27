@@ -35,7 +35,7 @@ Red Hat Enterprise Linux (RHEL) には、Leapp ユーティリティが付属し
 
 > **注記**
 >
-> The <sub>![arrow pointing down at server](images/playbook_icon.svg)</sub> は、Ansible Playbook によって自動化されるワークフロー ステップを示します。
+> <sub>![arrow pointing down at server](images/playbook_icon.svg)</sub> は、Ansible Playbook によって自動化されるワークフロー ステップを示します。
 
 #### 分析
 
@@ -46,27 +46,28 @@ Red Hat Enterprise Linux (RHEL) には、Leapp ユーティリティが付属し
  In addition to upgrade risks that could impact the success of the upgrade, the report also indicates if there is enough free space to support the snapshot configuration required in case rolling back is required. If there is not enough free space, temporarily space should be made available, for example, by adding an additional virtual disk to the rootvg volume group. Removing /var/crash or other non-critical filesystems under the rootvg volume group is another option. It is strongly recommended to to make space so that a snapshot rollback is possible just in case.
 -->
 
-#### Upgrade
+#### アップグレード
 
-After the analysis phase is done and the report indicates acceptable risk, a maintenance window can be scheduled and the upgrade phase can begin. It is during this phase that the upgrade playbooks are executed using a workflow job template. The first playbook creates a snapshot that can be used for rolling back if anything goes wrong with the upgrade. After the snapshot is created, the second playbook uses the Leapp utility to perform the upgrade where the RHEL OS is advanced to the new major version. The host will not be available for login or application access during the upgrade. When the upgrade is finished, the host will reboot under the newly upgraded RHEL major version. Now the ops and app teams can assess if the upgrade was successful by verifying all application services are working as expected.
+分析フェーズが完了し、レポートで許容できるリスクが示されたら、メンテナンス ウィンドウをスケジュールしてアップグレード フェーズを開始できます。このフェーズでは、ワークフロー ジョブ テンプレートを使用してアップグレード プレイブックが実行されます。最初のプレイブックは、アップグレードで問題が発生した場合にロールバックに使用できるスナップショットを作成します。スナップショットが作成されると、2 番目のプレイブックは Leapp ユーティリティを使用してアップグレードを実行し、RHEL OS を新しいメジャー バージョンに進めます。アップグレード中は、ホストにログインしたりアプリケーションにアクセスしたりすることはできません。アップグレードが完了すると、ホストは新しくアップグレードされた RHEL メジャー バージョンで再起動します。これで、運用チームとアプリケーション チームは、すべてのアプリケーション サービスが期待どおりに動作していることを確認し、アップグレードが成功したかどうかを評価できます。
 
-#### Commit
+#### コミット
 
-If there are any application impacts discovered that can't be easily corrected within the scheduled maintenance window, the decision can be made to undo the upgrade by rolling back the snapshot. This will revert all changes and return the host back to the previous RHEL version. If there are no issues immediately found, the commit phase begins. During the commit phase, the host can be returned to normal operation while keeping the snapshot just in case any issues are uncovered later. <!-- This is LVM specific: However, while the snapshots are kept, regular disk writes to the rootvg volume group will continue to consume the free space allocated to the snapshots. The amount of time this takes will depend on the amount of free space initially available and the volume of write i/o activity to the rootvg volume group. Before the snapshot space is exhausted, the snapshots must be deleted and then there is no turning back. --> After everyone is comfortable with the upgraded host, the commit playbook should be executed to delete the snapshot. The RHEL in-place upgrade is done.
+スケジュールされたメンテナンス ウィンドウ内で簡単に修正できないアプリケーションへの影響が見つかった場合は、スナップショットをロールバックしてアップグレードを元に戻す決定を下すことができます。これにより、すべての変更が元に戻り、ホストが以前の RHEL バージョンに戻ります。すぐに問題が見つからない場合は、コミット フェーズが開始されます。コミット フェーズでは、後で問題が見つかった場合に備えてスナップショットを保持しながら、ホストを通常の操作に戻すことができます。 <!-- This is LVM specific: However, while the snapshots are kept, regular disk writes to the rootvg volume group will continue to consume the free space allocated to the snapshots. The amount of time this takes will depend on the amount of free space initially available and the volume of write i/o activity to the rootvg volume group. Before the snapshot space is exhausted, the snapshots must be deleted and then there is no turning back. --> アップグレードされたホストが問題ないことが確認されたら、スナップショットを削除します。これで RHEL インプレースアップグレードが完了となります。
 
-#### Let's Get Started
+#### 始めましょう
 
-The RHEL in-place upgrade automation approach workflow is designed to reduce the risks inherent in doing an in-place upgrade versus deploying a new RHEL host. Decision points at the end of the analysis and upgrade phases allow the process to be rolled back and restarted with the benefit of lessons learned through reporting checks and actual upgrade results. Of course, the best practice for avoiding production impacts or outages is to proceed with upgrades in properly configured Dev and Test environments before moving on to production hosts.
+RHEL インプレースアップグレードオートメーションアプローチを実現するワークフローは、インプレースアップグレードと新しい RHEL ホストの展開に伴うリスクを軽減するように設計されています。分析フェーズとアップグレードフェーズの最後にある決定ポイントにより、レポートチェックと実際のアップグレード結果から学んだ教訓を活用して、プロセスをロールバックして再開できます。もちろん、本番環境への影響や停止を回避するためのベストプラクティスは、本番環境ホストに移行する前に、適切に構成された開発環境とテスト環境でアップグレードを進めることです。
 
-### Step 2 - Use AAP to Launch an Analysis Playbook Job
 
-As we progress through the workshop, we'll refer back to this diagram to track where we are in our automation approach workflow. We are starting now in the highlighted block below:
+### Step 2 - AAP を使った分析 Playbook ジョブの起動
+
+ワークショップを進めるにつれて、この図を参照して、自動化アプローチ ワークフローのどこにいるかを追跡します。現在は、以下の強調表示されたブロックから開始しています。:
 
 ![Automation approach workflow diagram with analysis step highlighted](images/ripu-workflow-hl-analysis.svg)
 
-The first step in upgrading our pet app hosts will be executing the analysis playbook to generate the Leapp pre-upgrade report for each host. To do this, we will use the Ansible Automation Platform (AAP) automation controller host that has been pre-configured in your workshop lab environment.
+ペット アプリ ホストをアップグレードする最初のステップは、分析プレイブックを実行して、各ホストの Leapp アップグレード前レポートを生成することです。これを行うには、ワークショップ ラボ環境で事前構成されている Ansible Automation Platform (AAP) 自動化コントローラー ホストを使用します。
 
-- Return to the AAP Web UI browser tab you opened in step 3 of the previous exercise. Navigate to Resources > Templates by clicking on "Templates" under the "Resources" group in the navigation menu. This will bring up a list of job templates that can be used to run playbook jobs on target hosts:
+- 前の演習の手順 3 で開いた AAP Web UI ブラウザー タブに戻ります。ナビゲーション メニューの "リソース" グループの下にある "テンプレート" をクリックして、リソース > テンプレートに移動します。これにより、ターゲット ホストで Playbook ジョブを実行するために使用できるジョブ テンプレートのリストが表示されます。:
 
   ![Job templates listed on AAP Web UI](images/aap_templates.svg)
 
