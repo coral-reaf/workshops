@@ -31,7 +31,7 @@
 
 - [Workshop Exercise - Run Pre-upgrade Jobs](#workshop-exercise---run-pre-upgrade-jobs)
   - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
+  - [目的](#目的)
   - [Guide](#guide)
     - [Step 1 - RHEL In-place Upgrade Automation Workflow](#step-1---rhel-in-place-upgrade-automation-workflow)
       - [Analysis](#analysis)
