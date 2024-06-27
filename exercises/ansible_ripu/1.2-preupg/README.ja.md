@@ -29,6 +29,21 @@
     - [Step 4 - Challenge Lab: Analysis Playbook](#step-4---challenge-lab-analysis-playbook)
   - [Conclusion](#conclusion)
 
+- [Workshop Exercise - Run Pre-upgrade Jobs](#workshop-exercise---run-pre-upgrade-jobs)
+  - [Table of Contents](#table-of-contents)
+  - [Objectives](#objectives)
+  - [Guide](#guide)
+    - [Step 1 - RHEL In-place Upgrade Automation Workflow](#step-1---rhel-in-place-upgrade-automation-workflow)
+      - [Analysis](#analysis)
+      - [Upgrade](#upgrade)
+      - [Commit](#commit)
+      - [Let's Get Started](#lets-get-started)
+    - [Step 2 - Use AAP to Launch an Analysis Playbook Job](#step-2---use-aap-to-launch-an-analysis-playbook-job)
+    - [Step 3 - Review the Playbook Job Output](#step-3---review-the-playbook-job-output)
+    - [Step 4 - Challenge Lab: Analysis Playbook](#step-4---challenge-lab-analysis-playbook)
+  - [Conclusion](#conclusion)
+
+
 ## Objectives
 
 * Understand the end-to-end RHEL in-place upgrade workflow
