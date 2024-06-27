@@ -71,72 +71,72 @@ RHEL インプレースアップグレードオートメーションアプロー
 
   ![Job templates listed on AAP Web UI](images/aap_templates.svg)
 
-- Click on the "AUTO / 01 Analysis" job template. This will display the Details tab of the job template:
+- "AUTO / 01 Analysis" ジョブテンプレートをクリックします。これにより、ジョブテンプレートの詳細タブが表示されます。:
 
   !["AUTO / 01 Analysis" job templates seen on AAP Web UI](images/analysis_template.svg)
 
-- From here, we could use the "Edit" button if we wanted to make any changes to the job template. This job template is already configured, so we are ready to use it to submit a playbook job. To do this, use the "Launch" button which will bring up a series of prompts.
+- ここから、ジョブ テンプレートに変更を加える場合は "編集" ボタンを使用できます。このジョブ テンプレートはすでに構成されているため、これを使用してプレイブック ジョブを送信する準備が整いました。これを行うには、"起動" ボタンを使用して一連のプロンプトを表示します。
 
-  > **Note**
+  > **注記**
   >
-  > The prompts that each job template presents can be configured using the "Prompt on launch" checkboxes seen when editing a job template.
+  > 各ジョブ テンプレートに表示されるプロンプトは、ジョブ テンプレートの編集時に表示される "起動時にプロンプ​​トを表示" チェックボックスを使用して構成できます。
 
   ![Analysis job variables prompt on AAP Web UI](images/analysis_vars_prompt.svg)
 
-- The first prompt as seen above allows for changing the default playbook variables or adding more variables. We don't need to do this at this time, so just click the "Next" button to move on.
+- 上記の最初のプロンプトでは、デフォルトのプレイブック変数を変更したり、変数を追加したりできます。この時点でこれを行う必要はありません。"次へ" ボタンをクリックして先に進みます。
 
   ![Analysis job survey prompt on AAP Web UI](images/analysis_survey_prompt.svg)
 
-- Next we see the job template survey prompt. A survey is a customizable set of prompts that can be configured from the Survey tab of the job template. For this job template, the survey allows for choosing a group of hosts on which the job will execute the playbook. Choose the "ALL_rhel" option and click the "Next" button. This will bring you to a preview of the selected job options and variable settings.
+- 次に、ジョブ テンプレート サーベイ プロンプトが表示されます。サーベイは、ジョブ テンプレートの サーベイタブから構成できるカスタマイズ可能な一連のプロンプトです。このジョブ テンプレートでは、ジョブがプレイブックを実行するホストのグループを調査で選択できます。"ALL_rhel" オプションを選択し、"次へ" ボタンをクリックします。選択したジョブ オプションと変数設定のプレビューが表示されます。
 
   ![Analysis job preview on AAP Web UI](images/analysis_preview.svg)
 
-- If you are satisfied with the job preview, use the "Launch" button to start the playbook job.
+- ジョブ プレビューに問題がなければ、"起動" ボタンを使用してプレイブック ジョブを開始します。
 
-### Step 3 - Review the Playbook Job Output
+### Step 3 - Playbook ジョブ出力のレビュー
 
-After launching the analysis playbook job, the AAP Web UI will navigate automatically to the job output page for the job you just started.
+分析 Playbook ジョブを起動すると、AAP Web UI は、開始したジョブのジョブ出力ページに自動的に移動します。
 
-- While the playbook job is running, you can monitor its progress by clicking the "Follow" button. When you are in follow mode, the output will scroll automatically as task results are streamed to the bottom of job output shown in the AAP Web UI.
+- Playbook ジョブの実行中は、"フォロー" ボタンをクリックして進行状況を監視できます。フォローモードの場合、タスクの結果が AAP Web UI に表示されるジョブ出力の下部にストリーミングされると、出力が自動的にスクロールします。
 
-- The analysis playbook will run the Leapp pre-upgrade scan. This will take about two or three minutes to complete. When it is done, you can find a "PLAY RECAP" at the end of the job output showing the success or failure status for the playbook runs executed on each host. A status of "failed=0" indicates a successful playbook run. Scroll to the bottom of the job output and you should see that your job summary looks like this example:
+- 分析 Playbook は、Leapp のアップグレード前スキャンを実行します。完了するまでに約 2 ～ 3 分かかります。完了すると、ジョブ出力の最後に、各ホストで実行された Playbook 実行の成功または失敗のステータスを示す "PLAY RECAP" が表示されます。ステータスが "failed=0" の場合、Playbook の実行が成功したことを示します。ジョブ出力の一番下までスクロールすると、ジョブの概要が次の例のようになっていることがわかります。:
 
   ![Analysis job "PLAY RECAP" as seen at the end of the job output](images/analysis_job_recap.svg)
 
-### Step 4 - Challenge Lab: Analysis Playbook
+### Step 4 - チャレンジ ラボ: 分析 Playbook
 
-Let's take a closer look at the playbook we just ran.
+実行したばかりの Playbook を詳しく見てみましょう。
 
-> **Tip**
+> **ヒント**
 >
-> Try looking at the configuration details of the "Project Leapp" project and the "AUTO / 01 Analysis" job template.
+> "Project Leapp" プロジェクトと"AUTO / 01 Analysis"ジョブテンプレートの構成の詳細を確認してみてください。
 
-Can you find the upstream source repo and playbook code?
+アップストリーム ソース リポジトリと Playbook コードを見つけることができますか?
 
-> **Warning**
+> **警告**
 >
-> **Solution below\!**
+> **解決策は以下\!**
 
-- In the AAP Web UI, navigate to Resources > Projects > Project Leapp. Under the Details tab, you will see the "Source Control URL" setting that defines where job templates of this project will go to pull their playbooks. We see it is pointing to this git repo on GitHub: [https://github.com/redhat-partner-tech/leapp-project](https://github.com/redhat-partner-tech/leapp-project). Open this URL in a new browser tab.
+- AAP Web UI で、"リソース" > "プロジェクト" > "Project Leapp" に移動します。"詳細" タブの下に、"ソース コントロール URL" 設定が表示されます。この設定では、このプロジェクトのジョブ テンプレートが Playbook をプルする場所が定義されています。 GitHub のこの Git リポジトリを指していることがわかります: [https://github.com/redhat-partner-tech/leapp-project](https://github.com/redhat-partner-tech/leapp-project). この URL を新しいブラウザ タブで開きます。それをクリックすると、Playbook の内容が表示されます。
 
-- Go back to the AAP Web UI and now navigate to Resources > Templates > AUTO / 01 Analysis. Under the Details tab, you will see the "Playbook" setting with the name of the playbook this job template runs when it is used to submit a job. The playbook name is `analysis.yml`. In your GitHub browser tab, you can find `analysis.yml` listed in the files of the git repo. Click on it to see the playbook contents.
+- AAP Web UI に戻り、リソース > テンプレート > AUTO / 01 分析 に移動します。"詳細" タブの下に、ジョブの送信に使用されるときにこのジョブ テンプレートが実行する Playbook の名前を含む " Playbook" 設定が表示されます。 Playbookの名前は `analysis.yml` です。GitHub ブラウザ タブで、git リポジトリのファイルにリストされている `analysis.yml` を見つけることが出来ます。
 
-- Notice that the `Run RIPU preupg` task of the playbook is importing a role from the `infra.leapp` Ansible collection. By checking the `collections/requirements.yml` file in the git repo, we can discover that this role comes from another git repo at [https://github.com/redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp). It is the `analysis` role under this second git repo that provides all the automation tasks that ultimately runs the Leapp pre-upgrade scan and generates the report.
+- Playbookの `Run RIPU preupg` が `infra.leapp` Ansible コレクションからロールをインポートしていることに注意してください。Git リポジトリの `collections/requirements.yml` ファイルを確認すると、このロールが [https://github.com/redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp)  にある別の Git リポジトリから来ていることがわかります。この 2 番目の Git リポジトリの `analysis` ロールは、最終的に Leapp のアップグレード前スキャンを実行してレポートを生成するすべての自動化タスクを提供します。
 
-- Drill down to the `roles/analysis` directory in this git repo to review the README and yaml source files.
+- この Git リポジトリの `roles/analysis` ディレクトリにドリルダウンして、README および yaml ソース ファイルを確認します。
 
-When you are ready to develop your own custom playbooks to run upgrades for your enterprise, you should consider using roles from the `infra.leapp` Ansible collection to make your job easier.
+エンタープライズのアップグレードを実行するための独自のカスタム  Playbookを開発する準備ができたら、作業を容易にするために `infra.leapp` Ansible コレクションのロールの使用を検討する必要があります。
 
-## Conclusion
+## まとめ
 
-In this exercise, we learned about the end-to-end workflow used by our automation approach for doing RHEL in-place upgrades. We used a job template in AAP to submit a playbook job that ran the Leapp pre-upgrade analysis on our pet application servers. In the challenge lab, we explored the playbook that we ran and how it includes a role from an upstream Ansible collection.
+この演習では、RHEL インプレース アップグレードを実行するための自動化アプローチで使用されるエンドツーエンドのワークフローについて学習しました。 AAP のジョブ テンプレートを使用して、ペット アプリケーション サーバーで Leapp のアップグレード前分析を実行する Playbook ジョブを送信しました。チャレンジ ラボでは、実行した Playbookと、その Playbookにアップストリーム Ansible コレクションのロールがどのように含まれているかを調べました。
 
-In the next exercise, we will review the pre-upgrade reports we just generated and take action to resolve any high-risk findings that were identified.
+次の演習では、生成したアップグレード前レポートを確認し、特定された高リスクの検出結果を解決するための措置を講じます。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../1.1-setup/README.md) - [Next Exercise](../1.3-report/README.md)
+[Previous Exercise](../1.1-setup/README.ja.md) - [Next Exercise](../1.3-report/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
