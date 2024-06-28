@@ -70,53 +70,53 @@
 
 - さまざまなペット アプリ サーバーの RHEL Web コンソールで使用できるナビゲーション メニューを少し調べてください。コンソールの操作とホストの切り替えに慣れたら、次のステップに進み、最初のアップグレード前レポートを確認します。
 
-### Step 3 - Review Leapp Pre-upgrade Report of RHEL8 Host
+### Step 3 - RHEL8 ホストの Leapp アップグレード前レポートのレビュー
 
-Now we are ready to use the RHEL Web Console to see the Leapp pre-upgrade reports. Let's start by looking at one of the RHEL8 hosts and then we'll look at one of the RHEL7 hosts in the next step.
+これで、RHEL Web コンソールを使用して Leapp アップグレード前レポートを表示する準備ができました。まずは RHEL8 ホストの 1 つを見てから、次のステップで RHEL7 ホストの 1 つを見てみましょう。
 
-While you might be interested in learning about upgrading only RHEL7 or RHEL8, we recommend following the exercise steps for both. This workshop presents the skills you need with the RHEL7 and RHEL8 examples covering different topics you must know irrespective of the OS version being upgraded.
+RHEL7 または RHEL8 のみのアップグレードについて学習したいかもしれませんが、両方の演習手順に従うことをお勧めします。このワークショップでは、アップグレードする OS バージョンに関係なく知っておく必要のあるさまざまなトピックを網羅した RHEL7 と RHEL8 の例を使用して、必要なスキルを紹介します。
 
-We are now here in the automation approach workflow:
+今、オートメーションアプローチワークフローのここにいます:
 
 ![Automation approach workflow diagram with review report step highlighted](images/ripu-workflow-hl-review.svg)
 
-- Navigate to the RHEL Web Console remote host menu and click on the hostname of one of your RHEL8 pet app servers. Remember as we learned in the previous step, you can confirm the RHEL version on the system overview page. Also make sure you enabled administrative access as explained in the previous step.
+- RHEL Web コンソールのリモート ホスト メニューに移動し、RHEL8 ペット アプリ サーバーの 1 つのホスト名をクリックします。前のステップで学習したように、システム概要ページで RHEL バージョンを確認できることを覚えておいてください。また、前の手順で説明したように、管理アクセスが有効になっていることを確認してください。
 
-- Having verified you are looking at one of the RHEL8 pet app servers, use the main menu to navigate to Tools > Upgrade Report. This will display the Leapp pre-upgrade report that was generated for the selected host. For example, the report might look like this:
+- RHEL8 ペットアプリサーバーの 1 つを参照していることを確認したら、メインメニューから ツール > アップグレードレポート に移動します。これにより、選択したホスト用に生成された Leapp アップグレード前レポートが表示されます。たとえば、レポートは次のようになります。:
 
   ![Example pre-upgrade report of RHEL8 host](images/rhel8_report.svg)
 
-  > **Note**
+  > **注記**
   >
-  > The contents of your report may differ from the example above because of updates made to the Leapp framework and other RHEL packages released over time since this workshop was written. If you discover any differences that materially break the flow of the exercises in the workshop, kindly let us know by raising an issue [here](https://github.com/ansible/workshops/issues/new).
+  > このワークショップの作成以降にリリースされた Leapp フレームワークおよびその他の RHEL パッケージの更新により、レポートの内容が上記の例と異なる場合があります。ワークショップの演習の流れを大幅に妨げる違いが見つかった場合は、 [here](https://github.com/ansible/workshops/issues/new) で問題を提起してお知らせください。
 
-- When the pre-upgrade report is generated, the Leapp framework collects system data and assesses upgradeability based on a large collection of checks. When any of these checks uncovers a potential risk, it is recorded as a finding in the report. These findings are listed in order from highest risk to lowest. In the report above, we see there are three high risk findings. Let's review each of these.
+- アップグレード前レポートが生成されると、Leapp フレームワークはシステム データを収集し、多数のチェックに基づいてアップグレード可能性を評価します。これらのチェックのいずれかで潜在的なリスクが明らかになった場合、レポートに検出結果が記録されます。これらの検出結果は、リスクの高いものから低いものの順にリストされます。上記のレポートでは、リスクの高い検出結果が 3 つあります。それぞれ確認してみましょう。
 
-- The first finding we see listed has the title "Leapp could not identify where GRUB core is located." You can see additional details for any finding by clicking on it in the list. For example, click on the first finding and you will see these details:
+- 最初にリストされている検出結果のタイトルは "Leapp could not identify where GRUB core is located." です。リスト内の検出結果をクリックすると、その詳細を表示できます。たとえば、最初の検出結果をクリックすると、次の詳細が表示されます。:
 
   ![Details view of grub core finding](images/grub_core_finding.svg)
 
-  This finding is being reported because the EC2 instances deployed for the workshop do not have a separate /boot partition. We'll ignore this one for now, but make a mental note as we may revisit this with a Challenge Lab in a later exercise. <!-- We'll talk about fixing this in the commit playbook. -->
+  この検出結果は、ワークショップ用にデプロイされた EC2 インスタンスに個別の /boot パーティションがないため報告されています。今のところは無視しますが、後の演習でチャレンジ ラボでこれを再度検討する可能性があるため、覚えておいてください。 <!-- We'll talk about fixing this in the commit playbook. -->
 
-- The next finding is titled "Remote root logins globally allowed using password." Click on it to see the details:
+- 次の検出結果は "Remote root logins globally allowed using password." です。詳細を表示するには、以下をクリックしてください。:
 
   ![Details view of remote root logins finding](images/remote_root_logins_finding.svg)
 
-  This finding is meant to raise awareness of a change to the default root login settings introduced with RHEL9. We can safely ignore this finding because surely everybody already follows best practices by never logging in directly as the root user.
-
-- That brings us to the final high risk finding. This one is a little embarrassing because it's actually a known bug in the Leapp framework.
+  この検出結果は、RHEL9 で導入されたデフォルトのルート ログイン設定の変更について認識を高めることを目的としています。誰もがすでにベストプラクティスに従って、ルートユーザーとして直接ログインしないようになっているため、この検出結果は無視しても問題ありません。
+  
+- これで、最後の高リスクの検出結果に至りました。これは、実際には Leapp フレームワークの既知のバグであるため、少し恥ずかしいものです。
 
   ![Details view usage of deprecated model bug finding](images/leapp_bug_finding.svg)
 
-  Luckily, it is completely benign and we can safely ignore it. This bug will be fixed with an update to the Leapp framework expected to be released soon. <!-- FIXME: remove this after the bug fix gets released. Also remove from RHEL7 report step further down. -->
+  幸いなことに、これは完全に無害であるため、無視しても問題ありません。このバグは、まもなくリリースされる予定の Leapp フレームワークの更新で修正されます。 <!-- FIXME: remove this after the bug fix gets released. Also remove from RHEL7 report step further down. -->
 
-- The good news is that none of the findings with our RHEL8 host were the most severe "inhibitor" classification. When any inhibitor findings are reported, the RHEL upgrade is blocked and can't proceed without first taking action to correct the cause of the inhibitor risk finding.
+- 幸いなことに、RHEL8 ホストの検出結果はどれも最も深刻な "inhibitor" ではありませんでした。inhibitor が検出されると、RHEL のアップグレードはブロックされ、阻害要因のリスク検出の原因を修正する措置を最初に講じない限り、先に進めません。
 
-- There are a number of filtering options you can use to limit the findings that are displayed according to risk level, audience, etc. Click on the "Filters" button to experiment with this feature. For example, if you click the "Is inhibitor?" filter checkbox, you will see no findings displayed because there were no inhibitors.
+- リスク レベル、対象者などに応じて表示される検出結果を制限するために使用できるフィルター オプションがいくつかあります。この機能を試すには、 "Filters" ボタンをクリックします。たとえば、 "Is inhibitor?" フィルターチェックボックスをクリックすると、該当となるものがないため、検出結果は表示されません。
 
-- Let's now move on to the pre-upgrade report for one of our RHEL7 hosts. Spoiler alert: we will have to deal with some inhibitor findings with this one!
+- 次に、RHEL7 ホストの 1 つに関するアップグレード前のレポートに移りましょう。ネタバレ注意: このホストでは、inhibitor の検出結果に対処する必要があります！
 
-### Step 4 - Review Leapp Pre-upgrade Report of RHEL7 Host
+### Step 4 - RHEL7 ホストの Leapp アップグレード前レポートのレビュー
 
 In the previous step, we reviewed the pre-upgrade report for one of our RHEL8 hosts. Now let's take a look at the report from one of our RHEL7 hosts.
 
