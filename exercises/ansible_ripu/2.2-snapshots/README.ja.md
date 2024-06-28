@@ -143,30 +143,30 @@ RHEL サーバーのローカル ストレージを割り当てるためのベ�
 
 残念ながら、VMware スナップショットは、OS またはアプリ データが含まれているかどうかに関係なく、すべての仮想ディスクを含む VM インスタンスの完全な状態を保存します。これは、いくつかの理由で困難になる可能性があります。まず、スナップショットに必要なストレージ領域が増え、アプリ データのアクティビティによってスナップショットがどの程度増加するかを予測するのが難しくなります。もう 1 つの問題は、アプリ データをロールバックすると、アプリの状態が外部システムと同期しなくなり、予期しない問題が発生する可能性があることです。何らかの理由でアプリ データをロールバックする場合は、発生する可能性のある潜在的な問題に注意してください。
 
-### Step 4 - Choosing the Best Snapshot Solution
+### Step 4 - 最適なスナップショットソリューションの選択
 
-There are a number of factors you should consider when deciding which method of snapshot/rollback will work best in your environment.
+スナップショット/ロールバックのどの方法が環境に最適かを判断する際に考慮すべき要素がいくつかあります。
 
-- What is your mix of bare metal servers versus VMware or cloud instances?
-- Where can free space most readily be made available?
-- Can you get unfettered access to your VMware inventory and vSphere APIs?
-- What is the appropriate snapshot scope for your organization?
-- Which snapshot solution can you most easily make fully automated?
+- ベアメタル サーバーと VMware またはクラウド インスタンスの混合はどのようなものですか?
+- 空き領域を最も簡単に利用できる場所はどこですか?
+- VMware インベントリと vSphere API に自由にアクセスできますか?
+- 組織にとって適切なスナップショットの範囲はどれですか?
+- 最も簡単に完全に自動化できるスナップショット ソリューションはどれですか?
 
-Consider a belt and suspenders approach, that is, offer support for more than one method. Maybe it makes sense to recommend one method for bare metal and another for VMs.
+ベルトとサスペンダーのアプローチを検討してください。つまり、複数の方法をサポートします。ベアメタル用に 1 つの方法を推奨し、VM 用に別の方法を推奨するのが理にかなっているかもしれません。
 
-Whatever your decision, remember that an effective snapshot/rollback capability integrated with your end-to-end automation is the most important feature of any RHEL in-place upgrade solution.
+どのような決定を下す場合でも、エンドツーエンドの自動化と統合された効果的なスナップショット/ロールバック機能が、RHEL インプレース アップグレード ソリューションの最も重要な機能であることを忘れないでください。
 
-## Conclusion
+## まとめ
 
-In this exercise, we learned about the pros and cons of a number of different methods of achieving an automated snapshot/rollback capability. We also considered the risks that can happen because of rolling back app data that isn't isolated from OS changes. With this knowledge, you are ready to make more informed decisions when designing your snapshot/rollback automation approach.
+この演習では、自動化されたスナップショット/ロールバック機能を実現するさまざまな方法の長所と短所について学習しました。また、OS の変更から分離されていないアプリ データをロールバックすることで発生する可能性のあるリスクについても検討しました。この知識があれば、スナップショット/ロールバック自動化アプローチを設計する際に、より情報に基づいた決定を下すことができます。
 
-In the next exercise, we'll go back to look at how the RHEL in-place upgrades are progressing on our pet application servers.
+次の演習では、ペット アプリケーション サーバーで RHEL インプレース アップグレードがどのように進行しているかをもう一度確認します。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../2.1-upgrade/README.md) - [Next Exercise](../2.3-check-upg/README.md)
+[Previous Exercise](../2.1-upgrade/README.ja.md) - [Next Exercise](../2.3-check-upg/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
