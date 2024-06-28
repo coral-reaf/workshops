@@ -42,80 +42,70 @@
 
 - Leapp カスタム アクターの開発は、プレイブックにタスクを追加するだけの場合ほど簡単ではありません。そのため、ほとんどのカスタム自動化要件は、Ansible を使用して実現するのが最適です。タスクは、RHEL OS アップグレードを実際に実行するために から `infra.leapp` コレクション `upgrade` ロールをインポートするタスクの前後にアップグレード プレイブックに含めることができます。
 
-### Step 2 - Install a Leapp Custom Actor
+### ステップ 2 - Leapp カスタムアクターのインストール
 
-There is a collection of example custom actor at the GitHub repo [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements). We will use one of these to demonstrate adding a custom check to our pre-upgrade reports.
+GitHub リポジトリ [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements) には、サンプルのカスタム アクターのコレクションがあります。そのうちの 1 つを使用して、アップグレード前のレポートにカスタム チェックを追加する方法を説明します。
 
-- The example custom actor we are going to install implements checks for compliance with an imaginary organization's "reboot hygiene" policy. The actor will block the upgrade by reporting inhibitor risk if any of the following conditions are detected:
+- インストールするサンプルのカスタム アクターは、架空の組織の "reboot hygiene" ポリシーに準拠しているかどうかのチェックを実装します。アクターは、次のいずれかの条件が検出された場合、阻害リスクを報告してアップグレードをブロックします。
 
-  - The host uptime is greater than the maximum defined by the policy.
+- ホストの稼働時間が、ポリシーで定義された最大値を超えています。
 
-  - The running kernel version does not match the default kernel version configured in the bootloader.
+- 実行中のカーネル バージョンが、ブートローダーで構成されているデフォルトのカーネル バージョンと一致していません。
 
-  - The /boot directory has any files that have been modified since the last reboot.
+- /boot ディレクトリに、前回の再起動以降に変更されたファイルがあります。
 
-- Go to your VS Code browser tab and open a terminal session. Refer back to [Exercise 1.1, Step 2](https://github.com/swapdisk/workshops/blob/devel/exercises/ansible_ripu/1.1-setup/README.md#step-2---open-a-terminal-session) if you need a reminder of how we did that.
+- VS Code ブラウザー タブに移動して、ターミナル セッションを開きます。どのように実行したかを思い出す必要がある場合は、[演習 1.1、ステップ 2](https://github.com/swapdisk/workshops/blob/devel/exercises/ansible_ripu/1.1-setup/README.ja.md#step-2---ターミナルセッションを開く) を参照してください。
 
-- Login to one of your pet app servers using the `ssh` command. For example:
+- `ssh` コマンドを使用して、ペット アプリ サーバーの 1 つにログインします。例:
 
-  ```
-  ssh tidy-bengal
-  ```
+```
+ssh tidy-bengal
+```
 
-- Now we will install the RPM package that provides our custom actor. Run the following command on your pet app server:
+- 次に、カスタム アクターを提供する RPM パッケージをインストールします。ペット アプリ サーバーで次のコマンドを実行します:
 
-  ```
-  sudo yum -y --enablerepo=leapp-supplements install leapp-upgrade-\*-supplements
-  ```
+```
+sudo yum -y --enablerepo=leapp-supplements install leapp-upgrade-\*-supplements
+```
 
-  > **Note**
-  >
-  > We are installing the package manually just for the purpose of demonstrating this custom actor. If we were ready to roll out custom actors at enterprise scale, we would include the package installation at the beginning of our analysis playbook.
+> **注**
+>
+> このカスタム アクターをデモンストレーションするためだけに、パッケージを手動でインストールしています。エンタープライズ規模でカスタム アクターを展開する準備ができている場合は、分析プレイブックの冒頭にパッケージのインストールを含めます。
 
-- This is an example of the output you should expect to see if the package is installed successfully:
+- パッケージが正常にインストールされた場合に表示される出力の例を次に示します。
 
-  ```
-  Resolving Dependencies
-  --> Running transaction check
-  ---> Package leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7 will be installed
-  --> Finished Dependency Resolution
+```
+依存関係を解決しています
+--> トランザクション チェックを実行しています
+---> パッケージ leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7 がインストールされます
+--> 依存関係の解決が完了しました
 
-  Dependencies Resolved
+依存関係が解決されました
 
-  ==========================================================================================
-   Package                             Arch    Version             Repository          Size
-  ==========================================================================================
-  Installing:
-   leapp-upgrade-el7toel8-supplements  noarch  1.0.0-47.demo.el7   leapp-supplements   12 k
+== ... == ... 12 k
+インストールサイズ: 18 k
+パッケージをダウンロードしています:
+leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch.rpm | 12 kB 00:00:00
+トランザクション チェックを実行しています
+トランザクション テストを実行しています
+トランザクション テストが成功しました
+トランザクションを実行しています
+インストールしています: leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch 1/1
+検証しています: leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch 1/1
 
-  Transaction Summary
-  ==========================================================================================
-  Install  1 Package
+インストール済み:
+leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7
 
-  Total download size: 12 k
-  Installed size: 18 k
-  Downloading packages:
-  leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch.rpm    |  12 kB  00:00:00
-  Running transaction check
-  Running transaction test
-  Transaction test succeeded
-  Running transaction
-    Installing : leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch            1/1
-    Verifying  : leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch            1/1
+完了しました!
+```
 
-  Installed:
-    leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7
+- カスタム アクターの動作を実証するために、ポリシーに違反する条件を作成し、阻害要因の検出が報告されるようにします。次のコマンドを使用します:
 
-  Complete!
-  ```
+```
+sudo touch /boot/policy-violation
+```
 
-- To demonstrate the custom actor at work, let's create a condition that violates our policy so that an inhibitor finding will be reported. Use this command:
-
-  ```
-  sudo touch /boot/policy-violation
-  ```
-
-  With this command, we just created a file under /boot with a timestamp later than the last reboot. This host is now out of compliance with our reboot hygiene policy!
+このコマンドにより、/boot の下に、最後の再起動よりも後のタイムスタンプを持つファイルが作成されました。このホストは、再起動の衛生ポリシーに準拠しなくなりました。
 
 ### Step 3 - Generate a New Pre-upgrade Report
 
