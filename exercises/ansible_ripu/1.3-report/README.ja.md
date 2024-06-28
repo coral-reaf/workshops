@@ -13,62 +13,62 @@
     - [チャレンジラボ: 多数の高レベルの検出結果を無視するのはどうでしょうか?](#チャレンジラボ-多数の高レベルの検出結果を無視するのはどうでしょうか)
   - [まとめ](#まとめ)
 
-## Objectives
+## 目標
 
-* Understand the different options for managing Leapp pre-upgrade reports
-* Use the RHEL Web Console to review the reports we generated
-* Learn how to filter pre-upgrade report entries
-* Embrace failure!
+* Leapp のアップグレード前レポートを管理するためのさまざまなオプションを理解する
+* RHEL Web コンソールを使用して、生成したレポートを確認する
+* アップグレード前レポートのエントリをフィルター処理する方法を学ぶ
+* 失敗を受け入れよう!
 
-## Guide
+## ガイド
 
-### Step 1 - Managing Leapp Pre-upgrade Results
+### Step 1 - Leapp アップグレード前結果の管理
 
-In the previous exercise, we used a playbook job template to generate a Leapp pre-upgrade report on each of our pet app servers. Now we need to review the findings listed in those reports. There are a number of different ways that we can access the reports. Let's review these and consider the pros and cons:
+前の演習では、プレイブック ジョブ テンプレートを使用して、各ペット アプリ サーバーで Leapp のアップグレード前レポートを生成しました。次に、それらのレポートにリストされている結果を確認する必要があります。レポートにアクセスする方法はいくつかあります。これらを確認し、長所と短所を検討してみましょう。:
 
-- If we we're using the Leapp framework to manually upgrade just a single RHEL host, we could simply get to a shell prompt on the host and look at the local report file output. In [Exercise 1.1, Step 2](../1.1-setup/README.md#step-2---open-a-terminal-session), we learned how to open an ssh session to one of our pet app servers. Follow those steps and after logging in, use this command to review the local Leapp pre-upgrade report file:
+- Leapp フレームワークを使用して単一の RHEL ホストのみを手動でアップグレードする場合は、ホストでシェルプロンプトにアクセスして、ローカルレポートファイルの出力を確認するだけで済みます。 [Exercise 1.1, Step 2](../1.1-setup/README.md#step-2---open-a-terminal-session) では、ペット アプリ サーバーの 1 つへの ssh セッションを開く方法を学習しました。これらの手順に従い、ログイン後、次のコマンドを使用してローカルの Leapp アップグレード前レポート ファイルを確認します:
 
   ```
   less /var/log/leapp/leapp-report.txt
   ```
 
-  This is a "quick and dirty" way to review the report, but doesn't scale if you need to review reports for a large number of hosts.
+  これはレポートを確認するための "手っ取り早い" 方法ですが、多数のホストのレポートを確認する必要がある場合には適していません。
 
-  > **Note**
+  > **注記**
   >
-  > Use the up and down arrow keys to scroll through the file and type `q` when you are ready to quit the `less` command.
+  > 上下矢印キーを使用してファイルをスクロールし、`less` コマンドを終了する準備が出来たら `q` と入力します。
 
-- If your RHEL hosts are registered to [Red Hat Insights](https://www.redhat.com/en/technologies/management/insights), you can see the Leapp pre-upgrade reports on your Insights console. The pet app servers provisioned for this workshop are not registered to Insights, so we can't demonstrate this here. Read the blog article [Take the unknowns out of RHEL upgrades with Red Hat Insights](https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights) to see an example of how Insights can be used to review and manage Leapp pre-upgrades.
+- RHEL ホストが [Red Hat Insights](https://www.redhat.com/en/technologies/management/insights) に登録されている場合、Insights コンソールで Leapp のアップグレード前レポートを確認できます。このワークショップ用にプロビジョニングされたペット アプリ サーバーは Insights に登録されていないため、ここでは説明を割愛しますがブログ記事 [Take the unknowns out of RHEL upgrades with Red Hat Insights](https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights) を読んで、Insights を使用して Leapp のアップグレード前を確認および管理する方法の例を確認してください。
 
-- RHEL includes an optional administration web console based on [Cockpit](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/managing_systems_using_the_rhel_8_web_console/index#what-is-the-RHEL-web-console_getting-started-with-the-rhel-8-web-console) that we call the RHEL Web Console. We will explore how to review the Leapp pre-upgrade reports using the RHEL Web Console in the next step of this exercise.
+- RHEL には [Cockpit](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/managing_systems_using_the_rhel_8_web_console/index#what-is-the-RHEL-web-console_getting-started-with-the-rhel-8-web-console) に基づくオプションの管理 Web コンソールが含まれており、これを RHEL Web コンソールと呼んでいます。この演習の次のステップでは、RHEL Web コンソールを使用して Leapp のアップグレード前レポートを確認する方法について説明します。
+ 
+- Leapp は、プレーン テキストの `leapp-report.txt` ファイルを書き込むだけでなく、JSON 形式の `leapp-report.json` ファイルも生成します。このファイルには、プレーンテキストファイルと同じレポート結果が含まれますが、Elastic/Kibana や Splunk などのログ管理ツールで取り込むのに最適な JSON 形式です。多くの大企業は、アップグレード前のレポート データをこれらのツールの 1 つにプッシュして、環境 (開発/テスト/本番など)、場所、アプリケーション ID、所有チームなどでレポートをフィルターできる独自のカスタム ダッシュボードを開発します。 <!-- FIXME: add Splunk example here when https://issues.redhat.com/browse/RIPU-35 gets done. -->
 
-- In addition to writing the plain text `leapp-report.txt` file, Leapp also generates a JSON format `leapp-report.json` file. This file includes the same report results as the plain text file, but in JSON format which is perfect for being ingested by log management tools like Elastic/Kibana or Splunk. Many large enterprises will push their pre-upgrade report data to one of these tools to develop their own custom dashboards that can filter reports by environment (e.g., Dev/Test/Prod), location, app ID, owning team, etc. <!-- FIXME: add Splunk example here when https://issues.redhat.com/browse/RIPU-35 gets done. -->
+### Step 2 - RHEL Web コンソールのナビゲート
 
-### Step 2 - Navigating the RHEL Web Console
+このワークショップでは、RHEL Web コンソールを使用して、生成した Leapp アップグレード前レポートにアクセスします。
 
-For this workshop, we will be using the RHEL Web Console to access the Leapp pre-upgrade reports we generated.
-
-- Return to the RHEL Web Console browser tab you opened from [Exercise 1.1, Step 4](../1.1-setup/README.md#step-4---access-the-rhel-web-console). This is the RHEL Web Console of the AAP controller host, but we need to access our pet app server hosts to see their pre-upgrade reports. Do this by clicking the "student&#8203;@&#8203;ansible-1.example.com" box in the top left corner of the RHEL Web Console to reveal the remote host menu. For example:
+- [Exercise 1.1, Step 4](../1.1-setup/README.md#step-4---access-the-rhel-web-console) で開いた RHEL Web コンソールのブラウザー タブに戻ります。これは AAP コントローラー ホストの RHEL Web コンソールですが、アップグレード前レポートを表示するには、ペット アプリケーション サーバー ホストにアクセスする必要があります。これを行うには、RHEL Web コンソールの左上隅にある "student&#8203;@&#8203;ansible-1.example.com" ボックスをクリックして、リモートホストメニューを表示します。例:
 
   ![Remote host menu listing all pet app servers](images/remote_host_menu_with_pets.svg)
 
-- You can use the remote host menu to navigate to the web consoles of each of your pet app servers. Try selecting one of your pet servers now. The RHEL Web Console system overview page will show the operating system version installed. For example, this pet app server is running RHEL8:
+- リモートホストメニューを使用して、各ペットアプリサーバーの Web コンソールに移動できます。今すぐペットサーバーの 1 つを選択してみてください。RHEL Web コンソールのシステム概要ページに、インストールされているオペレーティングシステムのバージョンが表示されます。たとえば、このペットアプリ サーバーは RHEL8 を実行しています:
 
   ![upward-moray running Red Hat Enterprise Linux 8.7 (Ootpa)](images/rhel8_os.svg)
 
-  Here is an example of one running RHEL7:
+  RHEL7 を実行している例を次に示します:
 
   ![Operating System Red Hat Enterprise Linux Server 7.9 (Maipo)](images/rhel7_os.svg)
 
-- When you navigate to different hosts in the RHEL Web Console, look out for the "limited access mode" warning:
+- RHEL Web コンソールで別のホストに移動する場合、"limited access mode" の警告に注意してください:
 
   ![Web console is running in limited access mode](images/limited_access.svg)
 
-  If you see this, use the button to switch to administrative access mode before proceeding. A confirmation will appear like this:
+  この警告が表示された場合は、続行する前にボタンを使用して管理アクセス モードに切り替えてください。 次のような確認が表示されます:
 
   ![You now have administrative access](images/administrative_access.svg)
 
-- Take some time to explore the navigation menus available with the RHEL Web Console of your different pet app servers. Once you feel comfortable navigating around the console and switching between hosts, move on to the next step where we will look at our first pre-upgrade report.
+- さまざまなペット アプリ サーバーの RHEL Web コンソールで使用できるナビゲーション メニューを少し調べてください。コンソールの操作とホストの切り替えに慣れたら、次のステップに進み、最初のアップグレード前レポートを確認します。
 
 ### Step 3 - Review Leapp Pre-upgrade Report of RHEL8 Host
 
