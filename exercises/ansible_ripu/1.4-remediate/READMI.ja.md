@@ -125,7 +125,7 @@ executable: /bin/bash
 
 - これにより、ジョブ テンプレートの調査プロンプトが表示されます。ここでも、"インベントリ グループの選択" プロンプトで "rhel7" オプションを選択します。これは、修復 Playbook が RHEL7 ホストのアップグレード前の調査結果に固有のものであるためです。次に、"次へ" ボタンをクリックします。ジョブのプレビューに問題がなければ、"起動" ボタンを使用してジョブを送信します。この Playbook には少数のタスクしか含まれていないため、すぐに実行できます。
 
-- "OS / Remediate" ジョブが終了したら、"インベントリ グループの選択" プロンプトで "rhel7" オプションを選択するように注意しながら、[AUTO / 01 Analysis] ジョブ テンプレートをもう一度起動します。ジョブが完了したら、RHEL7 ホストの RHEL Web コンソールに戻り、レポートを更新します。これで、阻害要因がなくなったことがわかります:
+- "OS / Remediate" ジョブが終了したら、"インベントリ グループの選択" プロンプトで "rhel7" オプションを選択するように注意しながら、"AUTO / 01 Analysis" ジョブ テンプレートをもう一度起動します。ジョブが完了したら、RHEL7 ホストの RHEL Web コンソールに戻り、レポートを更新します。これで、阻害要因がなくなったことがわかります:
 
 ![阻害要因がなくなった RHEL7 ホストのアップグレード前レポート](images/rhel7_no_inhibitors.svg)
 
@@ -146,8 +146,8 @@ These exercises are not required to successfully complete the workshop, but we r
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../1.3-report/README.md) - [Next Exercise](../1.5-custom-modules/README.md)
+[Previous Exercise](../1.3-report/README.ja.md) - [Next Exercise](../1.5-custom-modules/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
