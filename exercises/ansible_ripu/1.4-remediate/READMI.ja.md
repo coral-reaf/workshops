@@ -45,42 +45,42 @@
 
 - 次のステップでは、Ansible Automation Platform (AAP) のスケールを活用して、大規模な RHEL 資産全体で一括して修復を実行する方法について説明します。
 
-### Step 2 - Managing the Leapp Answer File
+### ステップ 2 - Leapp 回答ファイルの管理
 
-The Leapp framework uses an answer file as a means of accepting user input choices. This is explained in greater detail in the [Asking user questions](https://leapp.readthedocs.io/en/latest/dialogs.html) section of the Leapp developer documentation. The inhibitor finding we dissected in the previous step is looking for us to make a decision or, more specifically, asking us to acknowledge we are aware that Leapp will disable the pam_pkcs11 PAM module during the RHEL upgrade.
+Leapp フレームワークは、ユーザー入力の選択を受け入れる手段として回答ファイルを使用します。これについては、Leapp 開発者ドキュメントの [ユーザーへの質問](https://leapp.readthedocs.io/en/latest/dialogs.html) セクションで詳しく説明されています。前のステップで分析した阻害要因の検出結果は、私たちに決定を求めています。より具体的には、RHEL アップグレード中に Leapp が pam_pkcs11 PAM モジュールを無効にすることを認識していることを確認するように求めています。
 
-- In [Exercise 1.2 - Run Pre-upgrade Jobs](../1.2-preupg/README.md), we launched a playbook that runs the pre-upgrade report using the `analysis` role from the `infra.leapp` Ansible collection. Look at the [documentation for this role](https://github.com/redhat-cop/infra.leapp/blob/main/roles/analysis/README.md). Do you see where it supports a `leapp_answerfile` input variable. We can set the variable to automatically populate the Leapp answer file.
+- [演習 1.2 - アップグレード前のジョブの実行](../1.2-preupg/README.md) では、`infra.leapp` Ansible コレクションの `analysis` ロールを使用してアップグレード前のレポートを実行するプレイブックを起動しました。 [このロールのドキュメント](https://github.com/redhat-c​​op/infra.leapp/blob/main/roles/analysis/README.md) をご覧ください。`leapp_answerfile` 入力変数がサポートされている場所がわかりますか。変数を設定すると、Leapp 応答ファイルが自動的に入力されます。
 
-- Let's try running the pre-upgrade job again with this variable defined. Launch the "AUTO / 01 Analysis" job template the same as you did under [Exercise 1.2, Step 2](../1.2-preupg/README.md#step-2---use-aap-to-launch-an-analysis-playbook-job), except this time, we will add this setting when we get to the Variables prompt:
+- この変数を定義して、アップグレード前のジョブを再度実行してみましょう。 [演習 1.2、ステップ 2](../1.2-preupg/README.md#step-2---use-aap-to-launch-an-analysis-playbook-job) で実行したのと同じように、"AUTO / 01 Analysis" ジョブ テンプレートを起動します。ただし、今回は、変数プロンプトが表示されたときに次の設定を追加します:
 
-  ```json
-    "leapp_answerfile": "[remove_pam_pkcs11_module_check]\nconfirm = True\n",
-  ```
-  For example:
+```json
+"leapp_answerfile": "[remove_pam_pkcs11_module_check]\nconfirm = True\n",
+```
+例:
 
-  ![Setting the `leapp_answerfile` input variable](images/analysis_leapp_answerfile.svg)
+![`leapp_answerfile` 入力変数の設定](images/analysis_leapp_answerfile.svg)
 
-  After making the variable setting as shown above, click the "Next" button. This will lead to the job template survey prompt. Previously, we used the "ALL_rhel" option to run the pre-upgrade on all our pet servers. However, our `leapp_answerfile` setting is specific to our RHEL7 hosts, so choose the "rhel7" option this time:
+上記のように変数を設定したら、[次へ] ボタンをクリックします。これにより、ジョブ テンプレートの調査プロンプトが表示されます。以前は、すべてのペット サーバーでアップグレード前を実行するために「ALL_rhel」オプションを使用しました。ただし、`leapp_answerfile` 設定は RHEL7 ホストに固有のため、今回は「rhel7」オプションを選択します。
 
-  ![Choose "rhel7" at the survey prompt](images/analysis_survey_rhel7_only.svg)
+![調査プロンプトで「rhel7」を選択](images/analysis_survey_rhel7_only.svg)
 
-  Click the "Next" button to proceed to the preview prompt. If you are satisfied with the job preview, use the "Launch" button to start the job.
+「次へ」ボタンをクリックしてプレビュー プロンプトに進みます。ジョブ プレビューに問題がなければ、「起動」ボタンを使用してジョブを開始します。
 
-- As before, the AAP Web UI will navigate automatically to the job output page after you start the job. The job will take a few minutes to finish and then you should see the "PLAY RECAP" at the end of the job output.
+- 以前と同様に、ジョブを開始すると、AAP Web UI はジョブ出力ページに自動的に移動します。ジョブが完了するまでに数分かかり、ジョブ出力の最後に「PLAY RECAP」が表示されます。
 
-- Now go back to your RHEL Web Console browser tab and navigate to the pre-upgrade report of one of the RHEL7 hosts.
+- ここで、RHEL Web コンソールのブラウザー タブに戻り、RHEL7 ホストの 1 つのアップグレード前レポートに移動します。
 
-  > **Note**
-  >
-  > You may need to refresh the browser using Ctrl-R to see the newly generated report.
+> **注**
+>
+> 新しく生成されたレポートを表示するには、Ctrl + R を使用してブラウザーを更新する必要がある場合があります。
 
-  You should see that the "Missing required answers in the answer file" inhibitor finding is no longer being reported.
+「応答ファイルに必要な回答がありません」という阻害要因の検出結果は報告されなくなったことがわかります。
 
-  For example:
+例:
 
-  ![Pre-upgrade report of RHEL7 host without answer file inhibitor](images/rhel7_answer_fixed.svg)
+![応答ファイル阻害要因のない RHEL7 ホストのアップグレード前レポート](images/rhel7_answer_fixed.svg)
 
-  But we still have the "Possible problems with remote login using root account" inhibitor which we need to fix. Let's look at that next.
+ただし、「ルート アカウントを使用したリモート ログインで問題が発生する可能性がある」という阻害要因はまだ残っているので、これを修正する必要があります。次にこれについて見てみましょう。
 
 ### Step 3 - Resolving Inhibitors Using a Remediation Playbook
 
