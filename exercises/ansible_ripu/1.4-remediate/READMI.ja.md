@@ -1,49 +1,49 @@
-# Workshop Exercise - Perform Recommended Remediation
+# ワークショップ演習 - 推奨される修復を実行する
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Perform Recommended Remediation](#workshop-exercise---perform-recommended-remediation)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Explore Options for Resolving Inhibitors](#step-1---explore-options-for-resolving-inhibitors)
-    - [Step 2 - Managing the Leapp Answer File](#step-2---managing-the-leapp-answer-file)
-    - [Step 3 - Resolving Inhibitors Using a Remediation Playbook](#step-3---resolving-inhibitors-using-a-remediation-playbook)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - 推奨される修復を実行する](#workshop-exercise---perform-recommended-remediation)
+  - [目次](#table-of-contents)
+  - [目的](#objectives)
+  - [ガイド](#guide)
+    - [ステップ 1 - 阻害要因を解決するためのオプションを検討する](#step-1---explore-options-for-resolving-inhibitors)
+    - [ステップ 2 - Leapp 回答ファイルの管理](#step-2---managing-the-leapp-answer-file)
+    - [ステップ 3 - 修復プレイブックを使用して阻害要因を解決する](#step-3---resolving-inhibitors-using-a-remediation-playbook)
+  - [結論](#conclusion)
 
-## Objectives
+## 目的
 
-* Consider different options for resolving inhibitor risk findings
-* Learn how to use the `leapp_answerfile` variable of the `analysis` role
-* Use a remediation playbook to proactively prepare for pre-upgrade
+* 検討する阻害リスクの検出を解決するためのさまざまなオプション
+* `analysis` ロールの `leapp_answerfile` 変数の使用方法を学習します
+* 修復プレイブックを使用して、アップグレード前の準備を積極的に行います
 
-## Guide
+## ガイド
 
-### Step 1 - Explore Options for Resolving Inhibitors
+### ステップ 1 - 阻害要因を解決するためのオプションを探ります
 
-In the previous exercise, we reviewed the Leapp pre-upgrade reports that were generated for our RHEL7 and RHEL8 pet application servers. With the RHEL8 hosts, there were no inhibitor risk findings reported, so those are good to go and ready to try upgrading. However, there were a couple inhibitors reported for the RHEL7 hosts. We must take action to resolve them before those hosts can be upgraded.
+前の演習では、RHEL7 および RHEL8 ペット アプリケーション サーバー用に生成された Leapp アップグレード前レポートを確認しました。RHEL8 ホストでは阻害リスクの検出結果は報告されていなかったため、アップグレードを試行する準備は整っています。ただし、RHEL7 ホストでは阻害要因がいくつか報告されていました。これらのホストをアップグレードする前に、それらを解決するための措置を講じる必要があります。
 
-We are now here in our automation approach workflow:
+これで、自動化アプローチ ワークフローの次の段階に進みました:
 
-![Automation approach workflow diagram with apply recommended remediations step highlighted](images/ripu-workflow-hl-remediate.svg)
+![推奨される修復を適用する手順が強調表示された自動化アプローチ ワークフロー図](images/ripu-workflow-hl-remediate.svg)
 
-- Let's start by dissecting one of our inhibitor findings:
+- まず、阻害要因の 1 つを分析してみましょう:
 
-  ![Details view of missing required answers in the answer file](images/missing_answers_dissected.svg)
+![回答ファイルで必要な回答が不足している詳細ビュー](images/missing_answers_dissected.svg)
 
-  <sub>![1.](images/circle_1.svg)</sub> Each finding has a unique title.
+<sub>![1.](images/circle_1.svg)</sub> 各検出結果には固有のタイトルがあります。
 
-  <sub>![2.](images/circle_2.svg)</sub> A risk factor is assigned to each finding, but as we discussed in the previous exercise, this may be more nuanced than can be indicated by a simple High, Medium, Low or Info rating.
+<sub>![2.](images/circle_2.svg)</sub> 各検出結果にはリスク要因が割り当てられますが、前の演習で説明したように、これは単純な高、中、低、または情報の評価で示されるよりも微妙な場合があります。
 
-  <sub>![3.](images/circle_3.svg)</sub> The summary provides a detailed explanation of the risk and solution recommendation.
+<sub>![3.](images/circle_3.svg)</sub> 概要には、リスクとソリューションの推奨事項の詳細な説明が記載されています。
 
-  <sub>![4.](images/circle_4.svg)</sub> Under remediation, we are given a fairly prescriptive recommendation.
+<sub>![4.](images/circle_4.svg)</sub> 修復では、かなり規範的な推奨事項が提示されます。
 
-  <sub>![5.](images/circle_5.svg)</sub> Sometimes, the remediation also includes an exact command like this one.
+<sub>![5.](images/circle_5.svg)</sub> 場合によっては、修復には、次のような正確なコマンドも含まれています。
 
-- When a remediation command is given such as with the example above, there are a number of options we can choose from for how to execute the command. Obviously, we could go with the quick and dirty method of getting to a root shell prompt on the host to cut and paste the command or manually edit the answerfile. Of course, going that way is prone to human error and doesn't scale well. Another option would be to use the "Run Remediation" button shown above the command. Using this option, the RHEL Web Console executes the command for us. While doing this is less prone to human error, it still doesn't scale well as it's only going to run on this single host.
+- 上記の例のように修復コマンドが提示された場合、コマンドの実行方法として選択できるオプションがいくつかあります。もちろん、ホストのルート シェル プロンプトにアクセスしてコマンドを切り取って貼り付けるか、回答ファイルを手動で編集するという、手っ取り早い方法もあります。もちろん、その方法は人為的ミスが発生しやすく、拡張性も低くなります。別のオプションは、コマンドの上にある [修復の実行] ボタンを使用することです。このオプションを使用すると、RHEL Web コンソールがコマンドを実行します。この方法では人為的ミスが発生しにくくなりますが、この単一のホストでのみ実行されるため、拡張性は低くなります。
 
-- In the next steps, we'll look at how we can use the scale of Ansible Automation Platform (AAP) to perform remediations in bulk across a large RHEL estate.
+- 次のステップでは、Ansible Automation Platform (AAP) のスケールを活用して、大規模な RHEL 資産全体で一括して修復を実行する方法について説明します。
 
 ### Step 2 - Managing the Leapp Answer File
 
