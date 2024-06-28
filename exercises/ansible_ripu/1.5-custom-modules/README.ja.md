@@ -107,48 +107,48 @@ sudo touch /boot/policy-violation
 
 このコマンドにより、/boot の下に、最後の再起動よりも後のタイムスタンプを持つファイルが作成されました。このホストは、再起動の衛生ポリシーに準拠しなくなりました。
 
-### Step 3 - Generate a New Pre-upgrade Report
+### ステップ 3 - 新しいアップグレード前レポートを生成する
 
-We are now ready to try running a pre-upgrade report including the checks from our custom actor.
+これで、カスタム アクターからのチェックを含むアップグレード前レポートを実行する準備ができました。
 
-- Return to your AAP Web UI browser tab. Navigate to Resources > Templates and open the "AUTO / 01 Analysis" job template. Launch the job choosing the "ALL_rhel" option at the "Select inventory group" prompt.
+- AAP Web UI ブラウザー タブに戻ります。[リソース] > [テンプレート] に移動し、[AUTO / 01 Analysis] ジョブ テンプレートを開きます。[インベントリ グループの選択] プロンプトで [ALL_rhel] オプションを選択してジョブを起動します。
 
-- When the job completes, go back to the RHEL Web Console and use the remote host menu to navigate to the pet app server where you installed the custom actor package. Refresh the pre-upgrade report. You should now see there is a new inhibitor finding. For example:
+- ジョブが完了したら、RHEL Web コンソールに戻り、リモート ホスト メニューを使用して、カスタム アクター パッケージをインストールしたペット アプリ サーバーに移動します。アップグレード前レポートを更新します。これで、新しい阻害物質の検出結果が表示されるはずです。例:
 
-  ![Pre-upgrade report showing inhibitor finding from custom actor](images/reboot_hygiene.svg)
+![Pre-upgrade report showing inhibitor finding from custom actor](images/reboot_hygiene.svg)
 
-- Click on the finding to open the detail view. Here we see the summary with an explanation of the finding and the remediation hint which politely says please reboot:
+- 検出結果をクリックして詳細ビューを開きます。ここでは、検出結果の説明と、再起動してくださいという丁寧な修復のヒントを含む概要が表示されます。
 
-  ![Finding details reported by reboot hygiene custom actor](images/reboot_hygiene_finding.svg)
+![Finding details reported by reboot hygiene custom actor](images/reboot_hygiene_finding.svg)
 
-- Reboot the host to resolve the inhibitor finding. For example:
+- ホストを再起動して、阻害要因の検出を解決します。例:
 
-  ```
-  sudo reboot
-  ```
+```
+sudo reboot
+```
 
-- Now generate another pre-upgrade report after rebooting. Verify that this inhibitor finding has disappeared with the new report.
+- 再起動後に、別のアップグレード前レポートを生成します。新しいレポートで、この阻害要因の検出が消えていることを確認します。
 
-### Step 4 - Learn More About Customizing the In-place Upgrade
+### ステップ 4 - インプレース アップグレードのカスタマイズの詳細
 
-Read the knowledge article [Customizing your Red Hat Enterprise Linux in-place upgrade](https://access.redhat.com/articles/4977891) to understand best practices for handling the upgrade of third-party packages using custom repositories for an in-place upgrade or custom actors.
+インプレース アップグレード用のカスタム リポジトリまたはカスタム アクターを使用してサードパーティ パッケージのアップグレードを処理するためのベスト プラクティスを理解するには、ナレッジ記事 [Customizing your Red Hat Enterprise Linux in-place upgrade](https://access.redhat.com/articles/4977891) をお読みください。
 
-The gritty details of developing Leapp custom actors are beyond the scope of this workshop. Here are some resources you can check out to learn more on your own:
+Leapp カスタム アクターの開発に関する細かい詳細は、このワークショップの範囲外です。以下に、自分でさらに学習するために確認できるリソースをいくつか示します。
 
-  - [Developer Documentation for Leapp](https://leapp.readthedocs.io/en/latest/): this documentation covers the internal workflow architecture of the Leapp framework and how to develop and test your own custom actors.
+- [Leapp の開発者向けドキュメント](https://leapp.readthedocs.io/en/latest/): このドキュメントでは、Leapp フレームワークの内部ワークフロー アーキテクチャと、独自のカスタム アクターを開発およびテストする方法について説明します。
 
-  - [Leapp Dashboard](https://oamg.github.io/leapp-dashboard/#/): dig around here to make sure the custom actor functionality you are considering doesn't already exist in the mainstream Leapp framework.
+- [Leapp ダッシュボード](https://oamg.github.io/leapp-dashboard/#/): ここを調べて、検討しているカスタム アクターの機能がメインストリームの Leapp フレームワークにまだ存在していないことを確認してください。
 
-  - [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements): GitHub repo where you can find example custom actors and contribute your own. It also has the `Makefile` for custom actor RPM packaging.
+- [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements): サンプルのカスタム アクターを見つけて独自のアクターを投稿できる GitHub リポジトリ。カスタム アクター RPM パッケージ用の `Makefile` もあります。
 
-## Conclusion
+## 結論
 
-In this exercise, we learned that custom modules can be Leapp custom actors or simply custom tasks added to your upgrade playbook. We demonstrated installing an RPM package that provides an example custom actor with additional pre-upgrade checks and generated a new pre-upgrade report to see it in action.
+この演習では、カスタム モジュールは Leapp カスタム アクターにすることも、アップグレード プレイブックに追加されたカスタム タスクにすることもできることを学びました。追加のアップグレード前チェックを備えたサンプルのカスタム アクターを提供する RPM パッケージのインストールを実演し、実際に動作する新しいアップグレード前レポートを生成しました。
 
 ---
 
-**Navigation**
+**ナビゲーター**
 
-[Previous Exercise](../1.4-remediate/README.md) - [Next Exercise](../1.6-my-pet-app/README.md)
+[Previous Exercise](../1.4-remediate/README.ja.md) - [Next Exercise](../1.6-my-pet-app/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
