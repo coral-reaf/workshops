@@ -11,11 +11,11 @@
       - [LVM](#lvm)
       - [VMware](#vmware)
       - [Amazon EBS](#amazon-ebs)
-      - [休憩ミラー](#break-mirror)
+      - [ミラーの解除](#ミラーの解除)
       - [ReaR](#rear)
-    - [Step 3 - スナップショットの範囲](#step-3---snapshot-scope)
-    - [Step 4 - 最適なスナップショットソリューションの選択](#step-4---choosing-the-best-snapshot-solution)
-  - [結論](#conclusion)
+    - [Step 3 - スナップショットの範囲](#スナップショットの範囲)
+    - [Step 4 - 最適なスナップショットソリューションの選択](#step-4---最適なスナップショットソリューションの選択)
+  - [まとめ](#まとめ)
 
 ## 目標
 
@@ -104,44 +104,44 @@ VMware スナップショットは、自動化できる場合に非常に効果�
 
 #### Amazon EBS
 
-Amazon Elastic Block Store (Amazon EBS) provides the block storage volumes used for the virtual disks attached to AWS EC2 instances. When a snapshot is created for an EBS volume, the COW data is written to Amazon S3 object storage.
+Amazon Elastic Block Store (Amazon EBS) は、AWS EC2 インスタンスに接続された仮想ディスクに使用されるブロック ストレージ ボリュームを提供します。EBS ボリュームのスナップショットが作成されると、COW データが Amazon S3 オブジェクト ストレージに書き込まれます。
 
-While EBS snapshots operate independently from the guest OS running on the EC2 instance, the similarity to VMware snapshots ends there. An EBS snapshot saves the data of the source EBS volume, but does not save the state or memory of the EC2 instance to which the volume is attached. Also unlike with VMware, EBS snapshots can be created for an OS volume only while leaving any separate application volumes as is.
+EBS スナップショットは EC2 インスタンスで実行されているゲスト OS とは独立して動作しますが、VMware スナップショットとの類似点はそれだけです。EBS スナップショットはソース EBS ボリュームのデータを保存しますが、ボリュームが接続されている EC2 インスタンスの状態やメモリは保存しません。また、VMware とは異なり、EBS スナップショットは OS ボリュームに対してのみ作成でき、個別のアプリケーションボリュームはそのままにしておくことができます。
 
-Automating EBS snapshot creation and rollback is fairly straightforward assuming your playbooks can access the required AWS APIs. The tricky bit of the automation is identifying the EC2 instance and attached EBS volume that corresponds to the target host in the Ansible inventory managed by AAP, but this can be solved by setting identifying tags on your EC2 instances.
+EBS スナップショットの作成とロールバックの自動化は、Playbook が必要な AWS API にアクセスできると仮定すると、かなり簡単です。自動化の難しい部分は、AAP によって管理される Ansible インベントリ内のターゲット ホストに対応する EC2 インスタンスと接続された EBS ボリュームを識別することですが、これは EC2 インスタンスに識別タグを設定することで解決できます。
 
-#### Break Mirror
+#### ミラーの解除
 
-This method is an alternative to LVM that can be used with bare metal servers where the root disk is on a hardware RAID mirror set. Technically speaking, it is not a snapshot, but it still provides a near instantaneous rollback capability.
+この方法は、ルート ディスクがハードウェア RAID ミラー セット上にあるベア メタル サーバーで使用できる LVM の代替手段です。技術的にはスナップショットではありませんが、ほぼ瞬時のロールバック機能を提供します。
 
-Instead of creating a snapshot just before starting the upgrade, the automation reconfigures the RAID controller to break the mirror set of the root disk so then it's just two JBOD disks. One of the JBOD disks is used going forward with the upgrade while the other is left untouched. To perform a rollback, the mirror set is reconstructed from the untouched JBOD.
+アップグレードを開始する直前にスナップショットを作成する代わりに、自動化によって RAID コントローラーが再構成され、ルート ディスクのミラー セットが解除されて JBOD ディスクが 2 つだけになります。JBOD ディスクの 1 つはアップグレードで使用され、もう 1 つはそのまま残ります。ロールバックを実行するには、ミラー セットがそのままの JBOD から再構築されます。
 
-Most bare metal servers support out-of-band management and those manufactured in the last decade will support APIs based on the [Redfish](https://www.dmtf.org/standards/redfish) standard. These APIs can be used by automation to break and reconstruct the mirror set, but be prepared for a significant development and testing effort because the API implementations are not always the same across different vendors and server models.
+ほとんどのベア メタル サーバーは帯域外管理をサポートしており、過去 10 年間に製造されたサーバーは [Redfish](https://www.dmtf.org/standards/redfish) 標準に基づく API をサポートします。これらの API は、自動化によってミラー セットを破棄して再構築するために使用できますが、API 実装はベンダーやサーバー モデルによって必ずしも同じではないため、開発とテストに多大な労力がかかることを覚悟してください。
 
 #### ReaR
 
-ReaR (Relax and Recover) is a backup and recovery tool that is included with RHEL. ReaR doesn't use snapshots, but it does make it very easy to perform a full backup and restore of your RHEL server. When taking a full backup, ReaR creates a bootable ISO image with the current state of the server. To use a ReaR backup to revert an in-place upgrade, we simply boot the server from the ISO image and then choose the "Automatic Recover" option from the menu.
+ReaR (Relax and Recover) は、RHEL に含まれているバックアップおよびリカバリ ツールです。ReaR はスナップショットを使用しませんが、RHEL サーバーの完全バックアップと復元を非常に簡単に実行できます。完全バックアップを実行すると、ReaR はサーバーの現在の状態を含む起動可能な ISO イメージを作成します。ReaR バックアップを使用してインプレース アップグレードを元に戻すには、サーバーを ISO イメージから起動し、メニューから [自動リカバリ] オプションを選択するだけです。
 
-While ReaR backup and recovery is not instantaneous like rolling back a snapshot, it is remarkably fast compared to recovery tools that require you to perform a fresh OS install and then manually recover at a file level.
+ReaR のバックアップとリカバリは、スナップショットのロールバックのように瞬時に行われるわけではありませんが、OS の新規インストールを実行してからファイル レベルで手動でリカバリする必要があるリカバリ ツールと比較すると、非常に高速です。
 
-Read the article [ReaR: Backup and recover your Linux server with confidence](https://www.redhat.com/sysadmin/rear-backup-and-recover) to learn more.
+詳細については、記事 [ReaR: Linux サーバーを自信を持ってバックアップおよびリカバリする](https://www.redhat.com/sysadmin/rear-backup-and-recover) をお読みください。
 
-### Step 3 - Snapshot Scope
+### Step 3 - スナップショットの範囲
 
-The best practice for allocating the local storage of a RHEL servers is to configure volumes that separate the OS from the apps and app data. For example, the OS filesystems would be under a "rootvg" volume group while the apps and app data would be in an "appvg" volume group or at least in their own dedicated logical volumes. This separation helps isolate the storage usage requirements of these two groups so they can be manged based on their individual requirements and are less likely to impact each other. For example, the backup profile for the OS is likely different than for the apps and app data.
+RHEL サーバーのローカル ストレージを割り当てるためのベスト プラクティスは、OS をアプリおよびアプリ データから分離するボリュームを構成することです。たとえば、OS ファイルシステムは「rootvg」ボリューム グループの下にあり、アプリおよびアプリ データは「appvg」ボリューム グループ内、または少なくとも専用の論理ボリューム内にあります。この分離により、これら 2 つのグループのストレージ使用要件が分離され、個々の要件に基づいて管理できるようになり、相互に影響を与える可能性が低くなります。たとえば、OS のバックアップ プロファイルは、アプリおよびアプリ データのバックアップ プロファイルとは異なる可能性があります。
 
-This practice helps to enforce a key tenet of the RHEL in-place upgrade approach: that is that the OS upgrade should leave the applications untouched with the expectation that system library forward compatibility and middleware runtime abstraction reduces the risk of the RHEL upgrade impacting app functionality.
+このプラクティスは、RHEL インプレース アップグレード アプローチの重要な原則、つまり、システム ライブラリの前方互換性とミドルウェア ランタイムの抽象化によって、RHEL アップグレードがアプリの機能に影響を与えるリスクが軽減されるという期待のもと、OS アップグレードではアプリケーションをそのまま残すという原則を強制するのに役立ちます。
 
-With these concepts in mind, let's consider if we want to include the apps and app data in what gets rolled back if we need to revert the RHEL upgrade:
+これらの概念を念頭に置いて、RHEL アップグレードを元に戻す必要がある場合にロールバックする対象にアプリおよびアプリ データを含めるかどうかを検討してみましょう。
 
-| Snapshot scope | Benefits | Drawbacks |
+| スナップショットの範囲 | 利点 |欠点 |
 | -------------- | -------- | --------- |
-| OS only |<ul><li>Simplifies storage requirements</li><li>Preserves isolation of OS changes from apps and app data</li><li>Reduces risk of rolling back impacting external apps</li></ul>|<ul><li>Probably not possible with VMware snapshots</li><li>Discipline required to avoid temptation of trying quick app changes to fix impacts</li></ul>|
-| OS and apps/data |<ul><li>Reduces risk if trying to fix app impact during maintenance window</li><li>Helpful if app impact could lead to app data corruption</li></ul>|<ul><li>More storage space required</li><li>Rolling back app data could impact external systems</li></ul>|
+| OS のみ |<ul><li>ストレージ要件が簡素化されます</li><li>OS の変更とアプリおよびアプリ データの分離が維持されます</li><li>外部アプリに影響を与えるロールバックのリスクが軽減されます</li></ul>|<ul><li>VMware スナップショットではおそらく不可能です</li><li>影響を修正するためにアプリをすぐに変更しようとする誘惑を避けるための規律が必要です</li></ul>|
+| OS とアプリ/データ |<ul><li>メンテナンス ウィンドウ中にアプリの影響を修正しようとする場合のリスクが軽減されます</li><li>アプリの影響によってアプリ データが破損する可能性がある場合に役立ちます</li></ul>|<ul><li>より多くのストレージ領域が必要です</li><li>アプリ データをロールバックすると外部システムに影響を与える可能性があります</li></ul>|
 
-When snapshots only include the upgraded OS volumes, the best practice of isolating OS changes from app changes is followed. In this case, it is important to resist the temptation to make some heroic app changes in an attempt to avoid rolling back in the face of application impact after a RHEL upgrade. For the sake of safety and soundness, gather the evidence required to help understand what caused any app impact, but then do a rollback. Don't make any app changes that could be difficult to untangle after rolling back the OS.
+スナップショットにアップグレードされた OS ボリュームのみが含まれる場合、OS の変更とアプリの変更を分離するというベスト プラクティスに従います。この場合、RHEL アップグレード後のアプリケーションへの影響に直面してロールバックを回避するために、大胆なアプリ変更を行う誘惑に抵抗することが重要です。安全性と健全性のために、アプリへの影響の原因を理解するのに役立つ証拠を収集してから、ロールバックを実行します。OS をロールバックした後に解明が困難になる可能性のあるアプリ変更は行わないでください。
 
-Unfortunately, a VMware snapshot saves the full state of a VM instance including all virtual disks irrespective of whether they contain OS or app data. This can prove challenging for a couple reasons. First, more storage space will be required for the snapshots and it is more difficult to anticipate how much snapshot growth will result because of app data activity. The other problem is that rolling back app data may result in the app state becoming out of sync with external systems leading to unpredictable issues. When rolling back app data for any reason, be aware of the potential headaches that may result.
+残念ながら、VMware スナップショットは、OS またはアプリ データが含まれているかどうかに関係なく、すべての仮想ディスクを含む VM インスタンスの完全な状態を保存します。これは、いくつかの理由で困難になる可能性があります。まず、スナップショットに必要なストレージ領域が増え、アプリ データのアクティビティによってスナップショットがどの程度増加するかを予測するのが難しくなります。もう 1 つの問題は、アプリ データをロールバックすると、アプリの状態が外部システムと同期しなくなり、予期しない問題が発生する可能性があることです。何らかの理由でアプリ データをロールバックする場合は、発生する可能性のある潜在的な問題に注意してください。
 
 ### Step 4 - Choosing the Best Snapshot Solution
 
