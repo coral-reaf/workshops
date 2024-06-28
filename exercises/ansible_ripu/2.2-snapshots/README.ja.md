@@ -44,7 +44,7 @@
 
 COW スナップショットは、従来の完全バックアップや増分バックアップの代替にはなりませんが、いくつかの利点があります。最も重要な利点は、従来のバックアップと復元では数時間以上かかるのに対し、スナップショットの作成とロールバックはほぼ瞬時に行われることです。サーバー全体を迅速に過去に戻すことができるため、スナップショットは RHEL インプレース アップグレードを実行するリスクを軽減するのに最適です。
 
-### Step 2 - Assessing Different Snapshot Solutions
+### Step 2 - さまざまなスナップショットソリューションの評価
 
 選択できるスナップショット ソリューションにはさまざまな種類があります。それぞれに利点と欠点があり、次の表にまとめられています。:
 
@@ -90,17 +90,17 @@ VolGroup00 1 7 0 wz--n- 29.53g 9.53g
 
 #### VMware
 
-A VMware snapshot preserves the state and data of a VM at a specific point in time. Because VMware snapshots operate at the hypervisor level, they are completely independent of the guest OS. This makes them foolproof to anything that can go wrong during a RHEL upgrade. Even if an upgrade fails so badly that the OS can't even be booted up again, reverting the VMware snapshot will still save the day. For these reasons, VMware snapshots appear to be a very compelling snapshot option.
+VMware スナップショットは、特定の時点での VM の状態とデータを保存します。VMware スナップショットはハイパーバイザー レベルで動作するため、ゲスト OS から完全に独立しています。そのため、RHEL のアップグレード中に問題が発生した場合でも、VMware スナップショットは完全に保護されます。アップグレードがひどく失敗して OS が再起動できない場合でも、VMware スナップショットを元に戻せば状況は改善されます。これらの理由から、VMware スナップショットは非常に魅力的なスナップショット オプションであると考えられます。
 
-VMware snapshots can be manually created and reverted using the vSphere management UI. To create or revert a VMware snapshot automatically from an Ansible playbook, access permissions to the required vSphere API calls must be authorized for the AAP control node.
+VMware スナップショットは、vSphere 管理 UI を使用して手動で作成および元に戻すことができます。Ansible プレイブックから VMware スナップショットを自動的に作成または元に戻すには、必要な vSphere API 呼び出しへのアクセス権限を AAP コントロール ノードに許可する必要があります。
 
-In our experience, having this access granted can be extremely challenging. The team that controls the VMware environment in most organizations is deeply invested in the "ClickOps" model of doing everything manually using the vSphere management UI. They may also be hesitant to trust that automation developed outside of their team can be trusted to perform the operations they would do manually to create a VMware snapshot, including checking for sufficient free space in the VMFS data store where the snapshot will be created.
+当社の経験では、このアクセスを許可するのは非常に困難です。ほとんどの組織で VMware 環境を管理するチームは、vSphere 管理 UI を使用してすべてを手動で行う「ClickOps」モデルに深く関わっています。また、チーム外で開発された自動化が、スナップショットが作成される VMFS データ ストアに十分な空き容量があるかどうかの確認など、VMware スナップショットを作成するために手動で行う操作を実行できるかどうかについても、信頼できない可能性があります。
 
-The VMware team may resist supporting snapshots because of limited storage space. While standard VMDK files are fixed in size, COW snapshots will grow over time and require careful monitoring with data stores in VMware environments often running tight on capacity.
+VMware チームは、ストレージ容量が限られているため、スナップショットのサポートに抵抗する可能性があります。標準の VMDK ファイルのサイズは固定されていますが、COW スナップショットは時間の経過とともに大きくなり、VMware 環境のデータ ストアが容量不足になることが多いため、注意深い監視が必要です。
 
-Another justification for pushing back on supporting automated snapshots will be the VMware vendor recommendation that snapshots should never be used for more than 72 hours (see KB article [Best practices for using VMware snapshots in the vSphere environment](https://kb.vmware.com/s/article/1025279)). Unfortunately, app teams usually need more than 3 days of soak time before they are comfortable that no impact to their apps has resulted from a RHEL upgrade.
+自動スナップショットのサポートに抵抗するもう 1 つの理由は、スナップショットは 72 時間を超えて使用してはならないという VMware ベンダーの推奨事項です (KB 記事 [Best practices for using VMware snapshots in the vSphere environment](https://kb.vmware.com/s/article/1025279) を参照)。残念ながら、アプリケーション チームは通常、RHEL のアップグレードによってアプリケーションに影響がないと確信するまでに 3 日以上のソーク時間を必要とします。
 
-VMware snapshots work great when they can be automated. If you are considering this option, engage early with the team that controls the VMware environment for your organization and be prepared for potential resistance.
+VMware スナップショットは、自動化できる場合に非常に効果的です。このオプションを検討している場合は、組織の VMware 環境を管理するチームと早期に連携し、潜在的な抵抗に備えてください。
 
 #### Amazon EBS
 
