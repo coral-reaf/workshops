@@ -131,18 +131,18 @@ executable: /bin/bash
 
 RHEL7 および RHEL8 ペット サーバーに阻害要因が表示されなくなったので、RHEL のアップグレードを試す準備ができました。
 
-## Conclusion
+## まとめ
 
-In this exercise, we looked at the different ways we can resolve inhibitor risk findings. We learned how to use the `leapp_answerfile` variable of the `analysis` role to manage the Leapp answer file. Finally, we used an example remediation playbook to demonstrate how we could address pre-upgrade inhibitor findings at scale across our RHEL estate.
+この演習では、阻害リスクの検出を解決するさまざまな方法を確認しました。`analysis` ロールの `leapp_answerfile` 変数を使用して Leapp 回答ファイルを管理する方法を学びました。最後に、修復プレイブックの例を使用して、アップグレード前の阻害の検出に RHEL 資産全体で大規模に対処する方法を示しました。
 
-Now we are ready to try upgrading our RHEL pet app servers, but before we get to that, there are two more optional exercises in this section of the workshop:
+これで、RHEL ペットアプリサーバーのアップグレードを試す準備ができましたが、その前に、2 つのオプションの演習があります。
 
-- [Exercise 1.5 - Custom Pre-upgrade Checks](../1.5-custom-modules/README.md)
-- [Exercise 1.6 - Deploy a Pet Application](../1.6-my-pet-app/README.md)
+- [演習 1.5 - カスタムのアップグレード前チェック](../1.5-custom-modules/README.ja.md)
+- [演習 1.6 - ペットアプリケーションのデプロイ](../1.6-my-pet-app/README.ja.md)
 
-These exercises are not required to successfully complete the workshop, but we recommend doing them if time allows. If you can't wait and want skip ahead to upgrading your RHEL hosts, strap in for this exciting exercise:
+これらの演習はワークショップは必須ではありませんが、時間に余裕がある場合は実行することをお勧めします。待ちきれず、RHEL ホストのアップグレードに進みたい場合は、このエキサイティングな演習に取り組んでください:
 
-- [Exercise 2.1 - Run the RHEL Upgrade Jobs](../2.1-upgrade/README.md)
+- [演習 2.1 - RHEL アップグレード ジョブを実行する](../2.1-upgrade/README.ja.md)
 
 ---
 
