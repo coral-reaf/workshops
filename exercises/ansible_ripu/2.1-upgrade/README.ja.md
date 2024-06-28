@@ -21,13 +21,13 @@ RHEL インプレースアップグレードオートメーションフェーズ
 
 ![自動化アプローチ ワークフロー図アップグレード手順が強調表示されています](images/ripu-workflow-hl-upgrade.svg)
 
-このフェーズでは、ワークフロー ジョブ テンプレートを使用してアップグレード プレイブックが実行されます。最初のプレイブックは、アップグレードで問題が発生した場合にロールバックするために使用できるスナップショットを作成します。スナップショットが作成されると、2 番目のプレイブックは Leapp ユーティリティを使用して、ホストを新しい RHEL メジャー バージョンにアップグレードするアップグレードを実行します。
+このフェーズでは、ワークフロー ジョブ テンプレートを使用してアップグレード Playbook が実行されます。最初のプレイブックは、アップグレードで問題が発生した場合にロールバックするために使用できるスナップショットを作成します。スナップショットが作成されると、2 番目の Playbook は Leapp ユーティリティを使用して、ホストを新しい RHEL メジャー バージョンにアップグレードするアップグレードを実行します。
 
-### Step 1 - アップグレード ワークフロー ジョブ テンプレートを起動する
+### Step 1 - アップグレードワークフロージョブテンプレートの起動
 
-ペットアプリケーションサーバーの RHEL インプレース アップグレードを開始します。アップグレード中は、ホストにログインしたりアプリケーションにアクセスしたりすることはできません。アップグレードが完了すると、ホストは新しくアップグレードされた RHEL メジャー バージョンで再起動します。
+ペットアプリケーションサーバーの RHEL インプレースアップグレードを開始します。アップグレード中は、ホストにログインしたりアプリケーションにアクセスしたりすることはできません。アップグレードが完了すると、ホストは新しくアップグレードされた RHEL メジャー バージョンで再起動します。
 
-アップグレードには通常 1 時間もかかりませんが、シャットダウンが遅いアプリケーションや、再起動サイクルが長いベア メタル ホストがある場合は、さらに時間がかかることがあります。ワークショップ ラボ環境用にプロビジョニングされたクラウド インスタンスは、従来のエンタープライズ アプリケーション サーバーに比べて非常に軽量であるため、かなり迅速にアップグレードされます。
+アップグレードには通常 1 時間もかかりませんが、シャットダウンが遅いアプリケーションや、再起動サイクルが長いベア メタル ホストがある場合は、さらに時間がかかることがあります。ワークショップラボ環境用にプロビジョニングされたクラウドインスタンスは、従来のエンタープライズ アプリケーション サーバーに比べて非常に軽量であるため、かなり迅速にアップグレードされます。
 
 - Web ブラウザの AAP Web UI タブに戻ります。リソース > テンプレート に移動して、"AUTO / 02 アップグレード" ジョブ テンプレートを開きます。次のようになります。
 
@@ -37,44 +37,44 @@ RHEL インプレースアップグレードオートメーションフェーズ
 
 ![AAP Web UI のアップグレード ジョブ変数プロンプト](images/upgrade_vars_prompt.svg)
 
-- 変数設定を変更する必要はないので、[次へ] ボタンをクリックして先に進みます。
+- 変数設定を変更する必要はないので、"次へ" ボタンをクリックして先に進みます。
 
 ![AAP Web UI のアップグレード ジョブ サーベイ プロンプト](images/upgrade_survey_prompt.svg)
 
-- 次に、インベントリ グループを選択するように求めるジョブ テンプレート サーベイ プロンプトが表示されます。 1 つのジョブを使用してすべてのペット アプリ ホストをアップグレードするため、"ALL_rhel" オプションを選択し、"次へ" ボタンをクリックします。これにより、選択したジョブ オプションと変数設定のプレビューが表示されます。
+- 次に、インベントリグループを選択するように求めるジョブ テンプレートサーベイプロンプトが表示されます。 1 つのジョブを使用してすべてのペットアプリホストをアップグレードするため、"ALL_rhel" オプションを選択し、"次へ" ボタンをクリックします。これにより、選択したジョブ オプションと変数設定のプレビューが表示されます。
 
 ![AAP Web UI でのアップグレード ジョブのプレビュー](images/upgrade_preview.svg)
 
-- ジョブ プレビューに問題がなければ、「起動」ボタンを使用してジョブを開始します。
+- ジョブ プレビューに問題がなければ、"起動" ボタンを使用してジョブを開始します。
 
-### Step 2 - Learn More About Leapp
+### Step 2 - Leapp の詳細の確認
 
-After launching the upgrade job, the AAP Web UI will navigate automatically to the workflow job output page of the job we just started. This job will take up to 20 minutes to finish, so let's take this time to learn a little more about how the Leapp framework upgrades your OS to next RHEL major version.
+アップグレード ジョブを起動すると、AAP Web UI は、開始したジョブのワークフロー ジョブ出力ページに自動的に移動します。このジョブは完了するまでに最大 20 分かかるため、この時間を利用して、Leapp フレームワークが OS を次の RHEL メジャー バージョンにアップグレードする方法についてもう少し学習しましょう。
 
-- Keep in mind that the Leapp framework is responsible only for upgrading the RHEL OS packages. Additional tasks required for upgrading your standard agents, tools, middleware, etc., need to be included in the upgrade playbooks you develop to deal with the specific requirements of your organization's environment.
+- Leapp フレームワークは、RHEL OS パッケージのアップグレードのみを担当することに注意してください。標準エージェント、ツール、ミドルウェアなどのアップグレードに必要な追加タスクは、組織の環境の特定の要件に対応するために開発するアップグレード プレイブックに含める必要があります。
 
-- The Leapp framework performs the RHEL in-place upgrade by following a sequence of phases. These phases are represented in the following diagram:
+- Leapp フレームワークは、一連のフェーズに従って RHEL インプレース アップグレードを実行します。これらのフェーズは次の図に示されています。
 
-  ![Leapp upgrade flow diagram](images/inplace-upgrade-workflow-gbg.svg)
+![Leapp アップグレード フロー図](images/inplace-upgrade-workflow-gbg.svg)
 
-- The steps of the RHEL in-place upgrade are implemented in modules known as Leapp actors. The Leapp framework is message-driven. The execution of actors is dependent on the data produced by other actors running before them. Actors running in the early phases scan the system to produce messages that add findings to the pre-upgrade report as well as messages that later actors use to make decisions or apply changes during the upgrade.
+- RHEL インプレース アップグレードの手順は、Leapp アクターと呼ばれるモジュールに実装されています。Leapp フレームワークはメッセージ駆動型です。アクターの実行は、それより前に実行されている他のアクターによって生成されたデータに依存します。初期フェーズで実行されているアクターは、システムをスキャンして、アップグレード前のレポートに結果を追加するメッセージと、アップグレード中に決定を下したり変更を適用したりするために後のアクターが使用するメッセージを生成します。
 
-- Each phase includes three defined stages: before, main, and after. Before and after stages are used to further refine when an actor will be run in relation to any other actors in the phase. Actors are tagged to define the phase and stage during which they are to run.
+- 各フェーズには、before、main、after の 3 つの定義済みステージが含まれます。before ステージと after ステージは、フェーズ内の他のアクターとの関係でアクターが実行されるタイミングをさらに絞り込むために使用されます。アクターは、実行されるフェーズとステージを定義するためにタグ付けされます。
 
-- There are three groups of phases: Old System, Interim System, and New System. Phases under the Old System group run under the existing RHEL installed version. The Interim System phases starts after the InitRamStart phase reboots the host to an upgrade initramfs environment under which the network and other services are not started. It is at this time that all RHEL packages can be upgraded. Once all the packages are upgraded, another reboot brings the host up under the new RHEL major version and the FirstBoot phase starts. This final phase runs a few post-upgrade actors that require network access and then the upgrade is done.
+- フェーズには、Old System、Interim System、New System の 3 つのグループがあります。Old System グループのフェーズは、既存の RHEL インストール バージョンで実行されます。Interim System フェーズは、InitRamStart フェーズがホストをアップグレード initramfs 環境に再起動した後に開始されます。この環境では、ネットワークとその他のサービスは開始されません。この時点で、すべての RHEL パッケージをアップグレードできます。すべてのパッケージがアップグレードされると、もう一度再起動すると、ホストが新しい RHEL メジャー バージョンで起動し、FirstBoot フェーズが開始されます。この最終フェーズでは、ネットワーク アクセスを必要とするアップグレード後のアクターをいくつか実行し、その後アップグレードが行われます。
 
-- Being aware of these phases helps if you need to troubleshoot an issue during the Leapp upgrade and is especially important if you are planning to develop any Leapp custom actors. You can learn more about the Leapp framework architecture and internal design by reading the upstream [Leapp Developer Documentation](https://leapp.readthedocs.io/en/latest/index.html).
+- これらのフェーズを理解しておくと、Leapp のアップグレード中に問題をトラブルシューティングする必要がある場合に役立ちます。また、Leapp カスタム アクターを開発する予定がある場合は特に重要です。Leapp フレームワークのアーキテクチャと内部設計の詳細については、アップストリームの [Leapp 開発者向けドキュメント](https://leapp.readthedocs.io/en/latest/index.html) を参照してください。
 
-## Conclusion
+## まとめ
 
-In this exercise, we launched a workflow job template to create snapshots and start the upgrades of our pet app servers. We learned more about the Leapp framework to better understand what is happening as the RHEL OS is being upgraded.
+この演習では、スナップショットを作成し、ペット アプリ サーバーのアップグレードを開始するためのワークフロー ジョブ テンプレートを起動しました。RHEL OS のアップグレード中に何が起こっているかをよりよく理解するために、Leapp フレームワークについてさらに学習しました。
 
-In the next exercise, we'll learn more about how snapshots work.
+次の演習では、スナップショットの仕組みについて詳しく学習します。
 
 ---
 
 **Navigation**
 
-[Previous Exercise](../1.6-my-pet-app/README.md) - [Next Exercise](../2.2-snapshots/README.md)
+[Previous Exercise](../1.6-my-pet-app/README.ja.md) - [Next Exercise](../2.2-snapshots/README.ja.md)
 
 [Home](../README.md)
