@@ -60,33 +60,33 @@ COW スナップショットは、従来の完全バックアップや増分バ�
 
 #### LVM
 
-The Logical Volume Manager (LVM) is a set of tools included in RHEL that provide a way to create and manage virtual block devices known as logical volumes. LVM logical volumes are typically used as the block devices from which RHEL OS filesystems are mounted. The LVM tools support creating and rolling back logical volume snapshots. Automating these actions from an Ansible playbook is relatively simple.
+論理ボリューム マネージャー (LVM) は、RHEL に含まれるツール セットで、論理ボリュームと呼ばれる仮想ブロック デバイスを作成および管理する方法を提供します。LVM 論理ボリュームは通常、RHEL OS ファイルシステムがマウントされるブロック デバイスとして使用されます。LVM ツールは、論理ボリューム スナップショットの作成とロールバックをサポートします。Ansible プレイブックからこれらのアクションを自動化するのは比較的簡単です。
 
-> **Note**
+> **注記**
 >
-> The snapshot and rollback automation capability implemented for our workshop lab environment creates LVM snapshots managed using Ansible roles from the [`infra.lvm_snapshots`](https://github.com/swapdisk/infra.lvm_snapshots#readme) collection.
+> ワークショップ ラボ環境に実装されたスナップショットおよびロールバック自動化機能は、[`infra.lvm_snapshots`](https://github.com/swapdisk/infra.lvm_snapshots#readme) コレクションの Ansible ロールを使用して管理される LVM スナップショットを作成します。
 
-Logical volumes are contained in a storage pool known as a volume group. The storage available in a volume group comes from one or more physical volumes, that is, block devices underlying actual disks or disk partitions. Typically, the logical volumes where the RHEL OS is installed will be in a "rootvg" volume group. If best practices are followed, applications and app data will be isolated in their own logicial volumes either in the same volume group or a separate volume group, "appvg" for example.
+論理ボリュームは、ボリューム グループと呼ばれるストレージ プールに含まれています。ボリューム グループで使用可能なストレージは、1 つ以上の物理ボリューム、つまり実際のディスクまたはディスク パーティションの基盤となるブロック デバイスから取得されます。通常、RHEL OS がインストールされている論理ボリュームは、「rootvg」ボリューム グループにあります。ベスト プラクティスに従うと、アプリケーションとアプリ データは、同じボリューム グループまたは別のボリューム グループ (たとえば「appvg」) 内の独自の論理ボリュームに分離されます。
 
-To create logical volume snapshots, there must be free space in the volume group. That is, the total size of the logical volumes in the volume group must be less than the total size of the volume group. The `vgs` command can be used query volume group free space. For example:
+論理ボリュームのスナップショットを作成するには、ボリューム グループに空き領域が必要です。つまり、ボリューム グループ内の論理ボリュームの合計サイズは、ボリューム グループの合計サイズよりも小さくする必要があります。ボリューム グループの空き領域を照会するには、`vgs` コマンドを使用できます。例:
 
 ```
 # vgs
-  VG         #PV #LV #SN Attr   VSize  VFree
-  VolGroup00   1   7   0 wz--n- 29.53g 9.53g
+VG #PV #LV #SN Attr VSize VFree
+VolGroup00 1 7 0 wz--n- 29.53g 9.53g
 ```
 
-In the example above, the `VolGroup00` volume group total size is 29.53 GiB and there is 9.53 GiB of free space in the volume group. This should be enough free space to support rolling back a RHEL upgrade.
+上記の例では、`VolGroup00` ボリューム グループの合計サイズは 29.53 GiB で、ボリューム グループには 9.53 GiB の空き領域があります。これは、RHEL アップグレードのロールバックをサポートするのに十分な空き領域です。
 
-If there is not enough free space in the volume group, there are a few ways we can make space available:
+ボリューム グループに十分な空き領域がない場合、スペースを利用できるようにする方法がいくつかあります。
 
-- Adding another physical volume to the volume group (i.e., `pvcreate` and `vgextend`). For a VM, you would first configure an additional virtual disk.
-- Temporarily remove a logical volume you don't need. For example, on bare metal servers, there is often a large /var/crash empty filesystem. Removing this filesystem from `/etc/fstab` and then using `lvremove` to remove the logical volume from which it was mounted will free up space in the volume group.
-- Reducing the size of one or more logical volumes. This is tricky because first the filesystem in the logical volume needs to be shrunk. XFS filesystems do not support shrinking. EXT filesystems do support shrinking, but not while the filesystem is mounted. Until recently, this way of freeing up volume group space was considered a last resort to be attempted by only the most skilled Linux admin, but it now possible to safely automate shrinking logical volumes using the [`shrink_lv`](https://github.com/swapdisk/infra.lvm_snapshots/tree/main/roles/shrink_lv#readme) role of the aforementioned `infra.lvm_snapshots` collection.
+- ボリューム グループに別の物理ボリュームを追加する (つまり、`pvcreate` および `vgextend`)。VM の場合は、最初に追加の仮想ディスクを構成します。
+- 不要な論理ボリュームを一時的に削除します。たとえば、ベア メタル サーバーでは、多くの場合、/var/crash という大きな空のファイル システムがあります。このファイル システムを `/etc/fstab` から削除し、`lvremove` を使用して、マウントされている論理ボリュームを削除すると、ボリューム グループのスペースが解放されます。
+- 1 つ以上の論理ボリュームのサイズを縮小します。これは、まず論理ボリューム内のファイル システムを縮小する必要があるため、注意が必要です。XFS ファイル システムは縮小をサポートしていません。EXT ファイル システムは縮小をサポートしていますが、ファイル システムがマウントされている間は縮小できません。最近まで、ボリューム グループのスペースを解放するこの方法は、最も熟練した Linux 管理者だけが試みる最後の手段と考えられていましたが、今では前述の `infra.lvm_snapshots` コレクションの [`shrink_lv`](https://github.com/swapdisk/infra.lvm_snapshots/tree/main/roles/shrink_lv#readme) ロールを使用して、論理ボリュームの縮小を安全に自動化できます。
 
-After a snapshot is created, COW data will start to utilize the free space of the snapshot logical volume as blocks are written to the origin logical volume. Unless the snapshot is create with the same size as the origin, there is a chance that the snapshot could fill up and become invalid. Testing should be performed during the development of the LVM snapshot automation to determine snapshot sizings with enough cushion to prevent this. The `snapshot_autoextend_percent` and `snapshot_autoextend_threshold` settings in lvm.conf can also be used to reduce the risk of snapshots running out of space. The [`lvm_snapshots`](https://github.com/swapdisk/infra.lvm_snapshots/tree/main/roles/lvm_snapshots#readme) role of the `infra.lvm_snapshots` collection supports variables that may be used to automatically configure the autoextend settings.
+スナップショットが作成されると、ブロックが元の論理ボリュームに書き込まれるため、COW データはスナップショット論理ボリュームの空き領域を利用し始めます。スナップショットが元のサイズと同じサイズで作成されない限り、スナップショットがいっぱいになって無効になる可能性があります。これを防ぐために十分な余裕のあるスナップショットのサイズを決定するために、LVM スナップショット自動化の開発中にテストを実行する必要があります。 lvm.conf の `snapshot_autoextend_percent` および `snapshot_autoextend_threshold` 設定を使用して、スナップショットの容量が不足するリスクを軽減することもできます。`infra.lvm_snapshots` コレクションの [`lvm_snapshots`](https://github.com/swapdisk/infra.lvm_snapshots/tree/main/roles/lvm_snapshots#readme) ロールは、自動拡張設定を自動的に構成するために使用できる変数をサポートしています。
 
-Unless you have the luxury of creating snapshots with the same size as their origin volumes, LVM snapshot sizing needs to be thoroughly tested and free space usage carefully monitored. However, if that challenge can be met, LVM snapshots offer a reliable snapshot solution without the headache of depending on external infrastructure such as VMware.
+元のボリュームと同じサイズのスナップショットを作成できる余裕がない限り、LVM スナップショットのサイズ設定を徹底的にテストし、空き容量の使用状況を注意深く監視する必要があります。ただし、その課題を解決できれば、LVM スナップショットは、VMware などの外部インフラストラクチャに依存する手間をかけずに、信頼性の高いスナップショット ソリューションを提供します。
 
 #### VMware
 
