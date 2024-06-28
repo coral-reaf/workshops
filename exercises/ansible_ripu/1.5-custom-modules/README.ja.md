@@ -54,7 +54,7 @@ GitHub リポジトリ [oamg/leapp-supplements](https://github.com/oamg/leapp-su
 
 - /boot ディレクトリに、前回の再起動以降に変更されたファイルがあります。
 
-- VS Code ブラウザー タブに移動して、ターミナル セッションを開きます。どのように実行したかを思い出す必要がある場合は、[演習 1.1、ステップ 2](https://github.com/swapdisk/workshops/blob/devel/exercises/ansible_ripu/1.1-setup/README.ja.md#step-2---ターミナルセッションを開く) を参照してください。
+- VS Code ブラウザー タブに移動して、ターミナル セッションを開きます。どのように実行したかを思い出す必要がある場合は、[演習 1.1、ステップ 2](../1.1-setup/README.ja.md#step-2---ターミナルセッションを開く) を参照してください。
 
 - `ssh` コマンドを使用して、ペット アプリ サーバーの 1 つにログインします。例:
 
