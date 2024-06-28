@@ -1,62 +1,62 @@
-# Workshop Exercise - Let's Talk About Snapshots
+# ワークショップ演習 - スナップショットについてお話しましょう
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Let's Talk About Snapshots](#workshop-exercise---lets-talk-about-snapshots)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - What are Snapshots and What are They Not](#step-1---what-are-snapshots-and-what-are-they-not)
-    - [Step 2 - Assessing Different Snapshot Solutions](#step-2---assessing-different-snapshot-solutions)
+- [ワークショップ演習 - スナップショットについてお話しましょう](#workshop-exercise---スナップショットについてお話しましょう)
+  - [目次](#目次)
+  - [目的](#目的)
+  - [ガイド](#ガイド)
+    - [Step 1 - スナップショットとは何か、またそうではないものは何か](#step-1---スナップショットとは何か、またそうではないものは何か)
+    - [Step 2 - さまざまなスナップショットソリューションの評価](#step-2---さまざまなスナップショットソリューションの評価)
       - [LVM](#lvm)
       - [VMware](#vmware)
       - [Amazon EBS](#amazon-ebs)
-      - [Break Mirror](#break-mirror)
+      - [休憩ミラー](#break-mirror)
       - [ReaR](#rear)
-    - [Step 3 - Snapshot Scope](#step-3---snapshot-scope)
-    - [Step 4 - Choosing the Best Snapshot Solution](#step-4---choosing-the-best-snapshot-solution)
-  - [Conclusion](#conclusion)
+    - [Step 3 - スナップショットの範囲](#step-3---snapshot-scope)
+    - [Step 4 - 最適なスナップショットソリューションの選択](#step-4---choosing-the-best-snapshot-solution)
+  - [結論](#conclusion)
 
-## Objectives
+## 目標
 
-* Understand the difference between backups and snapshots
-* Learn about some of the different ways of doing snapshots
-* Be prepared for the challenges and barriers you may encounter automating snapshots
-* Consider the appropriate snapshot scope for your organization
+* バックアップとスナップショットの違いを理解する
+* スナップショットを実行するさまざまな方法について学習する
+* スナップショットの自動化で遭遇する可能性のある課題や障壁に備える
+* 組織に適したスナップショットの範囲を検討する
 
-## Guide
+## ガイド
 
-In the previous exercise, we launched the automation to start the RHEL in-place upgrades of our pet application servers. The first step of the upgrade workflow template is to create a snapshot for each RHEL instance being upgraded. If something goes wrong with an upgrade, the snapshot makes it possible to quickly undo the upgrade.
+前回の演習では、ペット アプリケーション サーバーの RHEL インプレース アップグレードを開始するための自動化を開始しました。アップグレード ワークフロー テンプレートの最初のステップは、アップグレードする各 RHEL インスタンスのスナップショットを作成することです。アップグレードで問題が発生した場合、スナップショットによりアップグレードをすばやく元に戻すことができます。
 
-Automating snapshots can be one of the most difficult features of the RHEL in-place upgrade solution approach. In this exercise, we will explore some of the challenges that enterprises face and look at strategies for overcoming them.
+スナップショットの自動化は、RHEL インプレース アップグレード ソリューション アプローチの最も難しい機能の 1 つです。この演習では、企業が直面するいくつかの課題を検討し、それらを克服するための戦略を検討します。
 
-Let's start by defining exactly what we mean when we talk about snapshots.
+まず、スナップショットについて話すときに何を意味するのかを正確に定義することから始めましょう。
 
-### Step 1 - What are Snapshots and What are They Not
+### ステップ 1 - スナップショットとは何か、またそうでないものは何か
 
-Most organizations with a mature traditional computing environment will have standards and tools implemented for doing backups. Typically, backups will be performed on a periodic schedule. More critical or more dynamic data might be backed up more frequently than mostly static data. There is often a strategy where full backups are performed only occasionally and incremental backups are used to save changed file more often.
+成熟した従来のコンピューティング環境を持つほとんどの組織では、バックアップを実行するための標準とツールが実装されています。通常、バックアップは定期的なスケジュールで実行されます。より重要なデータやより動的なデータは、ほとんどが静的なデータよりも頻繁にバックアップされる可能性があります。多くの場合、完全バックアップはたまにしか実行せず、変更されたファイルをより頻繁に保存するために増分バックアップを使用する戦略があります。
 
-The reason for doing backups is to be able to recover data that has been lost for any reason. If data is corrupted because of an operations issue or software defect or accidentally deleted, backups make it easy to turn the clock back and restore the lost data.
+バックアップを実行する理由は、何らかの理由で失われたデータを回復できるようにするためです。操作上の問題やソフトウェアの欠陥、または誤って削除されたためにデータが破損した場合、バックアップを使用すると時計を戻して失われたデータを簡単に復元できます。
 
-But when an entire server is lost, using backups to recover is more difficult because a new operating system must first be installed before anything can be restored from the backup. The data can be spread out across a full backup as well as multiple incremental backups, further increasing the time for a full server recovery. Most organizations only use their backup solution to restore individual files or directories, but they are not as prepared to recover everything on a server. Even if they are, such a recovery will take a long time.
+ただし、サーバー全体が失われた場合、バックアップを使用して回復するのはより困難です。バックアップから何かを復元するには、まず新しいオペレーティング システムをインストールする必要があります。データは完全バックアップと複数の増分バックアップに分散される可能性があり、完全なサーバー回復にかかる時間がさらに長くなります。ほとんどの組織では、バックアップ ソリューションを個々のファイルやディレクトリの復元にのみ使用していますが、サーバー上のすべてのものを復元する準備は整っていません。たとえ整っていたとしても、そのような復元には長い時間がかかります。
 
-Snapshots are different in that they do not backup and restore individual files. Instead, backups operate at a storage device level, instantly saving the contents of an entire logical volume or virtual disk. Unlike backups, snapshots do not make a copy of the data being backed up, but rather mark a point in time after which a copy of all modified data is copied going forward. For this reason, the underlying technique used for snapshots is often referred to as "copy-on-write" or COW.
+スナップショットは、個々のファイルをバックアップおよび復元しないという点で異なります。代わりに、バックアップはストレージ デバイス レベルで動作し、論理ボリュームまたは仮想ディスク全体の内容を即座に保存します。バックアップとは異なり、スナップショットはバックアップされるデータのコピーを作成するのではなく、変更されたすべてのデータのコピーがコピーされる時点をマークします。このため、スナップショットに使用される基礎技術は、「コピー オン ライト」または COW と呼ばれることがよくあります。
 
-While COW snapshots are not a substitute for traditional full and incremental backups, they do offer a number of advantages. The most important advantage is that creating and rolling back snapshots happens almost instantaneously as compared to hours or longer for traditional backup and restore. It is this ability to quickly take an entire server back in time that makes snapshots ideal for reducing the risk of performing RHEL in-place upgrades.
+COW スナップショットは、従来の完全バックアップや増分バックアップの代替にはなりませんが、いくつかの利点があります。最も重要な利点は、従来のバックアップと復元では数時間以上かかるのに対し、スナップショットの作成とロールバックはほぼ瞬時に行われることです。サーバー全体を迅速に過去に戻すことができるため、スナップショットは RHEL インプレース アップグレードを実行するリスクを軽減するのに最適です。
 
 ### Step 2 - Assessing Different Snapshot Solutions
 
-There are a number of different types of snapshot solutions you may choose from. Each has their own benefits and drawbacks as summarized in the table below:
+選択できるスナップショット ソリューションにはさまざまな種類があります。それぞれに利点と欠点があり、次の表にまとめられています。:
 
-| Snapshot type | Works with | Benefits | Drawbacks |
-| ------------- | ---------- | -------- | --------- |
-| LVM |<ul><li>Bare metal</li><li>On-prem VMs</li><li>Cloud*</li></ul>|<ul><li>No external API access required</li><li>Scope can be just OS or everything</li></ul>|<ul><li>Free space required in volume group</li>Snapshots can run out of space if not sized correctly</li><li>Automation must backup and restore /boot separately</ul>|
-| VMware |<ul><li>On-prem VMs (ESX)</li></ul>|<ul><li>Simple and reliable</li><li>Scope includes everything</li></ul>|<ul><li>Doesn't support bare metal, etc.</li><li>Using VMware snapshot for over 3 days is discouraged</li><li>Getting API access can be difficult</li><li>No free space in datastores because of overcommitment</li><li>Everything scope might be too much</li></ul>|
-| Amazon EBS |<ul><li>Amazon EC2</li></ul>|<ul><li>Simple and reliable</li><li>Unlimited storage capacity</li><li>Scope can be just OS or everything</li></ul>|<ul><li>Only works on AWS</li></ul>|
-| Break Mirror |<ul><li>Bare metal</li></ul>|<ul><li>Alternative to LVM for servers with hardware RAID</li></ul>|<ul><li>Significant development and testing effort required</li><li>RAID and Redfish API standards vary across different vendors and hardware models</li></ul>|
-| ReaR |<ul><li>Bare metal</li><li>On-prem VMs</li></ul>|<ul><li>Method of last resort if no snapshot options will work</li></ul>|<ul><li>Not really a snapshot, but does offer boot ISO full recovery capability</li></ul>|
+| スナップショットの種類 | 機能 | 利点 | 欠点 |
+| ------------- | --------- | -------- | -------- |
+| LVM |<ul><li>ベアメタル</li><li>オンプレミス VM</li><li>クラウド*</li></ul>|<ul><li>外部 API アクセスは不要</li><li>スコープは OS のみまたはすべて</li></ul>|<ul><li>ボリューム グループに空き領域が必要</li>サイズが適切でない場合、スナップショットの領域が不足する可能性があります</li><li>自動化では /boot を個別にバックアップおよび復元する必要があります</ul>|
+| VMware |<ul><li>オンプレミス VM (ESX)</li></ul>|<ul><li>シンプルで信頼性が高い</li><li>スコープにすべてが含まれる</li></ul>|<ul><li>ベアメタルなどはサポートされていません</li><li>VMware スナップショットを 3 日以上使用することは推奨されません</li><li>API アクセスの取得が困難な場合があります</li><li>オーバーコミットメントのため、データストアに空き領域がありません</li><li>すべてをスコープにすると大きすぎる場合があります</li></ul>|
+| Amazon EBS |<ul><li>Amazon EC2</li></ul>|<ul><li>シンプルで信頼性が高い</li><li>無制限のストレージ容量</li><li>スコープは OS のみ、またはすべてにすることができます</li></ul>|<ul><li>AWS でのみ機能します</li></ul>|
+|ミラーの解除 |<ul><li>ベア メタル</li></ul>|<ul><li>ハードウェア RAID 搭載サーバー用の LVM の代替</li></ul>|<ul><li>開発とテストに多大な労力が必要</li><li>RAID および Redfish API 標準は、ベンダーやハードウェア モデルによって異なります</li></ul>|
+| ReaR |<ul><li>ベア メタル</li><li>オンプレミスの VM</li></ul>|<ul><li>スナップショット オプションが機能しない場合の最後の手段</li></ul>|<ul><li>実際にはスナップショットではありませんが、ブート ISO の完全回復機能を提供します</li></ul>|
 
-The following sections explain the pros and cons in detail.
+次のセクションでは、長所と短所について詳しく説明します。
 
 #### LVM
 
