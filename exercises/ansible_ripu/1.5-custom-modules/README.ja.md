@@ -74,30 +74,40 @@ sudo yum -y --enablerepo=leapp-supplements install leapp-upgrade-\*-supplements
 
 - パッケージが正常にインストールされた場合に表示される出力の例を次に示します。
 
-```
-依存関係を解決しています
---> トランザクション チェックを実行しています
----> パッケージ leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7 がインストールされます
---> 依存関係の解決が完了しました
+  ```
+  Resolving Dependencies
+  --> Running transaction check
+  ---> Package leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7 will be installed
+  --> Finished Dependency Resolution
 
-依存関係が解決されました
+  Dependencies Resolved
 
-== ... == ... 12 k
-インストールサイズ: 18 k
-パッケージをダウンロードしています:
-leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch.rpm | 12 kB 00:00:00
-トランザクション チェックを実行しています
-トランザクション テストを実行しています
-トランザクション テストが成功しました
-トランザクションを実行しています
-インストールしています: leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch 1/1
-検証しています: leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch 1/1
+  ==========================================================================================
+   Package                             Arch    Version             Repository          Size
+  ==========================================================================================
+  Installing:
+   leapp-upgrade-el7toel8-supplements  noarch  1.0.0-47.demo.el7   leapp-supplements   12 k
 
-インストール済み:
-leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7
+  Transaction Summary
+  ==========================================================================================
+  Install  1 Package
 
-完了しました!
-```
+  Total download size: 12 k
+  Installed size: 18 k
+  Downloading packages:
+  leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch.rpm    |  12 kB  00:00:00
+  Running transaction check
+  Running transaction test
+  Transaction test succeeded
+  Running transaction
+    Installing : leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch            1/1
+    Verifying  : leapp-upgrade-el7toel8-supplements-1.0.0-47.demo.el7.noarch            1/1
+
+  Installed:
+    leapp-upgrade-el7toel8-supplements.noarch 0:1.0.0-47.demo.el7
+
+  Complete!
+  ```
 
 - カスタム アクターの動作を実証するために、ポリシーに違反する条件を作成し、阻害要因の検出が報告されるようにします。次のコマンドを使用します:
 
