@@ -11,6 +11,26 @@
     - [Step 3 - Resolving Inhibitors Using a Remediation Playbook](#step-3---resolving-inhibitors-using-a-remediation-playbook)
   - [Conclusion](#conclusion)
 
+# ワークショップ演習 - 推奨される修復を実行する
+
+## 目次
+
+- [ワークショップ演習 - 推奨される修復を実行する](#workshop-exercise---perform-recommended-remediation)
+  - [目次](#table-of-contents)
+  - [目的](#objectives)
+  - [ガイド](#guide)
+    - [ステップ 1 - 阻害要因を解決するためのオプションを検討する](#step-1---explore-options-for-resolving-inhibitors)
+    - [ステップ 2 - Leapp 回答ファイルの管理](#step-2---managing-the-leapp-answer-file)
+    - [ステップ 3 - 修復プレイブックを使用して阻害要因を解決する](#step-3---resolving-inhibitors-using-a-remediation-playbook)
+  - [結論](#conclusion)
+
+## 目的
+
+* 検討する阻害リスクの検出を解決するためのさまざまなオプション
+* `analysis` ロールの `leapp_answerfile` 変数の使用方法を学習します
+* 修復プレイブックを使用して、アップグレード前の準備を積極的に行います
+
+
 ## Objectives
 
 * Consider different options for resolving inhibitor risk findings
