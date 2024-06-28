@@ -60,11 +60,11 @@ Leapp フレームワークは、ユーザー入力の選択を受け入れる�
 
 ![`leapp_answerfile` 入力変数の設定](images/analysis_leapp_answerfile.svg)
 
-上記のように変数を設定したら、[次へ] ボタンをクリックします。これにより、ジョブ テンプレートの調査プロンプトが表示されます。以前は、すべてのペット サーバーでアップグレード前を実行するために「ALL_rhel」オプションを使用しました。ただし、`leapp_answerfile` 設定は RHEL7 ホストに固有のため、今回は「rhel7」オプションを選択します。
+上記のように変数を設定したら、"次へ" ボタンをクリックします。これにより、ジョブ テンプレートの調査プロンプトが表示されます。以前は、すべてのペット サーバーでアップグレード前を実行するために "ALL_rhel" オプションを使用しました。ただし、`leapp_answerfile` 設定は RHEL7 ホストに固有のため、今回は "rhel7" オプションを選択します。
 
 ![調査プロンプトで「rhel7」を選択](images/analysis_survey_rhel7_only.svg)
 
-「次へ」ボタンをクリックしてプレビュー プロンプトに進みます。ジョブ プレビューに問題がなければ、「起動」ボタンを使用してジョブを開始します。
+"次へ" ボタンをクリックしてプレビュー プロンプトに進みます。ジョブ プレビューに問題がなければ、"起動" ボタンを使用してジョブを開始します。
 
 - 以前と同様に、ジョブを開始すると、AAP Web UI はジョブ出力ページに自動的に移動します。ジョブが完了するまでに数分かかり、ジョブ出力の最後に「PLAY RECAP」が表示されます。
 
@@ -74,62 +74,62 @@ Leapp フレームワークは、ユーザー入力の選択を受け入れる�
 >
 > 新しく生成されたレポートを表示するには、Ctrl + R を使用してブラウザーを更新する必要がある場合があります。
 
-「応答ファイルに必要な回答がありません」という阻害要因の検出結果は報告されなくなったことがわかります。
+"応答ファイルに必要な回答がありません" という阻害要因の検出結果は報告されなくなったことがわかります。
 
 例:
 
 ![応答ファイル阻害要因のない RHEL7 ホストのアップグレード前レポート](images/rhel7_answer_fixed.svg)
 
-ただし、「ルート アカウントを使用したリモート ログインで問題が発生する可能性がある」という阻害要因はまだ残っているので、これを修正する必要があります。次にこれについて見てみましょう。
+ただし、"ルート アカウントを使用したリモート ログインで問題が発生する可能性がある" という阻害要因はまだ残っているので、これを修正する必要があります。次にこれについて見てみましょう。
 
-### Step 3 - Resolving Inhibitors Using a Remediation Playbook
+### ステップ 3 - 修復 Playbook を使用して阻害要因を解決する
 
-In the previous step, we were able to resolve an inhibitor finding by simply setting the `leapp_answerfile` input variable supported by the `infra.leapp` Ansible collection `analysis` role. While that's a convenient way to resolve an answerfile inhibitor, our next inhibitor can't be resolved that way.
+前のステップでは、`infra.leapp` Ansible コレクション `analysis` ロールでサポートされている `leapp_answerfile` 入力変数を設定するだけで阻害要因の検出を解決できました。これは回答ファイルの阻害要因を解決する便利な方法ですが、次の阻害要因はその方法では解決できません。
 
-- Here is our other inhibitor finding:
+- これがもう 1 つの阻害要因の検出です:
 
-  ![Details view of missing required answers in the answer file](../1.3-report/images/root_account_inhibitor.svg)
+![回答ファイルで欠落している必須回答の詳細ビュー](../1.3-report/images/root_account_inhibitor.svg)
 
-  Like the previous inhibitor finding, this one also provides a detailed summary and a a fairly prescriptive recommended remediation. However, it does not recommend an exact remediation command. Instead, the remediation recommends making edits to the `/etc/ssh/sshd_config` file.
+前の阻害要因の検出と同様に、この検出でも詳細な概要とかなり規範的な推奨修復が提供されます。ただし、正確な修復コマンドは推奨されません。代わりに、修復では `/etc/ssh/sshd_config` ファイルを編集することが推奨されます。
 
-- Of course, we're not going to just login to a root shell and `vi` the configuration file, are we? Right, let's make a playbook to automate the required remediations. Here's a task that should do the trick:
+- もちろん、ルート シェルにログインして設定ファイルを `vi` するだけではありませんよね。では、必要な修復を自動化する Playbook を作成しましょう。次のタスクでうまくいきます:
 
-  ```yaml
-  - name: Configure sshd
-    ansible.builtin.lineinfile:
-      path: "/etc/ssh/sshd_config"
-      regex: "^(#)?{{ item.key }}"
-      line: "{{ item.key }} {{ item.value }}"
-      state: present
-    loop:
-      - {key: "PermitRootLogin", value: "prohibit-password"}
-      - {key: "PasswordAuthentication", value: "no"}
-    notify:
-      - Restart sshd
-  ```
+```yaml
+- name: sshd を構成する
+ansible.builtin.lineinfile:
+path: "/etc/ssh/sshd_config"
+regex: "^(#)?{{ item.key }}"
+line: "{{ item.key }} {{ item.value }}"
+state: present
+loop:
+- {key: "PermitRootLogin", value: "prohibit-password"}
+- {key: "PasswordAuthentication", value: "no"}
+notification:
+- sshd を再起動
+```
 
-  While we're at it, let's also add a task to take care of the answer file inhibitor using the `leapp answer` command. For example:
+ついでに、`leapp answer` コマンドを使用して、応答ファイル インヒビターを処理するタスクも追加しましょう。例:
 
-  ```yaml
-  - name: Remove pam_pkcs11 module
-    ansible.builtin.shell: |
-      set -o pipefail
-      leapp answer --section remove_pam_pkcs11_module_check.confirm=True
-    args:
-      executable: /bin/bash
-  ```
+```yaml
+- name: Remove pam_pkcs11 module
+ansible.builtin.shell: |
+set -o pipefail
+leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+args:
+executable: /bin/bash
+```
 
-- You will find the tasks above in the playbook [`remediate_rhel7.yml`](https://github.com/redhat-partner-tech/leapp-project/blob/main/remediate_rhel7.yml#L21-L38). There are a few more remediation task examples in this playbook as well. The "OS / Remediate" job template is already set up to execute this playbook, so let's use it to remediate our RHEL7 hosts.
+- 上記のタスクは、Playbook  [`remediate_rhel7.yml`](https://github.com/redhat-partner-tech/leapp-project/blob/main/remediate_rhel7.yml#L21-L38) にあります。この Playbook には、さらにいくつかの修復タスクの例もあります。この Playbook を実行するために、"OS / Remediate" ジョブ テンプレートがすでに設定されているので、それを使用して RHEL7 ホストを修復しましょう。
 
-- Return to your AAP Web UI browser tab. Navigate to Resources > Templates on the AAP Web UI and open the "OS / Remediate" job template. Click the "Launch" button to get started.
+- AAP Web UI ブラウザー タブに戻ります。 AAP Web UI で リソース > テンプレート に移動し、「OS / Remediate」ジョブ テンプレートを開きます。開始するには、"起動" ボタンをクリックします。
 
-- This will bring you to the job template survey prompt. Again, choose the "rhel7" option at the "Select inventory group" prompt because our remediation playbook is specific to the pre-upgrade findings of our RHEL7 hosts. Then click the "Next" button. If you are satisfied with the job preview, use the "Launch" button to submit the job. This playbook includes only a small number of tasks and should run pretty quickly.
+- これにより、ジョブ テンプレートの調査プロンプトが表示されます。ここでも、[インベントリ グループの選択] プロンプトで [rhel7] オプションを選択します。これは、修復 Playbook が RHEL7 ホストのアップグレード前の調査結果に固有のものであるためです。次に、[次へ] ボタンをクリックします。ジョブのプレビューに問題がなければ、[起動] ボタンを使用してジョブを送信します。この Playbook には少数のタスクしか含まれていないため、すぐに実行できます。
 
-- When the "OS / Remediate" job is finished, launch the "AUTO / 01 Analysis" job template one more time again taking care to choose the "rhel7" option at the "Select inventory group" prompt. When the job completes, go back to the RHEL Web Console of your RHEL7 host and refresh the report. You should now see there are no inhibitors:
+- [OS / Remediate] ジョブが終了したら、[インベントリ グループの選択] プロンプトで [rhel7] オプションを選択するように注意しながら、[AUTO / 01 Analysis] ジョブ テンプレートをもう一度起動します。ジョブが完了したら、RHEL7 ホストの RHEL Web コンソールに戻り、レポートを更新します。これで、阻害要因がなくなったことがわかります:
 
-  ![Pre-upgrade report of RHEL7 host with no more inhibitors](images/rhel7_no_inhibitors.svg)
+![阻害要因がなくなった RHEL7 ホストのアップグレード前レポート](images/rhel7_no_inhibitors.svg)
 
-  With no inhibitors indicated on our RHEL7 and RHEL8 pet servers, we are ready to try the RHEL upgrade.
+RHEL7 および RHEL8 ペット サーバーに阻害要因が表示されなくなったので、RHEL のアップグレードを試す準備ができました。
 
 ## Conclusion
 
