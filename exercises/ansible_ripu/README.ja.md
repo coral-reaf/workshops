@@ -44,26 +44,26 @@
 
 ### セクション 1 - アップグレード前の分析
 
-* [演習 1.1 - ワークショップ Lab 環境](1.1-setup/README.jp.md)
-* [演習 1.2 - プリアップグレードジョブの実行](1.2-preupg/README.jp.md)
-* [演習 1.3 - プリアップグレードレポートのレビュー](1.3-report/README.jp.md)
-* [演習 1.4 - 推奨の修復作業の実行](1.4-remediate/README.jp.md)
-* [演習 1.5 - (オプション) カスタムプリアップグレードチェック](1.5-custom-modules/README.jp.md)
-* [演習 1.6 - (オプション) ペットアプリのデプロイ](1.6-my-pet-app/README.jp.md)
+* [演習 1.1 - ワークショップ Lab 環境](1.1-setup/README.ja.md)
+* [演習 1.2 - プリアップグレードジョブの実行](1.2-preupg/README.ja.md)
+* [演習 1.3 - プリアップグレードレポートのレビュー](1.3-report/README.ja.md)
+* [演習 1.4 - 推奨の修復作業の実行](1.4-remediate/README.ja.md)
+* [演習 1.5 - (オプション) カスタムプリアップグレードチェック](1.5-custom-modules/README.ja.md)
+* [演習 1.6 - (オプション) ペットアプリのデプロイ](1.6-my-pet-app/README.ja.md)
 
 ### セクション 2 - RHEL OS アップグレード
 
-* [演習 2.1 - OS アップグレードジョブの実行](2.1-upgrade/README.jp.md)
-* [演習 2.2 - スナップショットに関するお話](2.2-snapshots/README.jp.md)
-* [演習 2.3 - アップグレードが成功したか否かの確認](2.3-check-upg/README.jp.md)
-* [演習 2.4 - (オプション) ペットアプリの動作具合は？](2.4-check-pet-app/README.jp.md)
+* [演習 2.1 - OS アップグレードジョブの実行](2.1-upgrade/README.ja.md)
+* [演習 2.2 - スナップショットに関するお話](2.2-snapshots/README.ja.md)
+* [演習 2.3 - アップグレードが成功したか否かの確認](2.3-check-upg/README.ja.md)
+* [演習 2.4 - (オプション) ペットアプリの動作具合は？](2.4-check-pet-app/README.ja.md)
 
 ### セクション 3 - ロールバック
 
-* [演習 3.1 - (オプション) インスタンスの破棄](3.1-rm-rf/README.jp.md)
-* [演習 3.2 - ロールバックジョブの実行](3.2-rollback/README.jp.md)
-* [演習 3.3 - アップグレードが元に戻されたことの確認](3.3-check-undo/README.jp.md)
-* [演習 3.4 - 繰り返し](3.4-conclusion/README.jp.md)
+* [演習 3.1 - (オプション) インスタンスの破棄](3.1-rm-rf/README.ja.md)
+* [演習 3.2 - ロールバックジョブの実行](3.2-rollback/README.ja.md)
+* [演習 3.3 - アップグレードが元に戻されたことの確認](3.3-check-undo/README.ja.md)
+* [演習 3.4 - 繰り返し](3.4-conclusion/README.ja.md)
 
 ## ワークショップナビゲーション
 
@@ -73,4 +73,4 @@
 
 **ナビゲーション**
 
-[Next Exercise](1.1-setup/README.jp.md)
+[Next Exercise](1.1-setup/README.ja.md)
