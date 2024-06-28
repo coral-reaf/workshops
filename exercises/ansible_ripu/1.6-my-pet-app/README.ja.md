@@ -28,7 +28,7 @@
 
 ## ガイド
 
-### ステップ 1 - 従来のアプリケーション ライフサイクル
+### Step 1 - 従来のアプリケーション ライフサイクル
 
 少し立ち止まって、インプレース アップグレードを実行する理由について考えてみましょう。新しい RHEL バージョンで新しいサーバーまたは VM インスタンスを展開し、そこからアプリケーションの新規インストールを行うのがベスト プラクティスではないでしょうか。
 
@@ -46,7 +46,7 @@
 
 - このオプションの演習では、アプリケーションをインストールして、RHEL インプレース アップグレードが何らかの影響を与えるかどうかを評価します。アップグレード後も、新しい RHEL バージョンでアプリが期待どおりに機能するかどうかを確認します。
 
-### ステップ 2 - 愛するペットアプリケーションのインストール
+### Step 2 - 愛するペットアプリケーションのインストール
 
 このステップでは、サンプル アプリケーションをインストールします。インストールは昔ながらの方法で行います。つまり、混乱を招き、エラーが発生しやすい可能性がある従来のコマンドライン 手順に従って手動でインストールします。結局のところ、アプリケーションのデプロイメントがエンドツーエンドで自動化されていれば、インプレース アップグレードを行う必要はありません。
 
@@ -145,90 +145,90 @@ o.s.s.petclinic.PetClinicApplication : PetClinicApplication を 6.945 秒で開�
 
 Ctrl-C を入力して `tailf` コマンドを終了します。
 
-### Step 3 - Test the Pet Application
+### Step 3 - ペットアプリケーションのテスト
 
-Now that we have installed our application and verified it is running, it's time to test how it works.
+アプリケーションをインストールして実行中であることを確認したので、次は動作をテストします。
 
-- Use this command to determine the application's external URL:
+- このコマンドを使用して、アプリケーションの外部 URL を確認します:
 
-  ```
-  echo "http://$(curl -s ifconfig.me):8080"
-  ```
+```
+echo "http://$(curl -s ifconfig.me):8080"
+```
 
-- Open a new web browser tab. Cut and paste the URL that was output by the command above. This should open the application web user interface. If the application is working correctly, you should see something like this:
+- 新しい Web ブラウザー タブを開きます。上記のコマンドによって出力された URL を切り取って貼り付けます。これで、アプリケーションの Web ユーザー インターフェイスが開きます。アプリケーションが正しく動作している場合は、次のような画面が表示されます:
 
-  ![Pet Clinic application home page](images/petapp_home.svg)
+![ペット クリニック アプリケーションのホームページ](images/petapp_home.svg)
 
-- Try the different function tabs at the top of the web user interface. For example, navigate to "FIND OWNERS" and search for Davis. Click on one of the owner records to see their details.
+- Web ユーザー インターフェイスの上部にあるさまざまな機能タブを試します。たとえば、"所有者の検索" に移動して、Davis を検索します。所有者レコードの 1 つをクリックして、詳細を表示します。
 
-  Use the "Edit Owner" and "Add New Pet" buttons to make changes and add new records.
+"所有者の編集" ボタンと "新しいペットの追加" ボタンを使用して、変更を加えたり、新しいレコードを追加したりします。
 
-  The "ERROR" tab in the top-right corner is a error handling test function. If you click it, the expected result is a "Something happened..." message will be displayed and a runtime exception and stack trace will be logged in the `app.log` file.
+右上隅の "エラー" タブは、エラー処理テスト機能です。これをクリックすると、予想される結果、"問題が発生しました..." というメッセージが表示され、ランタイム例外とスタック トレースが `app.log` ファイルに記録されます。
 
-- Play with the application until you feel comfortable you understand its expected behavior. After the upgrade, we will test it again to verify it has not been impacted.
+- 予想される動作を十分理解できるまで、アプリケーションを操作してください。アップグレード後、再度テストして、影響を受けていないことを確認します。
 
-### Step 4 - Configure the Application to Start on Reboot
+### Step 4 - 再起動時にアプリケーションが起動するように構成
 
-Right now, our application was started manually. We need to configure the app so it will start up automatically when our server is rebooted.
+現時点では、アプリケーションは手動で起動されています。サーバーが再起動されたときにアプリケーションが自動的に起動するように構成する必要があります。
 
-- Use this command to configure a reboot cron entry so the application will be started automatically after every reboot:
+- 次のコマンドを使用して、再起動 cron エントリを構成し、再起動のたびにアプリケーションが自動的に起動されるようにします。
 
-  ```
-  echo '@reboot cd $HOME/spring-petclinic && ./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql >> $HOME/app.log 2>&1' | crontab -
-  ```
+```
+echo '@reboot cd $HOME/spring-petclinic && ./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql >> $HOME/app.log 2>&1' | crontab -
+```
 
-  > **NOTE**
-  >
-  > If you deployed the example app using the "PETS / App Install" playbook job, you can skip the command above because the reboot cron entry was automatically created.
-  >
+> **注意**
+>
+> "PETS / App Install" プレイブックジョブを使用してサンプルアプリをデプロイした場合は、再起動 cron エントリが自動的に作成されるため、上記のコマンドをスキップできます。
+>
 
-- Now reboot the server to verify this works:
+- 次に、サーバーを再起動して、これが機能することを確認します。
 
-  ```
-  sudo reboot
-  ```
+```
+sudo reboot
+```
 
-- Try refreshing the web browser tab where you have the Pet Clinic web app open. While the server is rebooting, you may see a timeout or connection refused error. After the reboot is finished, the web app should be working again.
+- Pet Clinic Web アプリを開いている Web ブラウザーのタブを更新してみてください。サーバーの再起動中に、タイムアウトまたは接続拒否エラーが表示される場合があります。再起動が完了すると、Web アプリは再び動作するはずです。
 
-  > **Note**
-  >
-  > Because the external IP addresses of the EC2 instances provisioned for the workshop are dynamically assigned (i.e., using DHCP), it is possible that the web user interface URL might change after a reboot. If you are unable to access the app after the reboot, run this command again to determine the new URL for the application web user interface:
-  >
-  > ```
-  > echo "http://$(curl -s ifconfig.me):8080"
-  > ```
-  >
+> **注意**
+>
+> ワークショップ用にプロビジョニングされた EC2 インスタンスの外部 IP アドレスは動的に割り当てられるため (つまり、DHCP を使用)、再起動後に Web ユーザーインターフェイスの URL が変更される可能性があります。再起動後にアプリにアクセスできない場合は、このコマンドを再度実行して、アプリケーション Web ユーザー インターフェイスの新しい URL を特定します。
+>
+> ```
+> echo "http://$(curl -s ifconfig.me):8080"
+> ```
+>
 
-  FIXME: Shame on us for not using DNS!
+FIXME: DNS を使用しないのは恥ずべきことです!
 
-### Step 5 - Run Another Pre-upgrade Report
+### Step 5 - 別のアップグレード前レポートの実行
 
-Whenever changes are made to a server, its a good idea to rerun the Leapp pre-upgrade report to make sure those changes have not introduced any new risk findings.
+サーバーに変更が加えられた場合は、その変更によって新しいリスク検出結果が発生していないことを確認するために、Leapp のアップグレード前レポートを再実行することをお勧めします。
 
-- Launch the "AUTO / 01 Analysis" job template to generate a fresh pre-upgrade report. After the job finishes, review the report to see if there are any new findings. Refer to the steps in the previous exercises if you don't have them memorized by heart already.
+- "AUTO / 01 Analysis" ジョブ テンプレートを起動して、新しいアップグレード前レポートを生成します。ジョブが終了したら、レポートを確認して、新しい検出結果があるかどうかを確認します。前の演習の手順をまだ暗記していない場合は、前の演習の手順を参照してください。
 
-- Did you notice that this high risk finding has popped up now?
+- この高リスク検出結果が今ポップアップしていることに気付きましたか?
 
-  ![Packages not signed by Red Hat found on the system high risk finding](images/packages_not_signed_by_rh.svg)
+![システムで Red Hat によって署名されていないパッケージが見つかりました。高リスクの検出結果](images/packages_not_signed_by_rh.svg)
 
-- If we open the finding, we are presented with the following details:
+- 検出結果を開くと、次の詳細が表示されます:
 
-  ![Packages not signed by Red Hat details view](images/packages_not_signed_details.svg)
+![Red Hat によって署名されていないパッケージの詳細ビュー](images/packages_not_signed_details.svg)
 
-- "Packages not signed by Red Hat" is just a fancy way of referring to 3rd-party packages and/or package that are built in-house by your app teams. In the case of this finding, the package that has been identified is `temurin-17-jdk`, the 3rd-party JDK runtime package we installed. The finding is warning that there is a risk of this package being removed during the upgrade if there are unresolvable dependencies.
+- 「Red Hat によって署名されていないパッケージ」は、サードパーティのパッケージや、アプリ チームが社内で構築したパッケージを指すための、単なる言い回しです。この検出結果の場合、特定されたパッケージは、インストールしたサードパーティの JDK ランタイム パッケージである `temurin-17-jdk` です。この検出結果は、解決できない依存関係がある場合、アップグレード中にこのパッケージが削除されるリスクがあることを警告しています。
 
-  There is only one surefire way to know if the package will be removed or not. Let's run the upgrade and see what happens!
+パッケージが削除されるかどうかを確実に知る方法は 1 つしかありません。アップグレードを実行して、何が起こるか見てみましょう。
 
-## Conclusion
+## まとめ
 
-In this exercise, we discussed the sorry state of traditional application maintenance, untracked drift and technical debt. We installed a 3rd-party Java runtime and then installed the Pet Clinic application on top of that. We made certain that our app is functioning as expected, but we also discovered a new "high risk" finding on our pre-upgrade report.
+この演習では、従来のアプリケーション メンテナンスの悲惨な状況、追跡されていないドリフト、技術的負債について説明しました。サードパーティの Java ランタイムをインストールし、その上に Pet Clinic アプリケーションをインストールしました。アプリが期待どおりに機能していることを確認しましたが、アップグレード前のレポートで新しい「高リスク」の検出結果も発見しました。
 
-Congratulations on completing all the exercises in the first section of the workshop. It's time now to upgrade RHEL and see if there will be any application impact.
+ワークショップの最初のセクションのすべての演習を完了しました。おめでとうございます。次は、RHEL をアップグレードして、アプリケーションに影響があるかどうかを確認します。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../1.5-custom-modules/README.md) - [Next Exercise](../2.1-upgrade/README.md)
+[Previous Exercise](../1.5-custom-modules/README.ja.md) - [Next Exercise](../2.1-upgrade/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
