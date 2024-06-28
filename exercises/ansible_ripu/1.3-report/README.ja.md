@@ -10,7 +10,7 @@
     - [Step 2 - RHEL Web コンソールの操作](#step-2---navigating-the-rhel-web-console)
     - [Step 3 - RHEL8 ホストの Leapp アップグレード前レポートのレビュー](#step-3---RHEL8-ホストの-Leapp-アップグレード前レポートのレビュー)
     - [Step 4 - RHEL7 ホストの Leapp アップグレード前レポートのレビュー](#step-4---RHEL7-ホストの-Leapp-アップグレード前レポートのレビュー)
-    - [チャレンジラボ: 多数の高レベルの検出結果を無視するのはどうでしょうか?](#チャレンジラボ-多数の高レベルの検出結果を無視するのはどうでしょうか)
+    - [チャレンジラボ: 多数のハイレベルの検出結果を無視するのはどうでしょうか?](#チャレンジラボ-多数のハイレベルの検出結果を無視するのはどうでしょうか)
   - [まとめ](#まとめ)
 
 ## 目標
@@ -118,84 +118,85 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
 
 ### Step 4 - RHEL7 ホストの Leapp アップグレード前レポートのレビュー
 
-In the previous step, we reviewed the pre-upgrade report for one of our RHEL8 hosts. Now let's take a look at the report from one of our RHEL7 hosts.
+前の手順では、RHEL8 ホストの 1 つについてアップグレード前のレポートを確認しました。次に、RHEL7 ホストの 1 つからのレポートを見てみましょう。
 
-- Navigate to the RHEL Web Console remote host menu and click on the hostname of one of your RHEL7 pet app servers. Verify the host you have chosen is RHEL7. Then use the main menu to navigate to Tools > Upgrade Report. This will bring up the Leapp pre-upgrade report for the selected host. For example, the report might look like this:
+- RHEL Web コンソールのリモート ホスト メニューに移動し、RHEL7 ペットアプリサーバーの 1 つのホスト名をクリックします。選択したホストが RHEL7 であることを確認します。次に、メイン メニューを使用して Tools > に移動します。これにより、選択したホストの Leapp アップグレード前レポートが表示されます。たとえば、レポートは次のようになります。:
 
   ![Example pre-upgrade report of RHEL7 host](images/rhel7_report.svg)
 
-  > **Note**
+  > **注記**
   >
-  > The contents of your report may differ from the example above because of updates made to the Leapp framework and other RHEL packages released over time since this workshop was written. If you discover any differences that materially break the flow of the exercises in this workshop, kindly let us know by raising an issue [here](https://github.com/ansible/workshops/issues/new).
+  > このワークショップの作成後にリリースされた Leapp フレームワークおよびその他の RHEL パッケージの更新により、レポートの内容が上記の例と異なる場合があります。このワークショップの演習の流れを著しく妨げる相違点を発見した場合は、 [here](https://github.com/ansible/workshops/issues/new) で問題を提起してお知らせください。
 
-- In the report for our RHEL7 pet app server above, we see there are six high risk findings and two of those are inhibitor findings. Let's start by reviewing the high risk findings that are not inhibitors.
+- 上記の RHEL7 ペット アプリ サーバーのレポートには、6 つの高リスクの検出結果があり、そのうち 2 つは阻害要因の検出結果です。阻害要因ではない高リスクの検出結果を確認することから始めましょう。
 
-- The "GRUB core will be updated during upgrade" finding is no different than the finding with the same title we learned about in the RHEL8 pre-upgrade report, so we'll ignore this for now.
+- "GRUB core will be updated during upgrade" という検出結果は、RHEL8 のアップグレード前レポートで学んだ同じタイトルの検出結果と違いがないため、今のところは無視します。
+ 
+- "Usage of deprecated Model" というハイリスクの検出結果は、前に説明した Leapp フレームワークのバグが原因です。これは煩わしいものですが、問題ないで無視します。
 
-- The high risk finding "Usage of deprecated Model" is again because of the Leapp framework bug we talked about before. It's annoying but benign and we can ignore it.
-
-- Now let's look at the new findings we are seeing only on our RHEL7 pre-upgrade report. At the top of the list we see the "Packages available in excluded repositories will not be installed" finding. Clicking on the finding to bring up the detailed view, we see this:
+- 次に、RHEL7 のアップグレード前レポートでのみ確認できる新しい検出結果を見てみましょう。リストの一番上には、"Packages available in excluded repositories will not be installed" という結果があります。この結果をクリックして詳細ビューを表示すると、次のようになります:
 
   ![Details view of packages available in excluded repositories will not be installed](images/excluded_repos_finding.svg)
 
-  This finding is warning that packages python3-pyxattr and rpcgen will not be upgraded because "they are available only in target system repositories that are intentionally excluded from the list of repositories used during the upgrade," but then refers to an informational finding titled "Excluded target system repositories" for more information. Scroll down and click on that finding to show its details:
+  この結果は、パッケージ python3-pyxattr と rpcgen は "アップグレード中に使用されるリポジトリのリストから意図的に除外されたターゲットシステムリポジトリでのみ利用可能," であるためアップグレードされないという警告ですが、詳細については "Excluded target system repositories" というタイトルの情報結果を参照しています。下にスクロールしてその結果をクリックすると、詳細が表示されます:
 
   ![Details view of excluded target system repositories information finding](images/enablerepo_info_finding.svg)
 
-  Here we see the remediation hint suggests to run the `leapp` utility with the `--enablerepo` option. But wait, that's assuming we are manually running the `leapp` command. Don't worry, in an upcoming exercise, we'll explore how this option can be given by setting a variable when submitting the upgrade playbook job. Stay tuned!
+  ここでは、修復のヒントで、`--enablerepo` オプションを指定して `leapp` ユーティリティを実行するように提案されています。しかし、ちょっと待ってください。これは、`leapp` コマンドを手動で実行していることを前提としています。心配しないでください。次の演習では、アップグレード Playbook ジョブを送信するときに変数を設定することでこのオプションを指定する方法を説明します。お楽しみに!
 
-- The next high risk entry on the list is the "Difference in Python versions and support in RHEL8" finding:
+- リストの次のハイリスクエントリは、"Difference in Python versions and support in RHEL8" の検出結果です。:
 
   ![Details view of Difference in Python versions and support in RHEL8 finding](images/python_finding.svg)
 
-  This finding could be a concern if we have any apps on our pet server that are using the system-provided Python interpreter. Let's assume we don't have any of those in which case we can blissfully ignore this finding.
-
-- That leaves us with our two inhibitor findings. The first is the "Possible problems with remote login using root account" finding. You know the drill; click on the finding to review the details:
+  この検出結果は、システム提供の Python インタープリターを使用しているペット サーバー上のアプリがある場合に問題になる可能性があります。そのようなアプリがない場合は、この検出結果を無視できます。
+  
+- これで、2 つの阻害要因の検出結果が残ります。1 つ目は、"Possible problems with remote login using root account" という検出結果です。おわかりですね。結果をクリックすると詳細が表示されます: 
 
   ![Details view of possible problems with remote login using root account inhibitor finding](images/root_account_inhibitor.svg)
 
-  Remember that with inhibitor findings, if we don't take action to resolve the inhibitor, the Leapp framework will block the RHEL in-place upgrade from going forward.
+  阻害要因の検出では、阻害要因を解決するための措置を講じないと、Leapp フレームワークによって RHEL インプレース アップグレードが先に進めなくなることに注意してください。
 
-- The other inhibitor is the "Missing required answers in the answer file" finding. Here are the details for this one:
+- もう 1 つの阻害要因は、"Missing required answers in the answer file" という検出です。これに関する詳細は次のとおりです。:
 
   ![Details view of missing required answers in the answer file](images/missing_answers_inhibitor.svg)
 
-  Here again, we will need to take action to remediate this finding. Don't panic! In the next exercise, we will explore different options for automating the required remediation actions and recommendations.
+  ここでも、この検出を修正するための措置を講じる必要があります。慌てないでください。次の演習では、必要な修正措置と推奨事項を自動化するためのさまざまなオプションについて説明します。
+  
+### チャレンジラボ: 多数のハイレベルの検出結果を無視するのはどうでしょうか?
 
-### Challenge Lab: What About Ignoring So Many High Findings?
+阻害要因の検出だけを心配するのはなぜかと疑問に思うかもしれません。レポートに赤で表示されるその他の高リスクの検出結果についてはどうでしょうか? 赤は危険を意味します! レポートのすべての検出結果を解決せずにアップグレードを試行する理由は何でしょうか? もっともな質問です。
 
-You may be wondering why are we only worrying about the inhibitor findings. What about all the other high risk findings showing up in red on the report? Red means danger! Why would we be going forward with attempting an upgrade without first resolving all the findings on the report? It's a fair question.
-
-> **Tip**
+> **ヒント**
 >
-> Think back to the four key features that we introduced at the beginning of the workshop.
+> ワークショップの冒頭で紹介した 4 つの主要な機能を思い出してください。
 
-Is there a specific feature that helps with reducing risk?
+リスクの軽減に役立つ特定の機能はありますか?
 
-> **Warning**
+> **警告**
 >
-> **Solution below\!**
+> **解決策は以下\!**
 
-Of course, the answer is our automated snapshot/rollback capability.
+もちろん、答えは自動スナップショット/ロールバック機能です。
 
-- If any of the high risk findings listed in the pre-upgrade report ultimately leads to the upgrade failing or results in application compatibility impact, we can quickly get back to where we started by rolling back the snapshot. Before rolling back, we can debug the root cause and use the experience to understand the best way to eliminate the risk of that failure or impact happening in the future.
+- アップグレード前のレポートにリストされている高リスクの検出結果のいずれかが最終的にアップグレードの失敗につながったり、アプリケーションの互換性に影響を及ぼしたりした場合は、ロールバックすることですぐに元の状態に戻ることができます。
 
-- There is a concept explained quite well in the famous article [Fail Fast](http://www.martinfowler.com/ieeeSoftware/failFast.pdf) published in *IEEE Software*. The article dates back to 2004, so this is hardly a new concept. Unfortunately, there is a stigma associated with failure that can lead to excessively risk-averse behavior. The most important benefit of having automated snapshots is being able to quickly revert failures. That allows us to safely adopt a fail fast and fail smart mantra.
+- *IEEE Software* に掲載された有名な記事  [Fail Fast](http://www.martinfowler.com/ieeeSoftware/failFast.pdf) に非常によく説明されている概念があります。この記事は 2004 年にさかのぼるので、これはまったく新しい概念ではありません。残念ながら、失敗には不名誉がつきもので、リスクを過度に回避する行動につながる可能性があります。自動スナップショットの最も重要な利点は、障害をすばやく元に戻せることです。これにより、安全に fail fast と fail smart のマントラを採用できます。
 
-- Of course, there are many best practices we can follow to reduce risk. Obviously, test for application impacts by trying upgrades in your lower environments first. Any issues that can be worked out with Dev and Test servers will help you be prepared to avoid those issues in production.
+- もちろん、リスクを軽減するために従えるベストプラクティスは数多くあります。当然、最初に下位環境でアップグレードを試して、アプリケーションへの影響をテストしてください。開発サーバーとテスト サーバーで解決できる問題があれば、運用環境でそれらの問題を回避する準備に役立ちます。
 
-- The high risk findings reported by the Leapp pre-upgrade report are there to make us aware of potential failure modes, but experience has shown that they are not a problem in many cases. Don't become petrified when you see those red findings on the report. Upgrade early and often!
+- Leapp のアップグレード前レポートで報告されたハイリスクの調査結果は、潜在的な障害モードを認識させるためのものですが、経験上、多くの場合は問題にならないことがわかっています。レポートに赤い結果が表示されても、怖がらないでください。早めに頻繁にアップグレードしてください。
 
-## Conclusion
 
-In this exercise, we learned about the different options for managing Leapp pre-upgrade reports. We used the RHEL Web Console to look at the reports we generated in the previous exercise and reviewed a number of the reported findings. In the challenge lab, we explored the importance of snapshots and learned to embrace failure.
+## まとめ
 
-In the next exercise, we are going to look at how to automate the remediation actions required to resolve our inhibitor findings.
+この演習では、Leapp のアップグレード前レポートを管理するためのさまざまなオプションについて学習しました。RHEL Web コンソールを使用して、前の演習で生成したレポートを確認し、報告された結果のいくつかを確認しました。チャレンジ ラボでは、スナップショットの重要性について検討し、失敗を受け入れることを学びました。
+
+次の演習では、阻害要因の解決に必要な修復アクションを自動化する方法を学びます。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../1.2-preupg/README.md) - [Next Exercise](../1.4-remediate/README.md)
+[Previous Exercise](../1.2-preupg/README.ja.md) - [Next Exercise](../1.4-remediate/README.ja.md)
 
-[Home](../README.md)
+[Home](../README.ja.md)
