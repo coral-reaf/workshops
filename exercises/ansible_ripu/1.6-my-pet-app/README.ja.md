@@ -1,150 +1,149 @@
-# Workshop Exercise - Deploy a Pet App
+# ワークショップ演習 - ペット アプリのデプロイ
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Deploy a Pet App](#workshop-exercise---deploy-a-pet-app)
-  - [Table of Contents](#table-of-contents)
-  - [Optional Exercise](#optional-exercise)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - The Traditional Application Lifecycle](#step-1---the-traditional-application-lifecycle)
-    - [Step 2 - Installing Our Beloved Pet Application](#step-2---installing-our-beloved-pet-application)
-    - [Step 3 - Test the Pet Application](#step-3---test-the-pet-application)
-    - [Step 4 - Configure the Application to Start on Reboot](#step-4---configure-the-application-to-start-on-reboot)
-    - [Step 5 - Run Another Pre-upgrade Report](#step-5---run-another-pre-upgrade-report)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - ペットアプリのデプロイ](#ワークショップ演習---ペットアプリのデプロイ)
+  - [目次](#目次)
+  - [オプション演習](#オプション演習)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - 従来のアプリケーション ライフサイクル](#step-1---the-traditional-application-lifecycle)
+    - [Step 2 - 愛するペットアプリケーションのインストール](#step-2---installing-our-beloved-pet-application)
+    - [Step 3 - ペットアプリケーションのテスト](#step-3---test-the-pet-application)
+    - [Step 4 - 再起動時にアプリケーションが起動するように構成](#step-4---再起動時にアプリケーションが起動するように構成)
+    - [Step 5 - 別のアップグレード前レポートを実行する](#step-5---別のアップグレード前レポートを実行する)
+  - [まとめ](#まとめ)
 
-## Optional Exercise
+## オプション演習
 
-This is an optional exercise. It is not required to successfully complete the workshop, but we recommended trying it if time allows. Review the objectives listed in the next section to decide if you want to do this exercise or if you would rather skip ahead to the next exercise:
+これはオプションの演習です。ワークショップを正常に完了するために必須ではありませんが、時間に余裕があれば試してみることをお勧めします。次のセクションに記載されている目標を確認して、この演習を行うか、それとも次の演習に進むかを決めてください。
 
-* [Exercise 2.1 - Run OS Upgrade Jobs](../2.1-upgrade/README.md)
+* [演習 2.1 - OS アップグレード ジョブを実行する](../2.1-upgrade/README.ja.md)
 
-## Objectives
+## 目標
 
-* Discuss how applications are deployed and maintained in traditional server environments
-* Install our example pet application or bring your own
-* Consider how to test if your application is functioning as expected
+* 従来のサーバー環境でアプリケーションがどのように展開および維持されるかについて説明します
+* サンプルのペット アプリケーションをインストールするか、独自のアプリケーションを用意します
+* アプリケーションが期待どおりに機能しているかどうかをテストする方法を検討します
 
-## Guide
+## ガイド
 
-### Step 1 - The Traditional Application Lifecycle
+### ステップ 1 - 従来のアプリケーション ライフサイクル
 
-Let's take a step back and think about why we want to do an in-place upgrade. Wouldn't it be best practice to deploy a new server or VM instance with the new RHEL version and then do a fresh install of our application from there?
+少し立ち止まって、インプレース アップグレードを実行する理由について考えてみましょう。新しい RHEL バージョンで新しいサーバーまたは VM インスタンスを展開し、そこからアプリケーションの新規インストールを行うのがベスト プラクティスではないでしょうか。
 
-- Yes, but...
+- はい、でも...
 
-  - What if the app team doesn't have automation to deploy their apps and they instead manually install and configure everything?
+  - アプリ チームがアプリの展開を自動化しておらず、代わりにすべてを手動でインストールして構成している場合はどうでしょうか。
 
-  - What if since they installed their app however many years ago, they have been making changes to their app environment to solve issues or cope with changing business requirements?
+  - 何年も前にアプリをインストールして以来、問題を解決したり、変化するビジネス要件に対応したりするために、アプリ環境に変更を加えてきた場合はどうでしょうか?
 
-  - What if they have lost track of all that accumulated drift and technical debt such that it would be very difficult for them to start fresh?
+  - 蓄積されたドリフトや技術的負債をすべて把握できなくなり、一からやり直すのが非常に困難になった場合はどうでしょうか?
 
-- Unfortunately, this is the position may app teams find themselves in. Their traditional app server has been tenderly cared for like a beloved pet for years. The idea of throwing it out and redoing everything from scratch is unthinkable.
+- 残念ながら、多くのアプリ チームがこのような状況に陥っています。従来のアプリ サーバーは、長年、愛するペットのように大切に扱われてきました。それを捨てて、すべてを最初からやり直すという考えは考えられません。
 
-- If they can just move to the new RHEL version without having to touch their application, that is a very compelling alternative. That is why they want to do an in-place upgrade, so they can disappear off the corporate platform lifecycle compliance report without having to suffer with the headache of manually installing and reconfiguring everything all over again.
+- アプリケーションに触れることなく、新しい RHEL バージョンに移行できるのであれば、それは非常に魅力的な選択肢です。そのため、インプレース アップグレードを行い、すべてを手動でインストールして再構成するという面倒な作業に悩まされることなく、企業のプラットフォーム ライフサイクル コンプライアンス レポートから姿を消すことを望んでいます。
 
-- In this optional exercise, we want to install an application so that we can assess if the RHEL in-place upgrade causes any impact. We want to see if the app still functions as expected under the new RHEL version after the upgrade.
+- このオプションの演習では、アプリケーションをインストールして、RHEL インプレース アップグレードが何らかの影響を与えるかどうかを評価します。アップグレード後も、新しい RHEL バージョンでアプリが期待どおりに機能するかどうかを確認します。
 
-### Step 2 - Installing Our Beloved Pet Application
+### ステップ 2 - 愛するペットアプリケーションのインストール
 
-In this step, we are going to install an example application. We are going to install the old fashioned way: manually by following a traditional written procedure of confusing and potentially error prone command line steps. After all, if our app deployment was automated end-to-end, we wouldn't need to upgrade in-place.
+このステップでは、サンプル アプリケーションをインストールします。インストールは昔ながらの方法で行います。つまり、混乱を招き、エラーが発生しやすい可能性がある従来のコマンドライン 手順に従って手動でインストールします。結局のところ、アプリケーションのデプロイメントがエンドツーエンドで自動化されていれば、インプレース アップグレードを行う必要はありません。
 
-You may want to install a different application, for example, an actual application from your enterprise environment that you would like to test for potential impacts. Feel free to skip the procedure below and make your own adventure. Just take care to test your app both before and after the upgrade.
+別のアプリケーション (たとえば、潜在的な影響をテストしたいエンタープライズ環境の実際のアプリケーション) をインストールすることもできます。以下の手順をスキップして、独自の冒険をしてください。アップグレードの前後でアプリケーションをテストするようにしてください。
 
-- Our example application will be the [Spring Pet Clinic Sample Application](https://github.com/spring-projects/spring-petclinic) written in Java. It is a Spring Boot application that gets built using Maven. It will connect to a MySQL database which gets populated at startup with sample data.
+- サンプル アプリケーションは、Java で記述された [Spring Pet Clinic サンプル アプリケーション](https://github.com/spring-projects/spring-petclinic) です。これは、Maven を使用して構築される Spring Boot アプリケーションです。起動時にサンプル データが入力される MySQL データベースに接続します。
 
-  > **Note**
-  >
-  > The procedure below steps though the commands required to _manually_ install and start the example application. This is done very much to mock how older traditional apps are deployed in the enterprise. If you want to take a shortcut as an alternative to manually running a bunch of commands, you can launch the "PETS / App Install" job template to deploy the example app.
-  >
-  > If the app install job is successful, you can skip ahead to [Step 3 - Test the Pet Application](#step-3---test-the-pet-application).
-  >
+> **注意**
+>
+> 以下の手順では、サンプル アプリケーションを手動でインストールして起動するために必要なコマンドを段階的に実行します。これは、企業内で従来の古いアプリケーションがどのようにデプロイされているかを模倣するために行われます。一連のコマンドを手動で実行する代わりにショートカットを使用する場合は、「PETS / App Install」ジョブ テンプレートを起動してサンプル アプリケーションをデプロイできます。
+>
+> アプリケーションのインストール ジョブが成功した場合は、[Step 3 - ペットアプリケーションのテスト](#step-3---ペットアプリケーションのテスト) に進んでください。
+>
 
-- The first step in our app install procedure is to install a Java JDK. We'll use a 3rd-party one just for fun!
+- アプリケーションのインストール手順の最初のステップは、Java JDK をインストールすることです。ここでは、楽しみのためにサードパーティの JDK を使用します。
+> **警告**
+>
+> すべてのコマンドは、root ではなく ec2-user として実行する必要があります。root を必要とするコマンドでは、`sudo` が使用されます。
 
-  > **Warning**
-  >
-  > All commands should be run as the ec2-user, not as root. Commands that require root will use `sudo`.
+ペット アプリ サーバーにログインし、次のコマンドを実行します:
 
-  Login to your pet app server and run these commands:
+```
+distver=$(sed -r 's/([^:]*:){4}//;s/(.).*/\1/' /etc/system-release-cpe)
+sudo yum-config-manager --add-repo=https://packages.adoptium.net/artifactory/rpm/rhel/$distver/x86_64
+sudo yum-config-manager --save --setopt=\*adoptium\*.gpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public
+sudo yum install mariadb mariadb-server temurin-17-jdk
+```
 
-  ```
-  distver=$(sed -r 's/([^:]*:){4}//;s/(.).*/\1/' /etc/system-release-cpe)
-  sudo yum-config-manager --add-repo=https://packages.adoptium.net/artifactory/rpm/rhel/$distver/x86_64
-  sudo yum-config-manager --save --setopt=\*adoptium\*.gpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public
-  sudo yum install mariadb mariadb-server temurin-17-jdk
-  ```
+最後のコマンドからのプロンプトにはすべて `y` と答えます。
 
-  Answer `y` to any prompts from the last command.
+- temurin-17-jdk パッケージがインストールされていることを確認します:
 
-- Verify that the temurin-17-jdk package was installed:
+```
+rpm -q temurin-17-jdk
+```
 
-  ```
-  rpm -q temurin-17-jdk
-  ```
+そうでない場合は、戻って何が間違っていたのかを調べます。
 
-  If not, go back and figure out what went wrong.
+- 次に、ec2-user のホーム ディレクトリに Spring Pet Clinic サンプル アプリケーションをインストールします。次のコマンドを実行します:
 
-- Next, we will install the Spring Pet Clinic Sample Application under the home directory of the ec2-user. Run these commands:
+```
+cd ~
+git clone https://github.com/spring-projects/spring-petclinic.git
+```
 
-  ```
-  cd ~
-  git clone https://github.com/spring-projects/spring-petclinic.git
-  ```
+これで、アプリケーション ファイルが `spring-petclinic` ディレクトリにインストールされていることがわかります。
 
-  You should now see that the application files are installed in the `spring-petclinic` directory.
-
-<!-- The EC2 instances for the workshop don't have firewalld, but in case you are using this procedure somewhere that does, use these command to open the firewall:
+<!-- ワークショップの EC2 インスタンスには、firewalld はありませんが、firewalld がある場所でこの手順を使用する場合は、次のコマンドを使用してファイアウォールを開きます:
 
 ```
 sudo firewall-cmd --add-port=8080/tcp
 sudo firewall-cmd --add-port=8080/tcp --permanent
 ```
 -->
-- We need to start the database server and create the database for our application. Use this command to enable and start the database:
+- データベース サーバーを起動し、アプリケーション用のデータベースを作成する必要があります。次のコマンドを使用して、データベースを有効にして起動します:
 
-  ```
-  sudo systemctl enable --now mariadb
-  ```
+```
+sudo systemctl enable --now mariadb
+```
 
-  Now use the `mysql` command line client to connect to the database server. For example:
+次に、`mysql` コマンドライン クライアントを使用して、データベース サーバーに接続します。例:
 
-  ```
-  mysql --user root
-  ```
+```
+mysql --user root
+```
 
-  This should bring you to a `MariaDB [(none)]>` prompt. Enter the following SQL commands at this prompt:
+`MariaDB [(none)]>` プロンプトが表示されます。このプロンプトで、次の SQL コマンドを入力します:
 
-  ```
-  CREATE DATABASE IF NOT EXISTS petclinic;
-  ALTER DATABASE petclinic DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-  GRANT ALL PRIVILEGES ON petclinic.* TO 'petclinic'@'localhost' IDENTIFIED BY 'petclinic';
-  FLUSH PRIVILEGES;
-  quit
-  ```
+```
+CREATE DATABASE IF NOT EXISTS petclinic;
+ALTER DATABASE petclinic DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+GRANT ALL PRIVILEGES ON petclinic.* TO 'petclinic'@'localhost' IDENTIFIED BY 'petclinic';
+FLUSH PRIVILEGES;
+quit
+```
 
-- Now we are ready to start the application web service. Use this command to run it in the background:
+- これで、アプリケーション Web サービスを開始する準備ができました。 バックグラウンドで実行するには、次のコマンドを使用します:
 
-  ```
-  echo 'cd $HOME/spring-petclinic && ./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql >> $HOME/app.log 2>&1' | at now
-  ```
+```
+echo 'cd $HOME/spring-petclinic && ./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql >> $HOME/app.log 2>&1' | at now
+```
 
-- The application will take a couple minute to come up the first time. Check the `app.log` file to follow the progress and verify the web service has started successfully:
+- アプリケーションの初回起動には数分かかります。 `app.log` ファイルをチェックして進行状況を追跡し、Web サービスが正常に開始されたことを確認します:
 
-  ```
-  tailf ~/app.log
-  ```
+```
+tailf ~/app.log
+```
 
-  When you see events listed at the bottom of the log output like this example, that means the application is started successfully and ready for testing:
+この例のように、ログ出力の下部にイベントがリストされている場合、アプリケーションが正常に開始され、テストの準備ができていることを意味します:
 
-  ```
-  o.s.b.a.e.web.EndpointLinksResolver      : Exposing 13 endpoint(s) beneath base path '/actuator'
-  o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-  o.s.s.petclinic.PetClinicApplication     : Started PetClinicApplication in 6.945 seconds (process running for 7.496)
-  ```
+```
+o.s.b.a.e.web.EndpointLinksResolver : ベース パス '/actuator' の下に 13 個のエンドポイントを公開しています
+o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat がポート 8080 (http) でコンテキスト パス '' で開始されました
+o.s.s.petclinic.PetClinicApplication : PetClinicApplication を 6.945 秒で開始しました (プロセスは 7.496 秒実行されました)
+```
 
-  Type Ctrl-C to quit the `tailf` command.
+Ctrl-C を入力して `tailf` コマンドを終了します。
 
 ### Step 3 - Test the Pet Application
 
