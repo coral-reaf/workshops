@@ -1,16 +1,3 @@
-# Workshop Exercise - Perform Recommended Remediation
-
-## Table of Contents
-
-- [Workshop Exercise - Perform Recommended Remediation](#workshop-exercise---perform-recommended-remediation)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Explore Options for Resolving Inhibitors](#step-1---explore-options-for-resolving-inhibitors)
-    - [Step 2 - Managing the Leapp Answer File](#step-2---managing-the-leapp-answer-file)
-    - [Step 3 - Resolving Inhibitors Using a Remediation Playbook](#step-3---resolving-inhibitors-using-a-remediation-playbook)
-  - [Conclusion](#conclusion)
-
 # ワークショップ演習 - 推奨される修復を実行する
 
 ## 目次
@@ -30,14 +17,36 @@
 * `analysis` ロールの `leapp_answerfile` 変数の使用方法を学習します
 * 修復プレイブックを使用して、アップグレード前の準備を積極的に行います
 
-
-## Objectives
-
-* Consider different options for resolving inhibitor risk findings
-* Learn how to use the `leapp_answerfile` variable of the `analysis` role
-* Use a remediation playbook to proactively prepare for pre-upgrade
-
 ## Guide
+
+## ガイド
+
+### ステップ 1 - 阻害要因を解決するためのオプションを探ります
+
+前の演習では、RHEL7 および RHEL8 ペット アプリケーション サーバー用に生成された Leapp アップグレード前レポートを確認しました。RHEL8 ホストでは阻害リスクの検出結果は報告されていなかったため、アップグレードを試行する準備は整っています。ただし、RHEL7 ホストでは阻害要因がいくつか報告されていました。これらのホストをアップグレードする前に、それらを解決するための措置を講じる必要があります。
+
+これで、自動化アプローチ ワークフローの次の段階に進みました:
+
+![推奨される修復を適用する手順が強調表示された自動化アプローチ ワークフロー図](images/ripu-workflow-hl-remediate.svg)
+
+- まず、阻害要因の 1 つを分析してみましょう:
+
+![回答ファイルで必要な回答が不足している詳細ビュー](images/missing_answers_dissected.svg)
+
+<sub>![1.](images/circle_1.svg)</sub> 各検出結果には固有のタイトルがあります。
+
+<sub>![2.](images/circle_2.svg)</sub> 各検出結果にはリスク要因が割り当てられますが、前の演習で説明したように、これは単純な高、中、低、または情報の評価で示されるよりも微妙な場合があります。
+
+<sub>![3.](images/circle_3.svg)</sub> 概要には、リスクとソリューションの推奨事項の詳細な説明が記載されています。
+
+<sub>![4.](images/circle_4.svg)</sub> 修復では、かなり規範的な推奨事項が提示されます。
+
+<sub>![5.](images/circle_5.svg)</sub> 場合によっては、修復には、次のような正確なコマンドも含まれています。
+
+- 上記の例のように修復コマンドが提示された場合、コマンドの実行方法として選択できるオプションがいくつかあります。もちろん、ホストのルート シェル プロンプトにアクセスしてコマンドを切り取って貼り付けるか、回答ファイルを手動で編集するという、手っ取り早い方法もあります。もちろん、その方法は人為的ミスが発生しやすく、拡張性も低くなります。別のオプションは、コマンドの上にある [修復の実行] ボタンを使用することです。このオプションを使用すると、RHEL Web コンソールがコマンドを実行します。この方法では人為的ミスが発生しにくくなりますが、この単一のホストでのみ実行されるため、拡張性は低くなります。
+
+- 次のステップでは、Ansible Automation Platform (AAP) のスケールを活用して、大規模な RHEL 資産全体で一括して修復を実行する方法について説明します。
+
 
 ### Step 1 - Explore Options for Resolving Inhibitors
 
