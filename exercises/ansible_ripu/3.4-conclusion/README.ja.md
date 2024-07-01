@@ -9,7 +9,7 @@
     - [Step 1 - 学習内容](#step-1---学習内容)
     - [Step 2 - 追加クレジットのアクティビティ](#step-2---追加クレジットのアクティビティ)
     - [Step 3 - コードの確認](#step-3---コードの確認)
-      - [redhat-c​​op/infra.leapp](#redhat-c​​opinfraleapp)
+      - [redhat-c​​op/infra.leapp](#redhat-copinfraleapp)
       - [oamg/leapp-supplements](#oamgleapp-supplements)
       - [redhat-partner-tech/leapp-project](#redhat-partner-techleapp-project)
       - [swapdisk/snapshot](#swapdisksnapshot)
