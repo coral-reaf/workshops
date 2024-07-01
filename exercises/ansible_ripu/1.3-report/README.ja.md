@@ -197,6 +197,6 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
 
 **ナビゲーション**
 
-[Previous Exercise](../1.2-preupg/README.ja.md) - [Next Exercise](../1.4-remediate/README.ja.md)
+[前の演習](../1.2-preupg/README.ja.md) - [次の演習](../1.4-remediate/README.ja.md)
 
-[Home](../README.ja.md)
+[ホーム](../README.ja.md)
