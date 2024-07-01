@@ -6,7 +6,7 @@
 
 ![Automate Everything, Snapshot/rollback, Custom Modules, Reporting Dashboard](images/ripu_key_features.svg)
 
-このワークショップを進めるにつれ、これらの機能の重要性と、企業での実装方法のさまざまなオプションについて、より詳しく学ぶことができます。このワークショップでは、Ansible Automation Platformの使用経験、およびAnsible playbookとロールの使用経験があることを前提としています。Ansibleを初めて使用する場合は、まず次のワークショップを完了することをご検討ください。 [Ansible for Red Hat Enterprise Linux](https://aap2.demoredhat.com/exercises/ansible_rhel/README.ja.html).
+このワークショップを進めるにつれ、これらの機能の重要性と、企業での実装方法のさまざまなオプションについて、より詳しく学ぶことができます。このワークショップでは、Ansible Automation Platform の使用経験、およびAnsible playbook と Role の使用経験があることを前提としています。Ansibleを初めて使用する場合は、まず次のワークショップを完了することをご検討ください。 [Ansible for Red Hat Enterprise Linux](https://aap2.demoredhat.com/exercises/ansible_rhel/README.ja.html).
 
 ## 目次
 
