@@ -94,6 +94,6 @@ RHEL Web コンソールのブラウザー タブに戻り、リモート ホス
 
 **ナビゲーション**
 
-[Previous Exercise](../2.1-upgrade/README.ja.md) - [Next Exercise](../2.4-check-pet-app/README.ja.md)
+[前の演習](../2.1-upgrade/README.ja.md) - [次の演習](../2.4-check-pet-app/README.ja.md)
 
-[Home](../README.ja.md)
+[ホーム](../README.ja.md)
