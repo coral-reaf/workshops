@@ -1,96 +1,102 @@
-# Workshop Exercise - Check if the Upgrades Worked
+# ワークショップ演習 - アップグレードが機能したかどうかの確認
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Check if the Upgrades Worked](#workshop-exercise---check-if-the-upgrades-worked)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Review the Upgrade Playbook Job Log](#step-1---review-the-upgrade-playbook-job-log)
-    - [Step 2 - Verify the Hosts are Upgraded to Next RHEL Version](#step-2---verify-the-hosts-are-upgraded-to-next-rhel-version)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - アップグレードが機能したかどうかの確認](#workshop-exercise---check-if-the-upgrades-worked)
+  - [目次](#目次)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - アップグレード Playbook のジョブログを確認する](#step-1---アップグレード-playbook-のジョブログを確認する)
+    - [Step 2 - ホストが次の RHEL バージョンにアップグレードされたことを確認する](#step-2---ホストが次の-rhel-バージョンにアップグレードされたことを確認する)
+  - [結論](#結論)
 
-## Objectives
+## 目的
 
-* Review the upgrade playbook job log
-* Verify our pet application servers are running the newer RHEL version
+* アップグレード プレイブックのジョブ ログを確認する
+* ペット アプリケーション サーバーが新しい RHEL バージョンを実行していることを確認する
 
-## Guide
+## ガイド
 
-In the previous exercises, we review pre-upgrade reports and performed some recommended remediations. If you tried the optional exercises, you also learned about custom pre-upgrade checks and installed a sample pet application. After all of that, you finally launched the Ansible playbook jobs to run the RHEL in-place upgrades on your servers.
+前の演習では、アップグレード前のレポートを確認し、推奨される修復をいくつか実行しました。オプションの演習を試した場合は、カスタムのアップグレード前チェックについても学習し、サンプルのペット アプリケーションをインストールしました。そのすべてが終わったら、最後に Ansible プレイブック ジョブを起動して、サーバー上で RHEL インプレース アップグレードを実行しました。
 
-It's time to see verify the result of the upgrades and let our application teams assess if their pet apps are still good. We are here in the our RHEL in-place upgrade automation workflow:
+アップグレードの結果を確認し、アプリケーション チームがペット アプリがまだ正常かどうかを評価できるようにします。ここでは、RHEL インプレース アップグレード自動化ワークフローについて説明します。
 
-![Automation approach workflow diagram with app validation steps highlighted](images/ripu-workflow-hl-validate.svg)
+![アプリ検証手順が強調表示された自動化アプローチ ワークフロー図](images/ripu-workflow-hl-validate.svg)
 
-Let's get started!
+始めましょう!
 
-### Step 1 - Review the Upgrade Playbook Job Log
+### Step 1 - アップグレード Playbook のジョブログを確認する
 
-The first thing we want to do is see if the job running the upgrade playbooks has finished successfully.
+最初に、アップグレード プレイブックを実行するジョブが正常に終了したかどうかを確認します。
 
-- Return to the AAP Web UI tab in your web browser. Navigate to Views > Jobs and then open the "OS / Upgrade" playbook run entry to see the log output from the upgrades.
+- Web ブラウザーで AAP Web UI タブに戻ります。[Views] > [Jobs] に移動し、[OS / Upgrade] プレイブック実行エントリを開いて、アップグレードからのログ出力を確認します。
 
-  > **Note**
-  >
-  > You will also see an entry for the "AUTO / 02 Upgrade" workflow job. Workflow jobs launch a number of playbook runs. To see the playbook log output, we need to open the playbook run entry, not the workflow job entry.
+> **注意**
+>
+> 「AUTO / 02 アップグレード」ワークフロー ジョブのエントリも表示されます。ワークフロー ジョブは、複数のプレイブック実行を開始します。プレイブックのログ出力を表示するには、ワークフロー ジョブ エントリではなく、プレイブック実行エントリを開く必要があります。
 
-  For example:
+例:
 
-  ![AAP Web UI listing upgrade job entries](images/upgrade_jobs.svg)
+![AAP Web UI のアップグレード ジョブ エントリ一覧](images/upgrade_jobs.svg)
 
-- If the playbook run finished without any failed tasks, you should see "Successful" displayed with a green checkmark.
+- プレイブック実行が失敗したタスクなしで終了した場合は、緑色のチェックマークとともに「成功」​​が表示されます。
 
-  > **Note**
-  >
-  > If you see "Running" with spinning arrows, the playbook is still running. Wait for the playbook run to finish before moving on with this exercise.
+> **注意**
+>
+> 回転矢印とともに「実行中」と表示される場合は、プレイブックはまだ実行中です。プレイブックの実行が完了するまで待ってから、この演習を続行してください。
 
-  Scroll down to the end of the log output to see the "PLAY RECAP" indicating the success or failure status for the playbook run executed on each host. Here is what you should expect to see:
+ログ出力の最後までスクロールすると、「PLAY RECAP」が表示され、各ホストで実行されたプレイブック実行の成功または失敗のステータスが表示されます。表示される内容は次のとおりです。
 
-  ![AAP Web UI showing successful upgrade playbook run play recap](images/upgrade_play_recap.svg)
+![アップグレード プレイブックの実行と再生の要約が成功したことを示す AAP Web UI](images/upgrade_play_recap.svg)
 
-  If there are no failed runs, the RHEL in-place upgrade is done on all of our pet app servers.
+実行に失敗がない場合、すべてのペット アプリケーション サーバーで RHEL インプレース アップグレードが実行されます。
 
-### Step 2 - Verify the Hosts are Upgraded to Next RHEL Version
+### Step 2 - ホストが次の RHEL バージョンにアップグレードされたことを確認する
 
-Now let's make sure our pet app servers are actually upgraded to the next RHEL version.
+次に、ペット アプリケーション サーバーが実際に次の RHEL バージョンにアップグレードされていることを確認します。
 
-- In [Exercise 1.3: Step 2](../1.3-report/README.md#step-2---navigating-the-rhel-web-console), you used the RHEL Web Console to check the installed RHEL versions on your pet app servers. Let's repeat those steps to see the RHEL versions reported after our upgrades.
+- [演習 1.3: Step 2](../1.3-report/README.ja.md#step-2---rhel-web-コンソールの操作) では、RHEL Web コンソールを使用して、ペット アプリケーション サーバーにインストールされている RHEL バージョンを確認しました。これらの手順を繰り返して、アップグレード後に報告された RHEL バージョンを確認しましょう。
 
-  Return to your RHEL Web Console browser tab and use the remote host menu to navigate to the web consoles of each of your pet app servers. The RHEL Web Console system overview page should now show the upgraded versions.
+RHEL Web コンソールのブラウザー タブに戻り、リモート ホスト メニューを使用して、各ペット アプリケーション サーバーの Web コンソールに移動します。 RHEL Web コンソールのシステム概要ページに、アップグレードされたバージョンが表示されるはずです。
 
-  > **Note**
-  >
-  > You may need to refresh the browser using Ctrl-R to see the newly reported RHEL version.
+> **注意**
+>
+> 新しく報告された RHEL バージョンを確認するには、Ctrl + R を使用してブラウザを更新する必要がある場合があります。
 
-  For example, this pet app server that previously had RHEL8 is now reporting RHEL9:
+たとえば、以前は RHEL8 だったこのペット アプリ サーバーは、現在 RHEL9 を報告しています:
 
-  ![fluent-bee running Red Hat Enterprise Linux 9.2 (Plow)](images/rhel9_upgraded.svg)
+![fluent-bee は Red Hat Enterprise Linux 9.2 (Plow) を実行しています](images/rhel9_upgraded.svg)
 
-  Here is an example one that was previously RHEL7 now running RHEL8:
+以前は RHEL7 だったが、現在は RHEL8 を実行している例を次に示します:
 
-  ![vocal-hyena running Red Hat Enterprise Linux Server 8.8 (Oopta)](images/rhel8_upgraded.svg)
+![vocal-hyena は Red Hat Enterprise Linux Server 8.8 (Oopta) を実行しています](images/rhel8_upgraded.svg)
 
-- You can also check the RHEL and kernel versions from the command line following the steps you used with [Exercise 1.1: Step 2](../1.1-setup/README.md#step-2---open-a-terminal-session).
+- [演習 1.1: 手順 2](../1.1-setup/README.ja.md#step-2---ターミナルセッションを開く) で使用した手順に従って、コマンド ラインから RHEL およびカーネルのバージョンを確認することもできます。
 
-  At the shell prompt of your pet app servers, use the `cat /etc/redhat-release` and `uname -r` commands. Here's an example showing a pet app server that was upgraded to RHEL9:
+ペット アプリ サーバーのシェル プロンプトで、`cat /etc/redhat-release` コマンドと `uname -r` コマンドを使用します。RHEL9 にアップグレードされたペット アプリ サーバーの例を次に示します。
 
-  ![command output showing RHEL9 is installed](images/rhel9_commands.svg)
+![RHEL9 がインストールされたことを示すコマンド出力](images/rhel9_commands.svg)
 
-## Conclusion
+## まとめ
 
-In this exercise, we observed that the upgrade playbook runs completed successfully. We then used the RHEL Web Console and the command line to verify the new RHEL versions were installed.
+この演習では、アップグレード プレイブックの実行が正常に完了したことを確認しました。次に、RHEL Web コンソールとコマンド ラインを使用して、新しい RHEL バージョンがインストールされたことを確認しました。
 
-If you deployed a sample pet application in the previous optional exercise, continue here to verify the pet application is still functioning as expected after the RHEL upgrades:
+前のオプション演習でサンプル ペット アプリケーションをデプロイした場合は、ここで続行して、RHEL アップグレード後もペット アプリケーションが期待どおりに機能していることを確認します。
 
-- [Exercise 2.4 - How is the Pet App Doing?](../2.4-check-pet-app/README.md)
+- [演習 2.4 - ペットアプリケーションの状態は?](../2.4-check-pet-app/README.ja.md)
 
-Otherwise, you may skip ahead to the next section of the workshop where we will demonstrate rolling back the RHEL upgrade, starting with these exercises:
+それ以外の場合は、ワークショップの次のセクションに進んでください。次の演習から始めて、RHEL アップグレードのロールバックを実演します。
 
-- [Exercise 3.1 - (Optional) Trash the Instance](../3.1-rm-rf/README.md)
-- [Exercise 3.2 - Run Rollback Job](../3.2-rollback/README.md)
+- [演習 3.1 - (オプション) インスタンスを破棄する](../3.1-rm-rf/README.ja.md)
+- [演習 3.2 - ロールバック ジョブを実行する](../3.2-rollback/README.ja.md)
 
 ---
+
+**Navigation**
+
+[Previous Exercise](../2.1-upgrade/README.ja.md) - [Next Exercise](../2.4-check-pet-app/README.ja.md)
+
+[Home](../README.ja.md)
 
 **Navigation**
 
