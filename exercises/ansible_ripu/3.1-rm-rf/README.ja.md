@@ -1,87 +1,87 @@
-# Workshop Exercise - Trash the Instance
+# ワークショップ演習 - インスタンスを破棄
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Trash the Instance](#workshop-exercise---trash-the-instance)
-  - [Table of Contents](#table-of-contents)
-  - [Optional Exercise](#optional-exercise)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Select a Pet App Server](#step-1---select-a-pet-app-server)
-    - [Step 2 - Choose your Poison](#step-2---choose-your-poison)
-      - [Delete everything](#delete-everything)
-      - [Uninstall glibc](#uninstall-glibc)
-      - [Break the application](#break-the-application)
-      - [Wipe the boot record](#wipe-the-boot-record)
-      - [Fill up your disk](#fill-up-your-disk)
-      - [Set off a fork bomb](#set-off-a-fork-bomb)
-  - [Conclusion](#conclusion)
+- [ワークショップ演習 - インスタンスを破棄](#workshop-exercise---trash-the-instance)
+  - [目次](#table-of-contents)
+  - [オプション演習](#オプション演習)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - ペットアプリ サーバーの選択](#step-1---ペットアプリ サーバーの選択)
+    - [Step 2 - アプリケーションを壊す](#step-2---アプリケーションを壊す)
+        - [すべてを削除](#すべてを削除)
+        - [glibc をアンインストール](#glibc-をアンインストール)
+        - [アプリケーションを破棄](#アプリケーションを破棄)
+        - [ブートレコードを消去](#ブートレコードを消去)
+        - [ディスクをいっぱいにする](#ディスクをいっぱいにする)
+        - [フォーク爆弾を発射する](#フォーク爆弾を発射する)
+  - [まとめ](#まとめ)
 
-## Optional Exercise
+## オプションの演習
 
-This is an optional exercise. It is not required to successfully complete the workshop, but it will help demonstrate the effectiveness of rolling back a RHEL upgrade. Review the objectives listed in the next section to decide if you want to do this exercise or if you would rather skip ahead to the next exercise:
+これはオプションの演習です。ワークショップを正常に完了するために必須ではありませんが、RHEL アップグレードのロールバックの有効性を示すのに役立ちます。次のセクションに記載されている目標を確認して、この演習を行うか、次の演習に進むかを決めてください。
 
-* [Exercise 3.2 - Run Rollback Job](3.2-rollback/README.md)
+* [演習 3.2 - ロールバックジョブを実行する](3.2-rollback/README.ja.md)
 
-## Objectives
+## 目標
 
-* Simulate a failed OS upgrade or application impact
-* Demonstrate the scope of rolling back a snapshot
+* 失敗した OS アップグレードまたはアプリケーションへの影響をシミュレートする
+* スナップショットのロールバックの範囲を示す
 
-## Guide
+## ガイド
 
-Have you ever wanted to try doing `rm -rf /*` on a RHEL host just to see what happens? Or maybe you have accidentally done an equally destructive recursive command and already know the consequences. In this exercise, we are going to intentionally mess up one of our pet app servers to demonstrate how rolling back can save the day.
+RHEL ホストで `rm -rf /*` を実行して何が起こるか試してみたいと思ったことはありませんか?あるいは、同じように破壊的な再帰コマンドを誤って実行し、その結果をすでに知っているかもしれません。この演習では、ペット アプリ サーバーの 1 つを意図的に台無しにして、ロールバックによって事態を打開する方法を説明します。
 
-Let's get started!
+では、始めましょう!
 
-### Step 1 - Select a Pet App Server
+### Step 1 - ペット アプリ サーバーの選択
 
-In the next exercise, we will be rolling back the RHEL upgrade on one of our servers.
+次の演習では、サーバーの 1 つで RHEL アップグレードをロールバックします。
 
-- Choose an app server. It can be one of the RHEL7 instances that is now on RHEL8, or one of the RHEL8 instances that was upgraded to RHEL9.
+- アプリ サーバーを選択します。現在 RHEL8 になっている RHEL7 インスタンスの 1 つ、または RHEL9 にアップグレードされた RHEL8 インスタンスの 1 つを選択できます。
 
-- Follow the steps you used with [Exercise 1.1: Step 2](../1.1-setup/README.md#step-2---open-a-terminal-session) to open a terminal session on the app server you have chosen to roll back.
+- [演習 1.1: Step 2](../1.1-setup/README.md#step-2---ターミナルセッションを開く) で使用した手順に従って、ロールバックするアプリ サーバーでターミナル セッションを開きます。
 
-- At the shell prompt, use the `sudo -i` command to switch to the root user. For example:
+- シェル プロンプトで、`sudo -i` コマンドを使用して、ルート ユーザーに切り替えます。たとえば:
 
-  ```
-  [ec2-user@cute-bedbug ~]$ sudo -i
-  [root@cute-bedbug ~]#
-  ```
+```
+[ec2-user@cute-bedbug ~]$ sudo -i
+[root@cute-bedbug ~]#
+```
 
-  Verify you see a root prompt like the example above.
+上記の例のようなルートプロンプトが表示されることを確認します。
 
-### Step 2 - Break your application
+### Step 2 - アプリケーションを壊す
 
-- In [Exercise 1.6: Step 5](../1.6-my-pet-app/README.md#step-5---run-another-pre-upgrade-report), we observed a pre-upgrade finding warning of a potential risk that our `temurin-17-jdk` 3rd-party JDK runtime package might be removed during the upgrade in case it had unresolvable dependencies. Of course, we know this did not happen because our pet app is still working perfectly.
+- [演習 1.6: Step 5](../1.6-my-pet-app/README.ja.md#step-5---別のアップグレード前レポートの実行) では、解決できない依存関係がある場合にアップグレード中に `temurin-17-jdk` サードパーティ JDK ランタイム パッケージが削除される可能性があるという潜在的なリスクを警告するアップグレード前の調査結果を確認しました。もちろん、ペットアプリは引き続き完全に動作しているため、このようなことは発生していないことはわかっています。
 
-  But what if this package did get removed? Our pet app requires the JDK runtime to function. Without it, our application will be broken. We can simulate this by manually removing the package like this:
+しかし、このパッケージが削除されたらどうなるでしょうか。ペットアプリが機能するには JDK ランタイムが必要です。これがないと、アプリケーションは中断されます。これをシミュレートするには、次のようにパッケージを手動で削除します:
 
-  ```
-  dnf -y remove temurin-17-jdk
-  ```
+```
+dnf -y remove temurin-17-jdk
+```
 
-  Now if you `reboot` the app server, the pet app will not come back up and the following error will be seen at the end of the `~/app.log` file:
+ここで、アプリケーション サーバーを `reboot` すると、ペット アプリケーションは起動せず、`~/app.log` ファイルの末尾に次のエラーが表示されます:
 
-  ```
-  ...
-  which: no javac in (/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
-  Error: JAVA_HOME is not defined correctly.
-  We cannot execute
-  ```
+```
+...
+which: no javac in (/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+Error: JAVA_HOME が正しく定義されていません。
+実行できません
+```
 
-  This is a realistic example of application impact that can be reversed by rolling back the upgrade.
+これは、アップグレードをロールバックすることで元に戻せるアプリケーションへの影響の現実的な例です。
 
-## Conclusion
+## まとめ
 
-Congratulations, you have trashed one of your app servers. Wasn't that fun?
+おめでとうございます。アプリケーションサーバーの 1 つが動かなくなりました。面白かったですか?
 
-In the next exercise, you will untrash it by rolling back the upgrade.
+次の演習では、アップグレードをロールバックして元の状態に戻します。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../2.4-check-pet-app/README.md) - [Next Exercise](../3.2-rollback/README.md)
+[前の演習](../2.4-check-pet-app/README.ja.md) - [次の演習](../3.2-rollback/README.ja.md)
 
-[Home](../README.md)
+[ホーム](../README.ja.md)
