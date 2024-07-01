@@ -148,6 +148,6 @@ RHEL7 および RHEL8 ペット サーバーに阻害要因が表示されなく
 
 **ナビゲーション**
 
-[Previous Exercise](../1.3-report/README.ja.md) - [Next Exercise](../1.5-custom-modules/README.ja.md)
+[前の演習](../1.3-report/README.ja.md) - [次の演習](../1.5-custom-modules/README.ja.md)
 
-[Home](../README.ja.md)
+[ホーム](../README.ja.md)
