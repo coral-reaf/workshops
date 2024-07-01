@@ -8,7 +8,7 @@
   - [ガイド](#ガイド)
     - [Step 1 - アップグレード Playbook のジョブログを確認する](#step-1---アップグレード-playbook-のジョブログを確認する)
     - [Step 2 - ホストが次の RHEL バージョンにアップグレードされたことを確認する](#step-2---ホストが次の-rhel-バージョンにアップグレードされたことを確認する)
-  - [結論](#結論)
+  - [まとめ](#まとめ)
 
 ## 目標
 
@@ -92,14 +92,8 @@ RHEL Web コンソールのブラウザー タブに戻り、リモート ホス
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
 [Previous Exercise](../2.1-upgrade/README.ja.md) - [Next Exercise](../2.4-check-pet-app/README.ja.md)
 
 [Home](../README.ja.md)
-
-**Navigation**
-
-[Previous Exercise](../2.1-upgrade/README.md) - [Next Exercise](../2.4-check-pet-app/README.md)
-
-[Home](../README.md)
