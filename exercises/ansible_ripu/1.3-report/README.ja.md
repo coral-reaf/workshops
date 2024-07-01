@@ -44,7 +44,7 @@
  
 - Leapp は、プレーン テキストの `leapp-report.txt` ファイルを書き込むだけでなく、JSON 形式の `leapp-report.json` ファイルも生成します。このファイルには、プレーンテキストファイルと同じレポート結果が含まれますが、Elastic/Kibana や Splunk などのログ管理ツールで取り込むのに最適な JSON 形式です。多くの大企業は、アップグレード前のレポート データをこれらのツールの 1 つにプッシュして、環境 (開発/テスト/本番など)、場所、アプリケーション ID、所有チームなどでレポートをフィルターできる独自のカスタム ダッシュボードを開発します。 <!-- FIXME: add Splunk example here when https://issues.redhat.com/browse/RIPU-35 gets done. -->
 
-### Step 2 - RHEL Web コンソールのナビゲート
+### Step 2 - RHEL Web コンソールの操作
 
 このワークショップでは、RHEL Web コンソールを使用して、生成した Leapp アップグレード前レポートにアクセスします。
 
