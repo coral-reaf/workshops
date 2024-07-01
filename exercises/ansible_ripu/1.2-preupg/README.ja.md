@@ -137,6 +137,6 @@ RHEL インプレースアップグレードオートメーションアプロー
 
 **ナビゲーション**
 
-[Previous Exercise](../1.1-setup/README.ja.md) - [Next Exercise](../1.3-report/README.ja.md)
+[前の演習](../1.1-setup/README.ja.md) - [次の演習](../1.3-report/README.ja.md)
 
-[Home](../README.ja.md)
+[ホーム](../README.ja.md)
