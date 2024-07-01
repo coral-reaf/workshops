@@ -159,6 +159,6 @@ Leapp カスタム アクターの開発に関する細かい詳細は、この�
 
 **ナビゲーター**
 
-[Previous Exercise](../1.4-remediate/README.ja.md) - [Next Exercise](../1.6-my-pet-app/README.ja.md)
+[前の演習](../1.4-remediate/README.ja.md) - [次の演習](../1.6-my-pet-app/README.ja.md)
 
-[Home](../README.ja.md)
+[ホーム](../README.ja.md)
