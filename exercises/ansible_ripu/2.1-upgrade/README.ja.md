@@ -75,6 +75,6 @@ RHEL インプレースアップグレードオートメーションフェーズ
 
 **Navigation**
 
-[Previous Exercise](../1.6-my-pet-app/README.ja.md) - [Next Exercise](../2.2-snapshots/README.ja.md)
+[前の演習](../1.6-my-pet-app/README.ja.md) - [次の演習](../2.2-snapshots/README.ja.md)
 
-[Home](../README.md)
+[ホーム](../README.md)
