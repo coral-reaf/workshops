@@ -1,60 +1,58 @@
-# Workshop Exercise - How is the Pet App Doing?
+## 目次
 
-## Table of Contents
+- [ワークショップ演習 - ペット アプリの調子はどうですか?](#workshop-exercise---how-is-the-pet-app-doing)
+  - [目次](#目次)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - ペットアプリケーションの再テスト](#step-1---ペットアプリケーションの再テスト)
+    - [Step 2 - データベースへのレコードの追加](#step-2---データベースへのレコードの追加)
+  - [まとめ](#まとめ)
 
-- [Workshop Exercise - How is the Pet App Doing?](#workshop-exercise---how-is-the-pet-app-doing)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - Retest our Pet Application](#step-1---retest-our-pet-application)
-    - [Step 2 - Add More Records to the Database](#step-2---add-more-records-to-the-database)
-  - [Conclusion](#conclusion)
+## 目標
 
-## Objectives
+* アップグレード後もペット アプリが期待どおりに機能していることを確認する
+* アプリ データベースに新しいレコードを追加して、ロールバック時に何が起こるかを確認する
 
-* Confirm our pet app is still functioning as expected after the upgrade
-* Add new records to the app database to see what happens when rolling back
+## ガイド
 
-## Guide
+[演習 1.6](../1.6-my-pet-app/README.ja.md)サンプルのペット アプリケーションをインストールし、その機能をテストしました。アプリケーション サーバーの RHEL バージョンをアップグレードしたので、影響があったかどうかを確認するために再テストしてみましょう。
 
-In [Exercise 1.6](../1.6-my-pet-app/README.md) we installed a sample pet application and tested its functionality. Now that we have upgraded the RHEL version of our app server, let's retest to see if there has been any impact.
+### Step 1 - ペットアプリケーションの再テスト
 
-### Step 1 - Retest our Pet Application
+前の演習の [Step 3](../1.6-my-pet-app/README.md#step-3---ペットアプリケーションのテスト) で行ったテストを繰り返します。
 
-It's time to repeat the testing you did for [Step 3](../1.6-my-pet-app/README.md#step-3---test-the-pet-application) in the previous exercise.
+- 通常は、以前と同じアドレスでアプリケーションの Web ユーザー インターフェイスにアクセスできるはずです。ブラウザー タブの 1 つでまだアプリが開いている場合は、ページを更新してみてください。
 
-- You should usually be able to access the application web user interface at the same address you used before. If you still have the app open in one of you browser tabs, try refreshing the page.
+> **注**
+>
+> ワークショップ用にプロビジョニングされた EC2 インスタンスの外部 IP アドレスは動的に割り当てられるため (つまり、DHCP を使用)、再起動後に Web ユーザー インターフェイスの URL が変更される可能性があります。その場合は、アプリケーション サーバーのシェル プロンプトで次のコマンドを実行して、アプリケーション Web ユーザー インターフェイスの新しい URL を確認します。
+>
+> ```
+> echo "http://$(curl -s ifconfig.me):8080"
+> ```
 
-  > **Note**
-  >
-  > Because the external IP addresses of the EC2 instances provisioned for the workshop are dynamically assigned (i.e., using DHCP), it is possible that the web user interface URL may change after a reboot. If that happens, run this command at the shell prompt of the app server to determine the new URL for the application web user interface:
-  >
-  > ```
-  > echo "http://$(curl -s ifconfig.me):8080"
-  > ```
+- 以前に [所有者の編集] ボタンまたは [新しいペットの追加] ボタンを使用してデータを変更したり、新しいレコードを追加したりしましたか? その場合は、そのデータがまだ存在し、正しく表示されているかどうかを確認します。
 
-- Did you previously use the "Edit Owner" or "Add New Pet" buttons to change any data or add new records? If so, check to see if that data is still there and displayed correctly.
+- アプリケーションの動作に変化が見られたり、アプリケーションがまったく動作しなかったりする場合は、問題のトラブルシューティングを行って、根本原因を絞り込みます。アップグレードをロールバックした後に再テストできるように、問題をメモしておきます。
 
-- If you observe any changes in your application behavior or the application isn't working at all, troubleshoot the issue to try to narrow down the root cause. Make note of any issues so you can retest after rolling back the upgrade.
+### Step 2 - データベースへのレコードの追加
 
-### Step 2 - Add More Records to the Database
+[演習 2.2](../2.2-snapshots/README.md) では、スナップショットのスコープにアプリケーション データを含めることの潜在的な落とし穴について検討しました。アップグレード後、最初はアプリに問題がないように見えたのに、アプリが本番環境に戻った後に問題が見つかった場合、どうなるか想像してみてください。
 
-In [Exercise 2.2](../2.2-snapshots/README.md), we considered the potential pitfalls of including app data in the scope of our snapshot. Imagine what would happen if your app at first appeared fine after the upgrade, but an issue was later discovered after the app had been returned to production use.
+- データベースに新しいレコードを追加します。たとえば、簡単に区別できるように、「Post Upgrade」という名前で新しいペット レコードを追加します。ワークショップの次のセクションで OS アップグレードを元に戻した後に何が起こるかを確認するために、このレコードを覚えておいてください。
 
-- Add a new record to the database. For example, add a new pet record with the name "Post Upgrade" to make it easy to distinguish. Remember this record to see what happens after we revert the OS upgrade in the next section of the workshop.
+- アップグレードでデータ更新がロールバックされた場合、ビジネスにどのような影響がありますか? これはまさに、このワークショップで展開されたペット アプリ サーバーに OS とアプリ データを分離するための個別のボリュームがないため、次に説明する問題です。
 
-- What will be the business impact if data updates are rolled back with the upgrade? That is exactly the problem we will demonstrate next because the pet app servers deployed in this workshop do not have separate volumes to isolate the OS from the app data.
+## 結論
 
-## Conclusion
+この演習では、RHEL インプレース アップグレードによってアプリケーションがそのまま残され、アップグレード後も期待どおりに機能することを確認しました。次に、アップグレードをロールバックした後に何が起こるかを示すために、新しいアプリ データをいくつか追加しました。
 
-In this exercise, we observed that the RHEL in-place upgrade left our application untouched and we found that it still works as expected after the upgrade. Then we added some new app data to demonstrate what will happen after rolling back the upgrade.
-
-This concludes the RHEL Upgrade section of the workshop. In the next and final section, we will be rolling back the RHEL upgrade, taking us right back to where we started.
+これで、ワークショップの RHEL アップグレード セクションは終了です。次の最後のセクションでは、RHEL アップグレードをロールバックして、開始した場所に戻ります。
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../2.3-check-upg/README.md) - [Next Exercise](../3.1-rm-rf/README.md)
+[前の演習](../2.3-check-upg/README.ja.md) - [次の演習](../3.1-rm-rf/README.ja.md)
 
-[Home](../README.md)
+[ホーム](../README.ja.md)
