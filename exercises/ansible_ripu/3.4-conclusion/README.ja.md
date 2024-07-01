@@ -1,90 +1,90 @@
-# Workshop Exercise - Rinse and Repeat
+# ワークショップ演習 - 繰り返し
 
-## Table of Contents
+## 目次
 
-- [Workshop Exercise - Rinse and Repeat](#workshop-exercise---rinse-and-repeat)
-  - [Table of Contents](#table-of-contents)
-  - [Objectives](#objectives)
-  - [Guide](#guide)
-    - [Step 1 - What You Learned](#step-1---what-you-learned)
-    - [Step 2 - Activities for Extra Credit](#step-2---activities-for-extra-credit)
-    - [Step 3 - Look at the Code](#step-3---look-at-the-code)
-      - [redhat-cop/infra.leapp](#redhat-copinfraleapp)
+- [ワークショップ演習 - 繰り返し](#ワークショップ演習---繰り返し)
+  - [目次](#目次)
+  - [目標](#目標)
+  - [ガイド](#ガイド)
+    - [Step 1 - 学習内容](#step-1---学習内容)
+    - [Step 2 - 追加クレジットのアクティビティ](#step-2---activities-for-extra-credit)
+    - [Step 3 - コードの確認](#step-3---look-at-the-code)
+      - [redhat-c​​op/infra.leapp](#redhat-c​​opinfraleapp)
       - [oamg/leapp-supplements](#oamgleapp-supplements)
       - [redhat-partner-tech/leapp-project](#redhat-partner-techleapp-project)
       - [swapdisk/snapshot](#swapdisksnapshot)
-  - [Thank You!](#thank-you)
+  - [ありがとうございました!](#ありがとうございました！)
 
-## Objectives
+## 目標
 
-* Review what we have learned in this workshop
-* Consider ideas for further exploration
-* Look at the code and get involved upstream
+* このワークショップで学んだことを復習する
+* さらなる探求のためのアイデアを検討する
+* コードを確認し、アップストリームに参加する
 
-## Guide
+## ガイド
 
-Congratulations! You have reached the end of the RHEL In-place Upgrade Automation Workshop. You are now armed with the knowledge needed to start developing an automation solution to help your organization manage RHEL upgrades at scale.
+おめでとうございます! RHEL インプレース アップグレード自動化ワークショップはこれで終了です。これで、組織が大規模な RHEL アップグレードを管理するのに役立つ自動化ソリューションの開発を開始するために必要な知識が身につきました。
 
-Let's review what we learned and think about what's next.
+学んだことを復習し、次に何をするかを考えてみましょう。
 
-### Step 1 - What You Learned
+### Step 1 - 学習内容
 
-With this workshop, you gained hands-on experience while learning about a prescriptive approach to automating RHEL in-place upgrades.
+このワークショップでは、RHEL インプレース アップグレードを自動化するための規範的なアプローチについて学びながら、実践的な経験を積むことができました。
 
-- You upgraded only a handful of RHEL cloud instances while progressing through the workshop exercises, but with the power of an enterprise deployment of AAP, this approach can be rolled out at scale across a large fleet of RHEL hosts.
+- ワークショップの演習を進める中で、RHEL クラウド インスタンスを少数アップグレードしただけですが、AAP のエンタープライズ デプロイメントの力により、このアプローチを大規模な RHEL ホスト全体に展開できます。
 
-- You learned why automated snapshot/rollback is one of the most important capabilities required to successfully deliver RHEL in-place upgrade automation. Snapshots not only eliminate the risk and anxiety experienced by an app team facing a RHEL upgrade, but they also help accelerate the development of robust upgrade automation playbooks.
+- 自動化されたスナップショット/ロールバックが、RHEL インプレース アップグレード自動化を正常に提供するために必要な最も重要な機能の 1 つである理由を学びました。スナップショットは、RHEL アップグレードに直面するアプリ チームが経験するリスクと不安を排除するだけでなく、堅牢なアップグレード自動化プレイブックの開発を加速するのにも役立ちます。
 
-- You also learned about the custom automation that must be developed to deal with the complex requirements of a large enterprise environment. We demonstrated a few examples of this including using Leapp custom actors for reporting special pre-upgrade checks as well as running Ansible playbooks to handle common remediations and third-party tools and agents.
+- また、大規模なエンタープライズ環境の複雑な要件に対処するために開発する必要があるカスタム自動化についても学びました。特別なアップグレード前チェックを報告するための Leapp カスタム アクターの使用、一般的な修復とサードパーティのツールおよびエージェントを処理するための Ansible Playbook の実行など、この例をいくつか示しました。
 
-- But the most important lesson we learned is "You can do this!"
+- しかし、私たちが学んだ最も重要な教訓は、「これはできる！」ということです。
 
-### Step 2 - Activities for Extra Credit
+### Step 2 - 追加クレジットのアクティビティ
 
-Hopefully, this workshop has opened your eyes to what is possible, but we have just scratched the surface.
+このワークショップで、何ができるかについて理解していただけたと思いますが、まだ表面をなぞっただけです。
 
-- Is it possible to upgrade from RHEL7 to RHEL9? While the Leapp framework doesn't support a "double upgrade" directly, it is possible to take a host that was upgraded from RHEL7 to RHEL8 and then upgrade it from there to RHEL9. You can try this with one of the pet app instances in the workshop lab.
+- RHEL7 から RHEL9 にアップグレードすることは可能ですか? Leapp フレームワークは "ダブル アップグレード" を直接サポートしていませんが、RHEL7 から RHEL8 にアップグレードしたホストを、そこから RHEL9 にアップグレードすることは可能です。ワークショップ ラボのペットアプリインスタンスの 1 つでこれを試すことができます。
 
-  There are a couple things to be aware of if you want to try it. You will first need to run the "AUTO / 04 Commit" playbook job template. This job will delete the snapshot created for your RHEL7 to RHEL8 upgrade, so be sure you are happy with everything before you do this. While rolling back to RHEL7 will then be impossible, you will be able to roll back to RHEL8 if needed after upgrading to RHEL9.
+試してみる場合は、注意すべき点がいくつかあります。まず、"AUTO / 04 Commit" プレイブック ジョブ テンプレートを実行する必要があります。このジョブは、RHEL7 から RHEL8 へのアップグレード用に作成されたスナップショットを削除するので、これを行う前にすべてに問題がないことを確認してください。その後、RHEL7 にロールバックすることはできなくなりますが、RHEL9 にアップグレードした後、必要に応じて RHEL8 にロールバックできます。
 
-  Another consideration with going from RHEL7 to RHEL9 is the increased risk of application impacts. While RHEL system library forward binary compatibility is really solid between each RHEL major version, "N+2" compatibility is not guaranteed. Of course, the only way to know for sure is try it!
+RHEL7 から RHEL9 に移行する際のもう 1 つの考慮事項は、アプリケーションへの影響のリスクが増大することです。 RHEL システム ライブラリのバイナリ前方互換性は各 RHEL メジャー バージョン間で非常に堅固ですが、"N+2" 互換性は保証されていません。もちろん、確実に知る唯一の方法は試してみることです。
 
-- If you skipped over any of the optional exercises, it's not too late to go back and try them now:
-  - [Exercise 1.5 - Custom Pre-upgrade Checks](../1.5-custom-modules/README.md)
-  - [Exercise 1.6 - Deploy a Pet App](../1.6-my-pet-app/README.md)
-  - [Exercise 2.4 - How is the Pet App Doing?](../2.4-check-pet-app/README.md)
-  - [Exercise 3.1 - Trash the Instance](../3.1-rm-rf/README.md)
+- オプションの演習のいずれかをスキップした場合、今から実施することも可能です。
+- [演習 1.5 - カスタムのアップグレード前チェック](../1.5-custom-modules/README.ja.md)
+- [演習 1.6 - ペットアプリのデプロイ](../1.6-my-pet-app/README.ja.md)
+- [演習 2.4 - ペットアプリの状態は?](../2.4-check-pet-app/README.ja.md)
+- [演習 3.1 - インスタンスを壊す](../3.1-rm-rf/README.ja.md)
 
-- The workshop lab environment is now yours to play with. Dream up your own ideas for additional learning and experimentation. Remember you can upgrade and roll back as often as you like. Rinse and repeat!
+- これで、ワークショップ ラボ環境を自由に操作できるようになりました。さらなる学習と実験のために、独自のアイデアを考え出してください。好きなだけアップグレードとロールバックができることを覚えておいてください。繰り返しましょう。
 
-### Step 3 - Look at the Code
+### Step 3 - コードの確認
 
-All of the Ansible roles and playbooks used in this workshop are maintained in upstream repositories that can be found on GitHub. Take some time to review the code and get engaged with the communities supporting these resources.
+このワークショップで使用されるすべての Ansible Role と Playbook は、GitHub にあるアップストリーム リポジトリで管理されています。時間をかけてコードを確認し、これらのリソースをサポートするコミュニティに参加してください。
 
-#### [redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp)
+#### [redhat-c​​op/infra.leapp](https://github.com/redhat-c​​op/infra.leapp)
 
-- The `infra.leapp` collection provides the Ansible role that generates the pre-upgrade reports and another that is used to perform the RHEL upgrades. This collection uses the Leapp framework for upgrades from RHEL7 and later, but also supports upgrading from RHEL6 using the older Red Hat Upgrade Tool. The collection is published on Ansible Galaxy [here](https://galaxy.ansible.com/infra/leapp) and also available from Ansible Automation Hub validated content [here](https://console.redhat.com/ansible/automation-hub/repo/validated/infra/leapp/). If you are planning to do RHEL in-place upgrades for your organization, these roles will help you quickly roll out proof-of-concept automation and start upgrading.
+- `infra.leapp` コレクションは、アップグレード前のレポートを生成する Ansible Role と、RHEL アップグレードを実行するために使用される別の Role を提供します。このコレクションは、RHEL7 以降からのアップグレードに Leapp フレームワークを使用しますが、古い Red Hat アップグレード ツールを使用して RHEL6 からのアップグレードもサポートします。このコレクションは、Ansible Galaxy [こちら](https://galaxy.ansible.com/infra/leapp) で公開されており、Ansible Automation Hub の検証済みコンテンツ [こちら](https://console.redhat.com/ansible/automation-hub/repo/validated/infra/leapp/) からも入手できます。組織で RHEL のインプレース アップグレードを計画している場合、これらのロールは概念実証の自動化を迅速に展開し、アップグレードを開始するのに役立ちます。
 
 #### [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements)
 
-- Leapp Supplements is a repository of example Leapp custom actors. The CheckRebootHygiene actor that was demonstrated in the optional [Custom Pre-upgrade Checks](../1.5-custom-modules/README.md) exercise is maintained here. There is also a Makefile and RPM spec file that can be used to build packages for installing your Leapp custom actors.
+- Leapp Supplements は、Leapp カスタム アクターのサンプルのリポジトリです。オプションの [カスタム アップグレード前チェック](../1.5-custom-modules/README.ja.md) 演習で示された CheckRebootHygiene アクターは、ここで管理されています。また、Leapp カスタム アクターをインストールするためのパッケージをビルドするために使用できる Makefile と RPM 仕様ファイルもあります。
 
 #### [redhat-partner-tech/leapp-project](https://github.com/redhat-partner-tech/leapp-project)
 
-- This is where you will find all of the AAP job templates and Ansible playbooks included in the workshop. You can also explore the infrastructure as code (IaC) magic that is used to provision the workshop lab environment.
+- ここには、ワークショップに含まれるすべての AAP ジョブ テンプレートと Ansible プレイブックがあります。また、ワークショップ ラボ環境のプロビジョニングに使用されるインフラストラクチャ アズ コード (IaC) マジックを調べることもできます。
 
 #### [swapdisk/snapshot](https://github.com/swapdisk/snapshot)
 
-- Here you will find work in progress on a new Ansible role for managing snapshot sets using LVM. If you are interested in automating LVM snapshots as explained in the [Let's Talk About Snapshots](../2.2-snapshots/README.md#lvm) exercise, connect with the authors of this project to get in on the action.
+- ここでは、LVM を使用してスナップショット セットを管理するための新しい Ansible ロールの作業が進行中です。 [スナップショットについてお話ししましょう](../2.2-snapshots/README.ja.md#lvm) 演習で説明されているように、LVM スナップショットの自動化に興味がある場合は、このプロジェクトの著者と連絡を取り、アクションに参加してください。
 
-## Thank You!
+## ありがとうございました！
 
-If you enjoyed this workshop, please take a moment to give it a 5-star rating or write a review. If you have any ideas for improvements or new features, don't hesitate to raise an issue [here](https://github.com/ansible/workshops/issues/new/choose) tagging @swapdisk and @heatmiser. All ideas and feedback are welcome!
+このワークショップをお楽しみいただけた場合は、5 つ星の評価を付けるか、レビューを書いてください。改善や新機能のアイデアがある場合は、[こちら](https://github.com/ansible/workshops/issues/new/choose) で @swapdisk と @heatmiser をタグ付けして、遠慮なく問題を提起してください。すべてのアイデアとフィードバックを歓迎します!
 
 ---
 
-**Navigation**
+**ナビゲーション**
 
-[Previous Exercise](../3.3-check-undo/README.md)
+[前の演習](../3.3-check-undo/README.ja.md)
 
-[Home](../README.md)
+[ホーム](../README.ja.md)
