@@ -42,7 +42,7 @@
 
 Visual Studio Code (VS Code) を使用します。これは、Web ブラウザーを使用してファイルを編集したり、ターミナル セッションにアクセスしたりするための便利で直感的な方法を提供するためです。コマンド ラインに精通していて、VS Code が気に入らない場合は、直接 SSH アクセスを利用できます。さらに明確にする必要がある場合は、YouTube の短い説明ビデオがあります: <a href="https://youtu.be/Y_Gx4ZBfcuk">Ansible Workshops - Accessing your workbench environment</a>.
 
-- 講師から提供されたワークショップ起動ページの「VS Code アクセス」の下にある「WebUI」リンクを使用して、Web ブラウザーで VS Code を開くことができます。パスワードはリンクの下に記載されています。例:
+- 講師から提供されたワークショップ起動ページの "VS Code アクセス" の下にある "WebUI" リンクを使用して、Web ブラウザーで VS Code を開くことができます。パスワードはリンクの下に記載されています。例:
 
   ![Example link to VS Code WebUI](images/vscode_link.png)
 
