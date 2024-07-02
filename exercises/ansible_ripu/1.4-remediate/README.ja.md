@@ -51,6 +51,10 @@ Leapp フレームワークは、ユーザー入力の選択を受け入れる�
 
 - [演習 1.2 - アップグレード前のジョブの実行](../1.2-preupg/README.ja.md) では、`infra.leapp` Ansible コレクションの `analysis` Role を使用してアップグレード前のレポートを実行する Playbook を起動しました。 [このロールのドキュメント](https://github.com/redhat-c​​op/infra.leapp/blob/main/roles/analysis/README.md) をご覧ください。`leapp_answerfile` 入力変数がサポートされている場所がわかりますか。変数を設定すると、Leapp 応答ファイルが自動的に入力されます。
 
+
+ [documentation for this role](https://github.com/redhat-cop/infra.leapp/blob/main/roles/analysis/README.md)
+
+ 
 - この変数を定義して、アップグレード前のジョブを再度実行してみましょう。 [演習 1.2、ステップ 2](../1.2-preupg/README.ja.md#step-2---aap-を使った分析-playbook-ジョブの起動) で実行したのと同じように、"AUTO / 01 Analysis" ジョブ テンプレートを起動します。ただし、今回は、変数プロンプトが表示されたときに次の設定を追加します:
 
 ```json
