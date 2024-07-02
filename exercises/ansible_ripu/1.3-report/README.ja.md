@@ -48,7 +48,7 @@
 
 このワークショップでは、RHEL Web コンソールを使用して、生成した Leapp アップグレード前レポートにアクセスします。
 
-- [Exercise 1.1, Step 4](../1.1-setup/README.ja.md#step-4---access-the-rhel-web-console) で開いた RHEL Web コンソールのブラウザー タブに戻ります。これは AAP コントローラー ホストの RHEL Web コンソールですが、アップグレード前レポートを表示するには、ペット アプリケーション サーバー ホストにアクセスする必要があります。これを行うには、RHEL Web コンソールの左上隅にある "student&#8203;@&#8203;ansible-1.example.com" ボックスをクリックして、リモートホストメニューを表示します。例:
+- [Exercise 1.1, Step 4](../1.1-setup/README.ja.md#step-4---rhel-web-コンソールへのアクセス) で開いた RHEL Web コンソールのブラウザー タブに戻ります。これは AAP コントローラー ホストの RHEL Web コンソールですが、アップグレード前レポートを表示するには、ペット アプリケーション サーバー ホストにアクセスする必要があります。これを行うには、RHEL Web コンソールの左上隅にある "student&#8203;@&#8203;ansible-1.example.com" ボックスをクリックして、リモートホストメニューを表示します。例:
 
   ![Remote host menu listing all pet app servers](images/remote_host_menu_with_pets.svg)
 
