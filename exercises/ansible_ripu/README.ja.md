@@ -10,7 +10,7 @@
 
 ## 目次
 
-- [RHEL In-place Upgrade Automation ワークショップ](#rhel-in-place-upgrade-automation-workshop)
+- [RHEL インプレース・アップグレード・オートメーションワークショップ](#rhel-インプレース・アップグレード・オートメーションワークショップ)
   - [目次](#目次)
   - [プレゼンテーション](#プレゼンテーション)
   - [タイムプランニング](#タイムプランニング)
