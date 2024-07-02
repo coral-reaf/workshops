@@ -29,7 +29,7 @@
 
 Red Hat Enterprise Linux (RHEL) には、Leapp ユーティリティが付属しています。これは、自動化アプローチでオペレーティング システムを次のメジャー バージョンにアップグレードするために使用する基盤となるフレームワークです。[Leapp documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/upgrading_from_rhel_7_to_rhel_8/index) では、Leapp フレームワークを使用して RHEL ホストを手動でアップグレードする方法について説明しています。アップグレードする RHEL ホストが数台しかない場合はこれで問題ありませんが、数万台の RHEL ホストがある大企業の場合はどうでしょうか。手動プロセスは拡張できません。自動化を使用すると、RHEL ホストのアップグレードのエンドツーエンドのプロセスは数日に短縮され、実際のアップグレードに必要なダウンタイムの合計は数時間以内になります。
 
-当社の RHEL インプレース アップグレード自動化アプローチは、3 つのフェーズから成るワークフローに従います。:
+当社の RHEL インプレース アップグレードオートメーションのアプローチは、3 つのフェーズから成るワークフローに従います。:
 
 ![3 フェーズ ワークフロー: Analysis, Upgrade, Commit](images/ripu-workflow.svg)
 
