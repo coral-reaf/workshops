@@ -73,4 +73,4 @@
 
 **ナビゲーション**
 
-[Next Exercise](1.1-setup/README.ja.md)
+[次の演習](1.1-setup/README.ja.md)
