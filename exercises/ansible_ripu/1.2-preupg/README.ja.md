@@ -52,7 +52,7 @@ Analysis Phase が完了し、レポートが許容可能なリスク内に収�
 
 #### コミット
 
-スケジュールされたメンテナンス ウィンドウ内で簡単に修正できないアプリケーションへの影響が見つかった場合は、スナップショットをロールバックしてアップグレードを元に戻す決定を下すことができます。これにより、すべての変更が元に戻り、ホストが以前の RHEL バージョンに戻ります。すぐに問題が見つからない場合は、コミット フェーズが開始されます。コミット フェーズでは、後で問題が見つかった場合に備えてスナップショットを保持しながら、ホストを通常の操作に戻すことができます。 <!-- This is LVM specific: However, while the snapshots are kept, regular disk writes to the rootvg volume group will continue to consume the free space allocated to the snapshots. The amount of time this takes will depend on the amount of free space initially available and the volume of write i/o activity to the rootvg volume group. Before the snapshot space is exhausted, the snapshots must be deleted and then there is no turning back. --> アップグレードされたホストが問題ないことが確認されたら、スナップショットを削除します。これで RHEL インプレースアップグレードが完了となります。
+スケジュールされたメンテナンス ウィンドウ内で簡単に修正できないアプリケーションへの影響が見つかった場合は、スナップショットをロールバックしてアップグレードを元に戻す決定を下すことができます。これにより、すべての変更が元に戻り、ホストが以前の RHEL バージョンに戻ります。すぐに問題が見つからない場合は、Commit Phase が開始可能となります。Commit Phase では、後で問題が見つかった場合に備えてスナップショットを保持しながら、ホストを通常の操作に戻すことができます。 <!-- This is LVM specific: However, while the snapshots are kept, regular disk writes to the rootvg volume group will continue to consume the free space allocated to the snapshots. The amount of time this takes will depend on the amount of free space initially available and the volume of write i/o activity to the rootvg volume group. Before the snapshot space is exhausted, the snapshots must be deleted and then there is no turning back. --> アップグレードされたホストが問題ないことが確認されたら、スナップショットを削除します。これで RHEL インプレースアップグレードが完了となります。
 
 #### 始めましょう
 
