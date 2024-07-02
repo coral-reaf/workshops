@@ -95,28 +95,28 @@ Leapp フレームワークは、ユーザー入力の選択を受け入れる�
 - シェルにログインして設定ファイルを `vi` で編集しても良いのですがスケールしません。ということで、必要な修復を自動化する Playbook を作成しましょう。次のタスクでうまくいきます:
 
 ```yaml
-- name: sshd を構成する
-ansible.builtin.lineinfile:
-path: "/etc/ssh/sshd_config"
-regex: "^(#)?{{ item.key }}"
-line: "{{ item.key }} {{ item.value }}"
-state: present
-loop:
-- {key: "PermitRootLogin", value: "prohibit-password"}
-- {key: "PasswordAuthentication", value: "no"}
-notification:
-- sshd を再起動
+  - name: Configure sshd
+    ansible.builtin.lineinfile:
+      path: "/etc/ssh/sshd_config"
+      regex: "^(#)?{{ item.key }}"
+      line: "{{ item.key }} {{ item.value }}"
+      state: present
+    loop:
+      - {key: "PermitRootLogin", value: "prohibit-password"}
+      - {key: "PasswordAuthentication", value: "no"}
+    notify:
+      - Restart sshd
 ```
 
 ついでに、`leapp answer` コマンドを使用して、応答ファイル インヒビターを処理するタスクも追加しましょう。例:
 
 ```yaml
-- name: Remove pam_pkcs11 module
-ansible.builtin.shell: |
-set -o pipefail
-leapp answer --section remove_pam_pkcs11_module_check.confirm=True
-args:
-executable: /bin/bash
+  - name: Remove pam_pkcs11 module
+    ansible.builtin.shell: |
+      set -o pipefail
+      leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+    args:
+      executable: /bin/bash
 ```
 
 - 上記のタスクは、Playbook  [`remediate_rhel7.yml`](https://github.com/redhat-partner-tech/leapp-project/blob/main/remediate_rhel7.yml#L21-L38) にあります。この Playbook には、さらにいくつかの修復タスクの例もあります。この Playbook を実行するために、"OS / Remediate" ジョブ テンプレートがすでに設定されているので、それを使用して RHEL7 ホストを修復しましょう。
