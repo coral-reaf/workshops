@@ -121,7 +121,7 @@ RHEL インプレースアップグレードオートメーションアプロー
 
 - AAP Web UI に戻り、リソース > テンプレート > AUTO / 01 分析 に移動します。"詳細" タブの下に、ジョブの送信に使用されるときにこのジョブ テンプレートが実行する Playbook の名前を含む " Playbook" 設定が表示されます。 Playbookの名前は `analysis.yml` です。GitHub ブラウザ タブで、git リポジトリのファイルにリストされている `analysis.yml` を見つけることが出来ます。
 
-- Playbookの `Run RIPU preupg` が `infra.leapp` Ansible コレクションからロールをインポートしていることに注意してください。Git リポジトリの `collections/requirements.yml` ファイルを確認すると、このロールが [https://github.com/redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp)  にある別の Git リポジトリから来ていることがわかります。この 2 番目の Git リポジトリの `analysis` ロールは、最終的に Leapp のアップグレード前スキャンを実行してレポートを生成するすべての自動化タスクを提供します。
+- Playbook の下部で、Ansible コレクションから、`infra.leapp` Role をインポートしていることに注意してください。Git リポジトリの `collections/requirements.yml` ファイルを確認すると、この Role が [https://github.com/redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp)  にある別の Git リポジトリから来ていることがわかります。この Role の中に定義されている `analysis` Role は、最終的に Leapp のアップグレード前スキャンを実行してレポートを生成する際の自動化タスクを提供します。
 
 - この Git リポジトリの `roles/analysis` ディレクトリにドリルダウンして、README および yaml ソース ファイルを確認します。
 
