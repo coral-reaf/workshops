@@ -154,7 +154,7 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
 
   ![Details view of possible problems with remote login using root account inhibitor finding](images/root_account_inhibitor.svg)
 
-  阻害要因の検出では、阻害要因を解決するための措置を講じないと、Leapp フレームワークによって RHEL インプレース アップグレードが先に進めなくなることに注意してください。
+  阻害要因が検出された場合、この問題を解決しない限り Leapp フレームワークを利用した RHEL インプレースアップグレードが出来ないことに注意してください。
 
 - もう 1 つの阻害要因は、"Missing required answers in the answer file" という検出です。これに関する詳細は次のとおりです。:
 
