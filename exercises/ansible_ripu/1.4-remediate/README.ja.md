@@ -47,7 +47,7 @@
 
 ### ステップ 2 - Leapp 回答ファイルの管理
 
-Leapp フレームワークは、ユーザー入力の選択を受け入れる手段として回答ファイルを使用します。これについては、Leapp 開発者ドキュメントの [Asking user questions](https://leapp.readthedocs.io/en/latest/dialogs.html) セクションで詳しく説明されています。前のステップで分析した阻害要因の検出結果は、私たちに決定を求めています。より具体的には、RHEL アップグレード中に Leapp が pam_pkcs11 PAM モジュールを無効にすることを認識していることを確認するように求めています。
+Leapp フレームワークは、ユーザー入力の選択を受け入れる手段として回答ファイルを使用します。これについては、Leapp 開発者ドキュメントの [Asking user questions](https://leapp.readthedocs.io/en/latest/dialogs.html) セクションで詳しく説明されています。前のステップで分析した阻害要因の検出結果は、私たちに回避のための決断を求めています。より具体的には、RHEL アップグレード中に Leapp が pam_pkcs11 PAM モジュールを無効にすることについて確認するように求めています。
 
 - [演習 1.2 - アップグレード前のジョブの実行](../1.2-preupg/README.ja.md) では、`infra.leapp` Ansible コレクションの `analysis` Role を使用してアップグレード前のレポートを実行する Playbook を起動しました。 [role のドキュメント](https://github.com/redhat-cop/infra.leapp/blob/main/roles/analysis/README.md) をご覧ください。`leapp_answerfile` 入力変数がサポートされている場所がわかりますか。変数を設定すると、Leapp 応答ファイルが自動的に入力されます。
  
