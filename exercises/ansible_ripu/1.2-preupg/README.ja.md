@@ -37,7 +37,7 @@ Red Hat Enterprise Linux (RHEL) には、Leapp ユーティリティが付属し
 >
 > <sub>![arrow pointing down at server](images/playbook_icon.svg)</sub> は、Ansible Playbook によって自動化されるワークフロー ステップを示します。
 
-#### 分析
+#### Analysis Phase
 
 Analysis Phase では、まだ変更は行われません。分析 Playbook が実行されると、Leapp ユーティリティを使用して、アップグレードの成功を妨げる可能性のある問題や障害がホストでスキャンされます。次に、見つかった潜在的なリスクをリストした詳細なレポートが生成されます。レポートには、報告された問題がアップグレードに影響を与える可能性を減らすために従うべき推奨アクションも含まれています。推奨される修復アクションが実行された場合は、リスクが解決されていることを確認するために分析スキャンを再度実行する必要があります。この反復は、レポートを確認する全員が残りの調査結果が許容できると確信するまで続けられます。
 
@@ -46,11 +46,11 @@ Analysis Phase では、まだ変更は行われません。分析 Playbook が�
  In addition to upgrade risks that could impact the success of the upgrade, the report also indicates if there is enough free space to support the snapshot configuration required in case rolling back is required. If there is not enough free space, temporarily space should be made available, for example, by adding an additional virtual disk to the rootvg volume group. Removing /var/crash or other non-critical filesystems under the rootvg volume group is another option. It is strongly recommended to to make space so that a snapshot rollback is possible just in case.
 -->
 
-#### アップグレード
+#### Upgrade Phase
 
 Analysis Phase が完了し、レポートが許容可能なリスク内に収まったら、メンテナンスウィンドウをスケジュールして Upgrade Phase を開始することができます。このフェーズでは、ワークフロージョブ テンプレートを使用してアップグレード Playbook が実行されます。最初の Playbook は、アップグレードで問題が発生した場合にロールバックに使用できるスナップショットを作成します。スナップショットが作成されると、2 番目の Playbook は Leapp ユーティリティを使用してアップグレードを実行し、RHEL OS を新しいメジャー バージョンに進めます。アップグレード中は、ホストにログインしたりアプリケーションにアクセスしたりすることはできません。アップグレードが完了すると、ホストは新しくアップグレードされた RHEL メジャー バージョンで再起動します。これで、運用チームとアプリケーション チームは、すべてのアプリケーション サービスが期待どおりに動作していることを確認し、アップグレードが成功したかどうかを評価できます。
 
-#### コミット
+#### Commit Phase
 
 スケジュールされたメンテナンス ウィンドウ内で簡単に修正できないアプリケーションへの影響が見つかった場合は、スナップショットをロールバックしてアップグレードを元に戻す決定を下すことができます。これにより、すべての変更が元に戻り、ホストが以前の RHEL バージョンに戻ります。すぐに問題が見つからない場合は、Commit Phase が開始可能となります。Commit Phase では、後で問題が見つかった場合に備えてスナップショットを保持しながら、ホストを通常の操作に戻すことができます。 <!-- This is LVM specific: However, while the snapshots are kept, regular disk writes to the rootvg volume group will continue to consume the free space allocated to the snapshots. The amount of time this takes will depend on the amount of free space initially available and the volume of write i/o activity to the rootvg volume group. Before the snapshot space is exhausted, the snapshots must be deleted and then there is no turning back. --> アップグレードされたホストが問題ないことが確認されたら、スナップショットを削除します。これで RHEL インプレースアップグレードが完了となります。
 
