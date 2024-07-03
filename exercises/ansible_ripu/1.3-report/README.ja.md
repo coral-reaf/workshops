@@ -150,7 +150,7 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
 
   この検出結果は、システム提供の Python インタープリターを使用しているペット サーバー上のアプリがある場合に問題になる可能性があります。そのようなアプリがない場合は、この検出結果を無視できます。
   
-- これで、2 つの阻害要因の検出結果が残ります。1 つ目は、"Possible problems with remote login using root account" という検出結果です。おわかりですね。結果をクリックすると詳細が表示されます: 
+- では、2 つの阻害要因を見てみましょう。1 つ目は、"Possible problems with remote login using root account" という検出結果です。結果をクリックすると詳細が表示されます: 
 
   ![Details view of possible problems with remote login using root account inhibitor finding](images/root_account_inhibitor.svg)
 
