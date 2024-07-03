@@ -38,7 +38,7 @@
   >
   > 上下矢印キーを使用してファイルをスクロールし、`less` コマンドを終了する準備が出来たら `q` と入力します。
 
-- RHEL ホストが [Red Hat Insights](https://www.redhat.com/en/technologies/management/insights) に登録されている場合、Insights コンソールで Leapp のアップグレード前レポートを確認できます。このワークショップ用にプロビジョニングされたペット アプリ サーバーは Insights に登録されていないため、この演習で試すことはできませんがブログ記事 [Take the unknowns out of RHEL upgrades with Red Hat Insights](https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights) を読んで、Insights を使用して Leapp のアップグレード前を確認および管理する方法の例を確認してください。
+- RHEL ホストが [Red Hat Insights](https://www.redhat.com/en/technologies/management/insights) に登録されている場合、Insights コンソールで Leapp のアップグレード前レポートを確認できます。このワークショップで利用する、ペットアプリサーバーは Insights に登録されていないため、この演習で試すことはできませんがブログ記事 [Take the unknowns out of RHEL upgrades with Red Hat Insights](https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights) を読んで、Insights を使用して Leapp のアップグレード前を確認および管理する方法の例を確認してください。
 
 - RHEL には [Cockpit](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/managing_systems_using_the_rhel_8_web_console/index#what-is-the-RHEL-web-console_getting-started-with-the-rhel-8-web-console) に基づくオプションの管理 Web コンソールが含まれており、これを RHEL Web コンソールと呼んでいます。この演習の次のステップでは、RHEL Web コンソールを使用して Leapp のアップグレード前レポートを確認する方法について説明します。
  
@@ -68,7 +68,7 @@
 
   ![You now have administrative access](images/administrative_access.svg)
 
-- さまざまなペット アプリ サーバーの RHEL Web コンソールで使用できるナビゲーション メニューを少し調べてください。コンソールの操作とホストの切り替えに慣れたら、次のステップに進み、最初のアップグレード前レポートを確認します。
+- さまざまなペットアプリサーバーの RHEL Web コンソールで使用できるナビゲーション メニューを少し調べてください。コンソールの操作とホストの切り替えに慣れたら、次のステップに進み、最初のアップグレード前レポートを確認します。
 
 ### Step 3 - RHEL8 ホストの Leapp アップグレード前レポートのレビュー
 
@@ -90,7 +90,8 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
   >
   > このワークショップの作成以降にリリースされた Leapp フレームワークおよびその他の RHEL パッケージの更新により、レポートの内容が上記の例と異なる場合があります。ワークショップの演習の流れを大幅に妨げる違いが見つかった場合は、 [here](https://github.com/ansible/workshops/issues/new) で問題を提起してお知らせください。
 
-- アップグレード前レポートが生成されると、Leapp フレームワークはシステム データを収集し、多数のチェックに基づいてアップグレード可能性を評価します。これらのチェックのいずれかで潜在的なリスクが明らかになった場合、レポートに検出結果が記録されます。これらの検出結果は、リスクの高いものから低いものの順にリストされます。上記のレポートでは、リスクの高い検出結果が 3 つあります。それぞれ確認してみましょう。
+- アップグレード前レポートが生成されると、Leapp フレームワークはシステム データを収集し、多数のチェックに基づいてアップグレード可能性を評価します。これらのチェックのいずれかで潜在的なリスクが明らかになった場合、レポートに検出結果が記録されます。これらの検出結果は、リスクの高いものから低いものの順にリストされます。上記のレポートでは、リスクの高い検出結果が 3 つ（もしくは 4つ）あります。それぞれ確認してみましょう。
+　※ 表示されるリスクは、ラボ環境の変化により変わります。恐らく皆さんの環境で表示されているものは異なるものだと思いますが、以下、柔軟に自身のラボ環境で表示されているリスクに読み替えて確認いただければと思います。重要なポイントは、RHEL 8 では、阻害要因となるリスクは無い、つまりこのままアップデートを行っても良いと判断できるということです。
 
 - 最初にリストされている検出結果のタイトルは "Leapp could not identify where GRUB core is located." です。リスト内の検出結果をクリックすると、その詳細を表示できます。たとえば、最初の検出結果をクリックすると、次の詳細が表示されます。:
 
