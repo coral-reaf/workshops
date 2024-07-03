@@ -7,7 +7,7 @@
   - [目的](#objectives)
   - [ガイド](#guide)
     - [ステップ 1 - 阻害要因を解決するためのオプションを検討する](#step-1---explore-options-for-resolving-inhibitors)
-    - [ステップ 2 - Leapp 回答ファイルの管理](#step-2---managing-the-leapp-answer-file)
+    - [ステップ 2 - Leapp 応答ファイルの管理](#step-2---managing-the-leapp-answer-file)
     - [ステップ 3 - 修復プレイブックを使用して阻害要因を解決する](#step-3---resolving-inhibitors-using-a-remediation-playbook)
   - [結論](#conclusion)
 
@@ -29,7 +29,7 @@
 
 - まず、阻害要因の 1 つを分析してみましょう:
 
-![回答ファイルで必要な回答が不足している詳細ビュー](images/missing_answers_dissected.svg)
+![応答ファイルで必要な応答が不足している詳細ビュー](images/missing_answers_dissected.svg)
 
 <sub>![1.](images/circle_1.svg)</sub> 各検出結果には固有のタイトルがあります。
 
@@ -41,13 +41,13 @@
 
 <sub>![5.](images/circle_5.svg)</sub> 場合によっては、修復には、次のような正確なコマンドも含まれています。
 
-- 上記の例のように修復コマンドが提示された場合、コマンドの実行方法として選択できるオプションがいくつかあります。もちろん、ホストのルート シェル プロンプトにアクセスしてコマンドを切り取って貼り付けるか、回答ファイルを手動で編集するという、手っ取り早い方法もあります。ただその方法は人為的ミスが発生しやすく、拡張性も低くなります。別のオプションは、コマンドの上にある "Run Remediation" ボタンを使用することです。このオプションを使用すると、RHEL Web コンソールがコマンドを実行します。この方法では人為的ミスは発生しにくくなりますが、この単一のホストでのみ実行されるため、拡張性は高められません。
+- 上記の例のように修復コマンドが提示された場合、コマンドの実行方法として選択できるオプションがいくつかあります。もちろん、ホストのルート シェル プロンプトにアクセスしてコマンドを切り取って貼り付けるか、応答ファイルを手動で編集するという、手っ取り早い方法もあります。ただその方法は人為的ミスが発生しやすく、拡張性も低くなります。別のオプションは、コマンドの上にある "Run Remediation" ボタンを使用することです。このオプションを使用すると、RHEL Web コンソールがコマンドを実行します。この方法では人為的ミスは発生しにくくなりますが、この単一のホストでのみ実行されるため、拡張性は高められません。
 
 - 次のステップでは、Ansible Automation Platform (AAP) のスケールを活用して、大規模な RHEL 資産全体で一括して修復を実行する方法について説明します。
 
-### ステップ 2 - Leapp 回答ファイルの管理
+### ステップ 2 - Leapp 応答ファイルの管理
 
-Leapp フレームワークは、ユーザー入力の選択を受け入れる手段として回答ファイルを使用します。これについては、Leapp 開発者ドキュメントの [Asking user questions](https://leapp.readthedocs.io/en/latest/dialogs.html) セクションで詳しく説明されています。前のステップで分析した阻害要因の検出結果は、私たちに回避のための決断を求めています。より具体的には、RHEL アップグレード中に Leapp が pam_pkcs11 PAM モジュールを無効にすることについて確認するよう求めています。
+Leapp フレームワークは、ユーザー入力の選択を受け入れる手段として応答ファイルを使用します。これについては、Leapp 開発者ドキュメントの [Asking user questions](https://leapp.readthedocs.io/en/latest/dialogs.html) セクションで詳しく説明されています。前のステップで分析した阻害要因の検出結果は、私たちに回避のための決断を求めています。より具体的には、RHEL アップグレード中に Leapp が pam_pkcs11 PAM モジュールを無効にすることについて確認するよう求めています。
 
 - [演習 1.2 - アップグレード前のジョブの実行](../1.2-preupg/README.ja.md) では、`infra.leapp` Ansible コレクションの `analysis` Role を使用してアップグレード前のレポートを実行する Playbook を起動しました。 [role のドキュメント](https://github.com/redhat-cop/infra.leapp/blob/main/roles/analysis/README.md) をご覧ください。`leapp_answerfile` 入力変数がサポートされている場所がわかりますか。変数を設定すると、Leapp 応答ファイルが自動的に入力されます。
  
