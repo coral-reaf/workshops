@@ -145,9 +145,9 @@ sudo reboot
 
 Leapp カスタム アクターの開発方法に関する詳細は、このワークショップでは取り扱いません。以下に、自分でさらに学習するために確認できるリソースをいくつか示しますのでご興味ある方はご参照ください。
 
-- [Leapp の開発者向けドキュメント](https://leapp.readthedocs.io/en/latest/): このドキュメントでは、Leapp フレームワークの内部ワークフロー アーキテクチャと、独自のカスタム アクターを開発およびテストする方法について説明します。
+- [Developer Documentation for Leapp](https://leapp.readthedocs.io/en/latest/): このドキュメントでは、Leapp フレームワークの内部ワークフロー アーキテクチャと、独自のカスタム アクターを開発およびテストする方法について説明します。
 
-- [Leapp ダッシュボード](https://oamg.github.io/leapp-dashboard/#/): ここを調べて、検討しているカスタム アクターの機能がメインストリームの Leapp フレームワークにまだ存在していないことを確認してください。
+- [Leapp Dashboard](https://oamg.github.io/leapp-dashboard/#/): ここを調べて、検討しているカスタム アクターの機能がメインストリームの Leapp フレームワークにまだ存在していないことを確認してください。
 
 - [oamg/leapp-supplements](https://github.com/oamg/leapp-supplements): サンプルのカスタム アクターを見つけて独自のアクターを投稿できる GitHub リポジトリ。カスタム アクター RPM パッケージ用の `Makefile` もあります。
 
