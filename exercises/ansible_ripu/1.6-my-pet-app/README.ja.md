@@ -52,7 +52,7 @@
 
 別のアプリケーション (たとえば、潜在的な影響をテストしたいエンタープライズ環境の実際のアプリケーション) をインストールすることもできます。以下の手順をスキップして、独自の冒険をしてください。アップグレードの前後でアプリケーションをテストするようにしてください。
 
-- サンプル アプリケーションは、Java で記述された [Spring Pet Clinic サンプル アプリケーション](https://github.com/spring-projects/spring-petclinic) です。これは、Maven を使用して構築される Spring Boot アプリケーションです。起動時にサンプル データが入力される MySQL データベースに接続します。
+- サンプル アプリケーションは、Java で記述された [Spring Pet Clinic Sample Application](https://github.com/spring-projects/spring-petclinic) です。これは、Maven を使用して構築される Spring Boot アプリケーションです。起動時にサンプル データが入力される MySQL データベースに接続します。
 
 > **注意**
 >
