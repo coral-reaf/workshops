@@ -123,7 +123,7 @@ RHEL インプレースアップグレードオートメーションアプロー
 
 - Playbook の下部で、Ansible コレクションから、`infra.leapp` Role をインポートしていることに注意してください。Git リポジトリの `collections/requirements.yml` ファイルを確認すると、この Role が [https://github.com/redhat-cop/infra.leapp](https://github.com/redhat-cop/infra.leapp)  にある別の Git リポジトリから来ていることがわかります。この Role の中に定義されている `analysis` Role は、最終的に Leapp のアップグレード前スキャンを実行してレポートを生成する際の自動化タスクを提供します。
 
-- この Git リポジトリの `roles/analysis` ディレクトリにドリルダウンして、README および yaml ソース ファイルを確認します。
+- この Git リポジトリの `roles/analysis` ディレクトリにドリルダウンして、README を確認します。
 
 エンタープライズのアップグレードを実行するための独自のカスタム  Playbookを開発する準備ができたら、作業を容易にするために `infra.leapp` Ansible コレクションのロールの使用を検討する必要があります。
 
