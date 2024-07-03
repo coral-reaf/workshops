@@ -138,7 +138,7 @@ RHEL7 または RHEL8 のみのアップグレードについて学習したい�
 
   ![Details view of packages available in excluded repositories will not be installed](images/excluded_repos_finding.svg)
 
-  この結果は、パッケージ python3-pyxattr と rpcgen は "アップグレード中に使用されるリポジトリのリストから意図的に除外されたターゲットシステムリポジトリでのみ利用可能," であるためアップグレードされないという警告ですが、詳細については "Excluded target system repositories" というタイトルの情報結果を参照しています。下にスクロールしてその結果をクリックすると、詳細が表示されます:
+  この結果は、パッケージ python3-pyxattr と rpcgen は "アップグレード中に使用されるリポジトリのリストから意図的に除外されたターゲットシステムリポジトリでのみ利用可能," であるためアップグレードされないという警告ですが、詳細については "Excluded target system repositories" を確認するように促されています。左ペインに戻ってそのタイトルをクリックすると、詳細が表示されます:
 
   ![Details view of excluded target system repositories information finding](images/enablerepo_info_finding.svg)
 
